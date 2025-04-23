@@ -2,101 +2,79 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+    <div className="min-h-screen bg-gray-100 font-sans">
+      {/* Hero Section */}
+      <header className="bg-cover bg-center h-[400px] flex items-center justify-center text-white" style={{ backgroundImage: "url('/hero-banner.jpg')" }}>
+        <div className="text-center px-4">
+          <h1 className="text-4xl font-bold mb-4">Welcome to Afforda Eats</h1>
+          <p className="text-lg">Discover affordable and delicious food in Metro Manila.</p>
+          <div className="mt-6">
+            <input
+              type="text"
+              placeholder="Search for food, vendors, or locations..."
+              className="px-4 py-2 rounded-l-md border-none focus:outline-none w-64"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <button className="px-4 py-2 bg-green-600 text-white rounded-r-md hover:bg-green-700">
+              Search
+            </button>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
+      </header>
+
+      {/* Featured Vendors Section */}
+      <section className="py-12 px-6">
+        <h2 className="text-2xl font-bold mb-6 text-center">Featured Food Vendors</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {["Vendor 1", "Vendor 2", "Vendor 3"].map((vendor, index) => (
+            <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden">
+              <Image
+                src={`/vendor-${index + 1}.jpg`}
+                alt={vendor}
+                width={400}
+                height={250}
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-4">
+                <h3 className="text-lg font-semibold">{vendor}</h3>
+                <p className="text-sm text-gray-600">Affordable and delicious meals available here.</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Recent Reviews Section */}
+      <section className="py-12 px-6 bg-gray-200">
+        <h2 className="text-2xl font-bold mb-6 text-center">Recent Reviews</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[
+            { user: "John Doe", review: "The food here is amazing and affordable!" },
+            { user: "Jane Smith", review: "Great experience, highly recommend Vendor 2!" },
+            { user: "Anonymous", review: "Loved the variety of food options available." },
+          ].map((review, index) => (
+            <div key={index} className="bg-white rounded-lg shadow-md p-4">
+              <p className="text-sm text-gray-800">"{review.review}"</p>
+              <p className="text-sm text-gray-600 mt-2">- {review.user}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Call to Action Section */}
+      <section className="py-12 px-6 text-center bg-green-600 text-white">
+        <h2 className="text-2xl font-bold mb-4">Are you a food vendor?</h2>
+        <p className="mb-6">Join Afforda Eats and reach more customers today!</p>
         <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="/register"
+          className="px-6 py-3 bg-white text-green-600 font-semibold rounded-md hover:bg-gray-100"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
+          Register Your Store
         </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-800 text-white py-6 text-center">
+        <p>&copy; 2025 Afforda Eats. All rights reserved.</p>
       </footer>
     </div>
   );

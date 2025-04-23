@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"npm run backend\" \"npm run client\"",
-    "server": "nodemon server/server.js",
+    "backend": "nodemon backend/server.js",
     "client": "npm --prefix client run dev",
     "build": "npm --prefix client run build"
   },
@@ -27,7 +27,8 @@
     "prisma": "^6.6.0"
   },
   "devDependencies": {
-    "concurrently": "^9.1.2"
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.9"
   },
   "workspaces": [
     "client",
