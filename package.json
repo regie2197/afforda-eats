@@ -1,0 +1,32 @@
+{
+  "name": "afforda-eats",
+  "version": "1.0.0",
+  "description": "Jolly Bus / Konbini Web Application made with NextJS &amp; Supabase DB and Cypress Test Automation",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run backend\" \"npm run client\"",
+    "server": "nodemon server/server.js",
+    "client": "npm --prefix client run dev",
+    "build": "npm --prefix client run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/regie2197/afforda-eats.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/regie2197/afforda-eats/issues"
+  },
+  "homepage": "https://github.com/regie2197/afforda-eats#readme",
+  "dependencies": {
+    "@prisma/client": "^6.6.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "prisma": "^6.6.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
