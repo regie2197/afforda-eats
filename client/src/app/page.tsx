@@ -53,7 +53,7 @@ export default function Home() {
             { user: "Anonymous", review: "Loved the variety of food options available." },
           ].map((review, index) => (
             <div key={index} className="bg-white rounded-lg shadow-md p-4">
-              <p className="text-sm text-gray-800">"{review.review}"</p>
+              <p className="text-sm text-gray-800">&quot;{review.review}&quot;</p>
               <p className="text-sm text-gray-600 mt-2">- {review.user}</p>
             </div>
           ))}
