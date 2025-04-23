@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-gray-100 font-sans">
@@ -5,19 +7,19 @@ export default function Home() {
       <header className="bg-green-600 text-white py-4">
         <div className="container mx-auto flex justify-between items-center px-4">
           <h1 className="text-xl font-bold">
-            <a href="/">Afforda Eats</a>
+            <Link href="/">Afforda Eats</Link>
           </h1>
           <nav>
             <ul className="flex space-x-4">
               <li>
-                <a href="/login" className="hover:underline">
+                <Link href="/login" className="hover:underline">
                   Login
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/register" className="hover:underline">
+                <Link href="/register" className="hover:underline">
                   Register
-                </a>
+                </Link>
               </li>
             </ul>
           </nav>
@@ -30,12 +32,12 @@ export default function Home() {
         <p className="text-lg mb-6">
           Discover affordable and delicious food in Metro Manila.
         </p>
-        <a
+        <Link
           href="/register"
           className="px-6 py-3 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700"
         >
           Get Started
-        </a>
+        </Link>
       </main>
 
       {/* Footer */}
