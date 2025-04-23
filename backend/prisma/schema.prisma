@@ -1,0 +1,102 @@
+
+
+datasource db {
+  provider = "postgresql" // Or your preferred database provider (e.g., mysql, sqlite)
+  url      = env("DATABASE_URL") // Make sure DATABASE_URL is set in your .env file
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+// Enum for account types
+enum AccountType {
+  ADMIN
+  USER
+  STORE_OWNER
+}
+
+// Model for User
+model User {
+  id          Int          @id @default(autoincrement()) 
+  email       String       @unique
+  username    String       @unique
+  password    String
+  firstName   String
+  lastName    String
+  accountType AccountType  // The type of account: Admin, User, StoreOwner
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  reviews     Review[]     // A User can write many reviews
+  storeId     Int?         // Optional: A User with STORE_OWNER can have a store
+  store       Store?       // Reference to Store if User is a StoreOwner
+}
+
+// Store model (owned by StoreOwner)
+model Store {
+  id        Int          @id @default(autoincrement())
+  name      String
+  location  Location[]   // Multiple locations for a store
+  ownerId   Int          @unique // Ensures one-to-one relation with User
+  owner     User         @relation(fields: [ownerId], references: [id])  // Reference to User (StoreOwner)
+  foods     Food[]       // Foods offered by the store
+  reviews   Review[]     // Reviews for the store
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+// Model for Location (Multiple locations for a store)
+model Location {
+  id           Int         @id @default(autoincrement())
+  streetNumber String?
+  streetName   String
+  city         String
+  zipcode      String
+  country      String
+  storeId      Int
+  store        Store       @relation(fields: [storeId], references: [id]) // Reference back to Store
+  storeHours   StoreHours[]  // Store hours for the location
+}
+
+// Model for Food (Items sold by the store)
+model Food {
+  id          Int       @id @default(autoincrement())
+  name        String
+  price       Float
+  description String
+  storeId     Int
+  store       Store     @relation(fields: [storeId], references: [id])
+  reviews     Review[]  // A food item can have many reviews
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// Model for Review (Users write reviews for food or stores)
+model Review {
+  id          Int       @id @default(autoincrement())
+  content     String    
+  rating      Int       // Rating for the food (1 to 5)
+  userId      Int
+  foodId      Int
+  storeId     Int?      // Optional: Reviews for stores too
+  user        User      @relation(fields: [userId], references: [id])
+  food        Food      @relation(fields: [foodId], references: [id])
+  store       Store?    @relation(fields: [storeId], references: [id])  // Optional: Reviews for stores
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// Model for Store Hours (Each location has its open/close time)
+model StoreHours {
+  id        Int       @id @default(autoincrement())
+  day       String    // e.g., "Monday", "Tuesday"
+  openTime  String    // Time in HH:MM format
+  closeTime String    // Time in HH:MM format
+  locationId Int
+  location   Location @relation(fields: [locationId], references: [id])
+}
+
+model Guest {
+  id        Int      @id @default(autoincrement())
+  sessionId String   
+  createdAt DateTime @default(now())
+}
