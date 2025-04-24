@@ -25,7 +25,6 @@
   },
   "homepage": "https://github.com/regie2197/afforda-eats#readme",
   "dependencies": {
-    "@clerk/nextjs": "^6.17.0",
     "@prisma/client": "^6.6.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
