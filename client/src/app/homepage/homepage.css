@@ -4,19 +4,23 @@ body {
     padding: 0;
     line-height: 1.6;
   }
-  
-  h1 {
-    padding: 0;
-    margin: 5px;
+
+  .headtitle {
+    font-weight: bold;
+    text-decoration: none;
+    color: black;
+    font-size: 40px;
+    margin-top: 0.5rem;
+  }
+
+  .logoPic {
+    width: auto;
+    height: 4rem;
   }
   
   main {
     max-width: 600px;
     margin: 0 auto;
-  }
-  
-  div {
-    margin-bottom: 50px;
   }
   
   select {
@@ -25,21 +29,42 @@ body {
     font-size: 16px;
   }
   
+  
+
   /* Default navbar styles */
   .navbar {
     position: sticky;
     top: 0;
     z-index: 1000;
     background-color: white;
-    padding: 10px 20px; /* Adjust padding for better alignment */
     display: flex;
-    align-items: center; /* Vertically align all items */
-    justify-content: space-between; /* Space between logo/title and search bar */
+    justify-content: space-between; /* Space between left and right sections */
+    height: 80px; /* Fixed height for consistent layout */
+    border: 0;
   }
   
   /* Add border when the navbar is sticky */
   .navbar.sticky {
-    border-bottom: 0.5px solid rgb(128, 128, 128, 0.20);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.4  );
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.50); /* Soft shadow */
+  }
+
+  .LogoTitle{
+    display: flex;
+    height: 10rem;
+  }
+
+  .navbar-right {
+    display: flex;
+    align-items: center; /* Vertically align items */
+    margin-left: auto; /* Push the container to the right */
+    gap: 0.5rem; /* Add spacing between the small search bar and the burger button */
+    height: 100%; /* Ensure it matches the navbar height */
+  }
+
+  .navbar-right .small-search-bar {
+    opacity: 1;
+    visibility: visible;
   }
 
 /* Navbar contents */
@@ -76,71 +101,61 @@ body {
 }
   
   /* From Uiverse.io by joe-watson-sbf */ 
-  .container {
-    color: black;
-    position: relative;
-    font-family: sans-serif;
-    padding: 5px;
-  }
-  
-  .container::before {
-    border-radius: 50%;
-    width: 6rem;
-    height: 6rem;
-    top: 30%;
-    right: 7%;
-  }
-  
-  .container .box {
-    width: 11.875em;
-    height: 15.875em;
-    padding: 1rem;
-    background-color: rgb(255, 255, 255);
-    border: 1px solid rgba(0, 0, 0, 0.222);
-    -webkit-backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
-    border-radius: 0.7rem;
-    transition: all ease 0.3s;
-  }
-  
-  .container .box {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
-  .container .box .title {
-    font-size: 2rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-  }
-  
-  .container .box div strong {
-    display: block;
-    margin-bottom: 0.5rem;
-  }
-  
-  .container .box div p {
-    margin: 0;
-    font-size: 0.9em;
-    font-weight: 300;
-    letter-spacing: 0.1em;
-  }
-  
-  .container .box div span {
-    font-size: 0.7rem;
-    font-weight: 300;
-  }
-  
-  .container .box div span:nth-child(3) {
-    font-weight: 500;
-    margin-right: 0.2rem;
-  }
-  
-  .container .box:hover {
-    box-shadow: 0px 0px 20px 1px #4545453f;
-    border: 1px solid rgba(12, 227, 120, 0.454);
-  }
+ /* Card styles */
+.container {
+  color: black;
+  position: relative;
+  font-family: sans-serif;
+  padding: 5px;
+}
+
+.container .box {
+  width: auto;
+  height: 15.875em;
+  padding: 1rem;
+  background-color: rgba(190, 190, 190, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.222);
+  backdrop-filter: blur(20px);
+  border-radius: 0.7rem;
+  transition: all ease 0.3s;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.50); /* Soft shadow */
+}
+
+.container .box .title {
+  font-size: 2rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+
+.container .box div strong {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.container .box div p {
+  margin: 0;
+  font-size: 0.9em;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+}
+
+.container .box div span {
+  font-size: 0.7rem;
+  font-weight: 300;
+}
+
+.container .box div span:nth-child(3) {
+  font-weight: 500;
+  margin-right: 0.2rem;
+}
+
+.container .box:hover {
+  box-shadow: 0 4px 4px rgba(70, 141, 52, 0.50); /* Soft shadow */
+  border: 1px solid rgba(70, 141, 52, 0.454);
+}
+
 
   img {
     width: 5%;         /* Sets width */
@@ -149,29 +164,10 @@ body {
     padding-top: 2px;
   }
   
-/* Search Section */
+/* Search section */
 .search-section {
   text-align: center;
   margin: 20px 0;
-}
-
-.search-section h2 {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.search-options {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 20px;
-}
-
-.search-options a {
-  text-decoration: none;
-  color: black;
-  font-weight: 500;
 }
 
 .search-bar {
@@ -182,11 +178,13 @@ body {
 }
 
 .search-bar input {
-  width: 60%;
+  width: 100%;
   padding: 10px;
   font-size: 1rem;
-  border: 1px solid #ccc;
+  color: white;
+  box-shadow: 0 0 0 1.5px #2b2c37, 0 0 25px -17px #000;
   border-radius: 5px;
+  background-color: #16171d;
 }
 
 .search-bar button {
@@ -203,47 +201,74 @@ body {
   background-color: #019874;
 }
 
-/* Small search bar */
+.filterSort {
+  justify-content: "left"; 
+  align-items: "center"; 
+  gap: 1rem;
+  margin-left: 14rem;
+}
+
+.selectBtn{
+  gap: 0;
+}
+
+.selectBtn .MuiOutlinedInput-notchedOutline {
+  border: none; /* Remove the border */
+}
+
+.selectBtn:hover .MuiOutlinedInput-notchedOutline {
+  border: none; /* Remove the hover border */
+}
+
+.selectBtn.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border: none; /* Remove the focus border */
+}
+
+/* Small search bar styles */
 .small-search-bar {
   display: flex;
   align-items: center;
   gap: 10px;
-  flex-grow: 0; /* Prevent the search bar from growing */
-  margin: 0 25%; /* Center the search bar */
-  line-height: 28px;
+  max-width: 200px;
+  height: 5rem;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
   position: relative;
-  max-width: 190px;
 }
 
-.small-search-bar input {
+.small-search-bar .input {
   width: 100%;
-  padding: 5px 5px 5px 2.5rem; /* Add left padding to account for the icon */
-  font-size: 0.9rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  height: 40px;
+  padding-left: 2.5rem;
+  box-shadow: 0 0 0 1.5px #2b2c37, 0 0 25px -17px #000;
+  border: 0;
+  border-radius: 12px;
+  background-color: #16171d;
+  outline: none;
+  color: #bdbecb;
+  transition: all 0.25s cubic-bezier(0.19, 1, 0.22, 1);
+  cursor: text;
 }
 
-.small-search-bar button {
-  padding: 5px 10px;
-  font-size: 0.9rem;
-  background-color: #000000;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.small-search-bar .input::placeholder {
+  color: #bdbecb;
 }
 
-.small-search-bar button:hover {
-  background-color: #019874;
+.small-search-bar .input:hover {
+  box-shadow: 0 0 0 2.5px #2f303d, 0px 0px 25px -15px #000;
 }
 
-/* From Uiverse.io by LightAndy1 */ 
-.group {
-  display: flex;
-  line-height: 28px;
-  align-items: center;
-  position: relative;
-  max-width: 190px;
+.small-search-bar .input:focus {
+  box-shadow: 0 0 0 2.5px #2f303d;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  fill: #bdbecb;
+  width: 1rem;
+  height: 1rem;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .input {
@@ -279,11 +304,205 @@ body {
 }
 
 .search-icon {
-  position: absolute;
-  left: 0.8rem; /* Position the icon inside the input */
+  position: relative;
+  left: 2.4rem; /* Position the icon inside the input */
   fill: #bdbecb;
   width: 1rem;
   height: 1rem;
   pointer-events: none; /* Prevent the icon from blocking input interactions */
   z-index: 1;
+}
+
+/* From Uiverse.io by devkatyall */ 
+/* The design is inspired from Galahhad*/
+
+.popup {
+  --burger-line-width: 1.125em;
+  --burger-line-height: 0.125em;
+  --burger-offset: 0.625em;
+  --burger-bg: #00bf63;
+  --burger-color: #333;
+  --burger-line-border-radius: 0.1875em;
+  --burger-diameter: 3.125em;
+  --burger-btn-border-radius: calc(var(--burger-diameter) / 2);
+  --burger-line-transition: 0.3s;
+  --burger-transition: all 0.1s ease-in-out;
+  --burger-hover-scale: 1.1;
+  --burger-active-scale: 0.95;
+  --burger-enable-outline-color: var(--burger-bg);
+  --burger-enable-outline-width: 0.125em;
+  --burger-enable-outline-offset: var(--burger-enable-outline-width);
+  /* nav */
+  --nav-padding-x: 0.25em;
+  --nav-padding-y: 0.625em;
+  --nav-border-radius: 0.375em;
+  --nav-border-color: #ccc;
+  --nav-border-width: 0.0625em;
+  --nav-shadow-color: rgba(0, 0, 0, 0.2);
+  --nav-shadow-width: 0 1px 5px;
+  --nav-bg: #eee;
+  --nav-font-family: "Poppins", sans-serif;
+  --nav-default-scale: 0.8;
+  --nav-active-scale: 1;
+  --nav-position-left: 0;
+  --nav-position-right: 0;
+  /* if you want to change sides just switch one property */
+  /* from properties to "unset" and the other to 0 */
+  /* title */
+  --nav-title-size: 0.625em;
+  --nav-title-color: #777;
+  --nav-title-padding-x: 1rem;
+  --nav-title-padding-y: 0.25em;
+  /* nav button */
+  --nav-button-padding-x: 1rem;
+  --nav-button-padding-y: 0.375em;
+  --nav-button-border-radius: 0.375em;
+  --nav-button-font-size: 17px;
+  --nav-button-hover-bg: #00bf63;
+  --nav-button-hover-text-color: #fff;
+  --nav-button-distance: 0.875em;
+  /* underline */
+  --underline-border-width: 0.0625em;
+  --underline-border-color: #ccc;
+  --underline-margin-y: 0.3125em;
+}
+
+/* popup settings 👆 */
+
+.popup {
+  display: inline-block;
+  text-rendering: optimizeLegibility;
+  position: relative;
+}
+
+.popup input {
+  display: none;
+}
+
+.burger {
+  display: flex;
+  align-items: center; /* Center the icon vertically */
+  justify-content: center; /* Center the icon horizontally */
+  background: var(--burger-bg);
+  width: 40px; /* Set a fixed width */
+  height: 40px; /* Set a fixed height */
+  border-radius: 50%; /* Make it circular */
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition: var(--burger-transition);
+  outline: var(--burger-enable-outline-width) solid transparent;
+  outline-offset: 0;
+}
+.popup-window {
+  top: 50px; /* Position 50px below the trigger */
+  right: 0rem; /* Center horizontally */
+  transform: translateY(-50%); /* Adjust for centering */
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  padding: var(--nav-padding-y) var(--nav-padding-x);
+  background: var(--nav-bg);
+  font-family: var(--nav-font-family);
+  color: var(--nav-text-color);
+  border-radius: var(--nav-border-radius);
+  box-shadow: var(--nav-shadow-width) var(--nav-shadow-color);
+  border: var(--nav-border-width) solid var(--nav-border-color);
+  transition: all 0.3s ease-in-out;
+}
+
+.popup-window legend {
+  padding: var(--nav-title-padding-y) var(--nav-title-padding-x);
+  margin: 0;
+  color: var(--nav-title-color);
+  font-size: var(--nav-title-size);
+  text-transform: uppercase;
+}
+
+.popup-window ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.popup-window ul button {
+  outline: none;
+  width: 100%;
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  color: var(--burger-color);
+  font-size: var(--nav-button-font-size);
+  padding: var(--nav-button-padding-y) var(--nav-button-padding-x);
+  white-space: nowrap;
+  border-radius: var(--nav-button-border-radius);
+  cursor: pointer;
+  column-gap: var(--nav-button-distance);
+}
+
+.popup-window ul li:nth-child(1) svg,
+.popup-window ul li:nth-child(2) svg {
+  color: #00bf63;
+}
+
+.popup-window ul li:nth-child(4) svg,
+.popup-window ul li:nth-child(5) svg {
+  color: rgb(153, 153, 153);
+}
+
+.popup-window ul li:nth-child(7) svg {
+  color: red;
+}
+
+.popup-window hr {
+  margin: var(--underline-margin-y) 0;
+  border: none;
+  border-bottom: var(--underline-border-width) solid
+    var(--underline-border-color);
+}
+
+/* actions */
+
+.popup-window ul button:hover,
+.popup-window ul button:focus-visible,
+.popup-window ul button:hover svg,
+.popup-window ul button:focus-visible svg {
+  color: var(--nav-button-hover-text-color);
+  background: var(--nav-button-hover-bg);
+}
+
+.burger:hover {
+  transform: scale(var(--burger-hover-scale));
+}
+
+.burger:active {
+  transform: scale(var(--burger-active-scale));
+}
+
+.burger:focus:not(:hover) {
+  outline-color: var(--burger-enable-outline-color);
+  outline-offset: var(--burger-enable-outline-offset);
+}
+
+.popup input:checked + .burger span:nth-child(1) {
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.popup input:checked + .burger span:nth-child(2) {
+  bottom: 50%;
+  transform: translateY(50%) rotate(-45deg);
+}
+
+.popup input:checked + .burger span:nth-child(3) {
+  transform: translateX(
+    calc(var(--burger-diameter) * -1 - var(--burger-line-width))
+  );
+}
+
+.popup input:checked ~ nav {
+  transform: scale(var(--nav-active-scale));
+  visibility: visible;
+  opacity: 1;
 }
