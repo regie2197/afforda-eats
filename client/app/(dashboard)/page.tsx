@@ -1,23 +1,20 @@
-import { UserButton } from "@clerk/nextjs";
-
 export default function Home() {
   return (
     <div className="p-6">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-blue-1">Admin Dashboard</h1>
-        <UserButton />
       </div>
 
       {/* Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div className="bg-white shadow-md rounded-lg p-6">
-          <h2 className="text-xl font-semibold text-gray-700">Total Vendors</h2>
-          <p className="text-3xl font-bold text-blue-1">120</p>
+          <h2 className="text-xl font-semibold text-gray-700">Total Stores</h2>
+          <p className="text-3xl font-bold text-blue-1">50</p>
         </div>
         <div className="bg-white shadow-md rounded-lg p-6">
           <h2 className="text-xl font-semibold text-gray-700">Total Menus</h2>
-          <p className="text-3xl font-bold text-blue-1">450</p>
+          <p className="text-3xl font-bold text-blue-1">400</p>
         </div>
         <div className="bg-white shadow-md rounded-lg p-6">
           <h2 className="text-xl font-semibold text-gray-700">Total Customers</h2>

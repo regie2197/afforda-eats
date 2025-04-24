@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
@@ -39,14 +38,6 @@ export const LeftSideBar = () => {
             <p>{link.label}</p>
           </Link>
         ))}
-      </div>
-
-      {/* User Section */}
-      <div className="mt-10 flex items-center gap-4 text-body-medium">
-        <UserButton data-testid="test-user-button" />
-        <p className="text-grey-1 hover:text-blue-1 transition-colors duration-300 cursor-pointer">
-          Edit Profile
-        </p>
       </div>
     </div>
   );
