@@ -26,6 +26,7 @@
   "homepage": "https://github.com/regie2197/afforda-eats#readme",
   "dependencies": {
     "@prisma/client": "^6.6.0",
+    "afforda-eats": "file:",
     "cors": "^2.8.5",
     "express": "^5.1.0"
   },
