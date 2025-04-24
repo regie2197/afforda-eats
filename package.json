@@ -1,6 +1,7 @@
 {
   "name": "afforda-eats",
   "version": "1.0.0",
+  "type": "module",
   "description": "Jolly Bus / Konbini Web Application made with NextJS &amp; Supabase DB and Cypress Test Automation",
   "main": "index.js",
   "scripts": {
@@ -8,9 +9,6 @@
     "build": "npm --prefix client run build",
     "backend": "nodemon backend/server.js",
     "client": "npm --prefix client run dev",
-    "db:push": "prisma db push --schema backend/prisma/schema.prisma",
-    "db:generate": "prisma generate --schema backend/prisma/schema.prisma",
-    "db:migrate": "prisma migrate dev --schema backend/prisma/schema.prisma",
     "db:validate": "npx prisma validate --schema backend/prisma/schema.prisma"
   },
   "repository": {
@@ -26,8 +24,11 @@
   "homepage": "https://github.com/regie2197/afforda-eats#readme",
   "dependencies": {
     "@prisma/client": "^6.6.0",
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
     "concurrently": "^9.1.2",
