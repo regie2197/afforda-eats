@@ -37,7 +37,7 @@
     "tailwindcss": "^4.1.4"
   },
   "workspaces": [
-    "admin",
+    "client",
     "backend"
   ]
 }
