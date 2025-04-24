@@ -29,18 +29,22 @@ jobs:
         run: npm install
 
       - name: Build Client Application
+        working-directory: admin
         run: npm run build
 
       - name: Install Vercel CLI
         run: npm install --global vercel
 
       - name: Pull Vercel Environment Information
+        working-directory: admin
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Run Vercel Build
+        working-directory: admin
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy Project Artifacts and Capture URL
+        working-directory: admin
         id: deploy
         run: |
           DEPLOYMENT_URL=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }} | grep -o 'https://[^ ]*')
