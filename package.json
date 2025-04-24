@@ -4,10 +4,10 @@
   "description": "Jolly Bus / Konbini Web Application made with NextJS &amp; Supabase DB and Cypress Test Automation",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"npm run backend\" \"npm run client\"",
-    "build": "npm --prefix client run build",
+    "dev": "concurrently \"npm run backend\" \"npm run admin\"",
+    "build": "npm --prefix admin run build",
     "backend": "nodemon backend/server.js",
-    "client": "npm --prefix client run dev",
+    "admin": "npm --prefix admin run dev",
     "db:push": "prisma db push --schema backend/prisma/schema.prisma",
     "db:generate": "prisma generate --schema backend/prisma/schema.prisma",
     "db:migrate": "prisma migrate dev --schema backend/prisma/schema.prisma",
@@ -37,7 +37,7 @@
     "tailwindcss": "^4.1.4"
   },
   "workspaces": [
-    "client",
+    "admin",
     "backend"
   ]
 }
