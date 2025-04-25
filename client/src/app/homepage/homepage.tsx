@@ -45,8 +45,8 @@ export default function HomePage() {
   return (
     <>
       {/* Navbar */}
-      <AppBar position="sticky" className={`navbar ${isSticky ? "sticky" : ""}`} sx={{ boxShadow: "none" }}>
-        <Toolbar sx={{ justifyContent: "space-between", padding: "0 1rem" }}>
+      <AppBar position="sticky" className={`navbar ${isSticky ? "sticky" : ""}`} sx={{ all: 'unset', boxShadow: "none",   width: "100%" }}>
+        <Toolbar sx={{ justifyContent: "space-between", padding: "0 1rem",   width: "100%" }}>
           <Box className="LogoTitle" sx={{ display: "flex", alignItems: "center" }}>
             <img src="/logo.png" alt="logo" className="logoPic" />
             <Typography component="a" href="#homepage" className="headtitle">
@@ -58,7 +58,7 @@ export default function HomePage() {
           <Box className="navbar-contents" sx={{ display: isSticky ? "none" : "flex" }}>
           </Box>
 
-          <Box className="navbar-right" sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <Box className="navbar-right" sx={{ display: "flex", alignItems: "center" }}>
             {showSmallSearchBar && (
               <Box
                 className="small-search-bar"
@@ -181,6 +181,11 @@ export default function HomePage() {
         defaultValue=""
         displayEmpty
         className="selectBtn"
+        MenuProps={{
+          style: { zIndex: 900 }, // Ensure the dropdown is below the navbar
+          disablePortal: true, // Render the dropdown inside the DOM hierarchy
+          disableScrollLock: true, // Allow scrolling while the dropdown is open
+        }}
       >
         <MenuItem value="" disabled>Filter By</MenuItem>
         <MenuItem value="restaurants">Restaurants</MenuItem>
@@ -195,6 +200,11 @@ export default function HomePage() {
         defaultValue=""
         displayEmpty
         className="selectBtn"
+        MenuProps={{
+          style: { zIndex: 900 }, // Ensure the dropdown is below the navbar
+          disablePortal: true, // Render the dropdown inside the DOM hierarchy
+          disableScrollLock: true, // Allow scrolling while the dropdown is open
+        }}
       >
         <MenuItem value="" disabled>Sort By</MenuItem>
         <MenuItem value="rating">Rating</MenuItem>
@@ -215,6 +225,7 @@ export default function HomePage() {
                 <Paper
                   className="box"
                 >
+                  <img src="/Jollijeep1.jpg" alt="jollijeep" className="jeepPic" />
                   <Typography
                     variant="h6"
                     className="title"
