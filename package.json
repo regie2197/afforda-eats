@@ -25,6 +25,11 @@
   },
   "homepage": "https://github.com/regie2197/afforda-eats#readme",
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^7.0.2",
+    "@mui/material": "^7.0.2",
+    "@next/font": "^14.2.15",
     "@prisma/client": "^6.6.0",
     "cors": "^2.8.5",
     "express": "^5.1.0"
