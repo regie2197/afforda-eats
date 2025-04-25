@@ -8,7 +8,7 @@ import reviewRoutes from './api/review.js';
 import storeRoutes from './api/store.js';
 import userRoutes from './api/user.js';
 
-dotenv.config({ path: '../.env' });
+dotenv.config();
 
 const app = express();
 app.use(cors());

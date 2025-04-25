@@ -8,46 +8,37 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Enum for account types
-enum AccountType {
-  ADMIN
-  USER
-  STORE_OWNER
-}
-
-// Model for User
 model User {
-  id          Int          @id @default(autoincrement()) 
-  email       String       @unique
-  username    String       @unique
+  id          Int         @id @default(autoincrement())
+  email       String      @unique
+  username    String      @unique
   password    String
   firstName   String
   lastName    String
   accountType AccountType
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  reviews     Review[]     // A User can write many reviews
-  stores      Store[]      // A User can own multiple stores
-}
-
-// Store model (owned by StoreOwner)
-model Store {
-  id          Int          @id @default(autoincrement())
-  name        String
-  locationId  Int          @unique
-  location    Location     @relation(fields: [locationId], references: [id])
-  ownerId     Int
-  owner       User         @relation(fields: [ownerId], references: [id])
-  foods       Food[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
   reviews     Review[]
-  storeHours  StoreHours[]
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  storeId       Int? 
+  stores      Store[]
 }
 
-// Location (one per store)
+model Store {
+  id         Int          @id @default(autoincrement())
+  name       String
+  locationId Int          @unique
+  ownerId    Int
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  foods      Food[]
+  reviews    Review[]
+  location   Location     @relation(fields: [locationId], references: [id])
+  owner      User         @relation(fields: [ownerId], references: [id])
+  storeHours StoreHours[]
+}
+
 model Location {
-  id           Int         @id @default(autoincrement())
+  id           Int     @id @default(autoincrement())
   streetNumber String?
   streetName   String
   city         String
@@ -56,47 +47,49 @@ model Location {
   store        Store?
 }
 
-// Food (Items sold by the store)
 model Food {
-  id          Int       @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String
   price       Float
   description String
   storeId     Int
-  store       Store     @relation(fields: [storeId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  store       Store    @relation(fields: [storeId], references: [id])
   reviews     Review[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
 }
 
-// Review (Users write reviews for food or stores)
 model Review {
-  id          Int       @id @default(autoincrement())
-  content     String    
-  rating      Int
-  userId      Int
-  foodId      Int
-  storeId     Int?
-  user        User      @relation(fields: [userId], references: [id])
-  food        Food      @relation(fields: [foodId], references: [id])
-  store       Store?    @relation(fields: [storeId], references: [id])
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id        Int      @id @default(autoincrement())
+  content   String
+  rating    Int
+  userId    Int
+  foodId    Int
+  storeId   Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  food      Food     @relation(fields: [foodId], references: [id])
+  store     Store?   @relation(fields: [storeId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 }
 
-// StoreHours (Each store has store hours)
 model StoreHours {
-  id        Int       @id @default(autoincrement())
+  id        Int    @id @default(autoincrement())
   day       String
   openTime  String
   closeTime String
   storeId   Int
-  store     Store     @relation(fields: [storeId], references: [id])
+  store     Store  @relation(fields: [storeId], references: [id])
 }
 
-// Guest model for session tracking
 model Guest {
   id        Int      @id @default(autoincrement())
   sessionId String
   createdAt DateTime @default(now())
+}
+
+enum AccountType {
+  ADMIN
+  USER
+  STORE_OWNER
 }
