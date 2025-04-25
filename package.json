@@ -23,11 +23,7 @@
   },
   "homepage": "https://github.com/regie2197/afforda-eats#readme",
   "dependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
     "@fontsource/roboto": "^5.2.5",
-    "@mui/icons-material": "^7.0.2",
-    "@mui/material": "^7.0.2",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.0.2",
@@ -42,16 +38,12 @@
     "lucide-react": "^0.503.0"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
-    "concurrently": "^9.1.2"
-=======
-    "autoprefixer": "^10.4.21",
     "concurrently": "^9.1.2",
+    "autoprefixer": "^10.4.21",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.4"
->>>>>>> 5a083225a9f2e1908eaf0158f9ecbf80890f7bc5
   },
   "workspaces": [
     "client",
