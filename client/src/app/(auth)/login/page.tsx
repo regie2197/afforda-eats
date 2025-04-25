@@ -31,7 +31,7 @@ const Login = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const accountType = form.username === 'vendor' ? 'vendor' : 'user';
-    router.push(`/`);
+    router.push(`/home`);
   };
 
   const handleOpenDialog = () => setOpenDialog(true);

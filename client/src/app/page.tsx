@@ -1,5 +1,6 @@
-import HomePage from "./homepage/homepage";
+import LoginPage from "./(auth)/login/page";
+// Ensure the correct path to the module
 
 export default function Page() {
-  return <HomePage />;
+  return <LoginPage />;
 }

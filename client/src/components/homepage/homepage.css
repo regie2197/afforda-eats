@@ -39,7 +39,7 @@ body {
     position: sticky;
     top: 0;
     z-index: 1000;
-    background-color: whitesmoke;
+    background-color: #c6c7cd;
     display: flex;
     justify-content: space-between; /* Space between left and right sections */
     height: 80px; /* Fixed height for consistent layout */
@@ -119,7 +119,7 @@ body {
   width: auto;
   height: 15.875em;
   padding: 1rem;
-  background-color: rgba(190, 190, 190, 0.2);
+  background-color: rgba(136, 135, 135, 0.538);
   border: 1px solid rgba(0, 0, 0, 0.222);
   backdrop-filter: blur(20px);
   border-radius: 0.7rem;
@@ -395,7 +395,7 @@ body {
   outline-offset: 0;
 }
 .popup-window {
-  top: 50px; /* Position 50px below the trigger */
+  top: 4.2rem; /* Position 50px below the trigger */
   right: 0rem; /* Center horizontally */
   transform: translateY(-50%); /* Adjust for centering */
   visibility: hidden;

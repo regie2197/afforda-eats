@@ -9,10 +9,21 @@ import Paper from "@mui/material/Paper"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import "./homepage.css"
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
   const [isSticky, setIsSticky] = useState(false)
   const [showSmallSearchBar, setShowSmallSearchBar] = useState(false)
+
+  const router = useRouter();
+
+  const handleLogout = () => {
+    // Clear authentication data (e.g., tokens)
+    localStorage.removeItem("authToken"); // Example: Remove token from localStorage
+
+    // Redirect to the login page
+    router.push("/login");
+  };
 
   useEffect(() => {
     const navbar = document.querySelector(".navbar")
@@ -115,7 +126,7 @@ export default function HomePage() {
                     </button>
                   </li>
                   <li>
-                    <button>
+                    <button onClick={handleLogout}>
                       <span>Log Out</span>
                     </button>
                   </li>
