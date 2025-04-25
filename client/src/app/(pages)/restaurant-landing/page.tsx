@@ -27,7 +27,7 @@ export default function Landing() {
 
             <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', py: 5 }}>
                 <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, width: '100%', maxWidth: '1200px', gap: 2 }}>
-                    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'column' }, width: '40%', maxWidth: '1200px', gap: 2, height: '100%' }}>
+                    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'column' }, width: { xs: '100%', md: '40%' }, gap: 2, height: '100%' }}>
                         <Card sx={{ flex: 1, p: 2 }}>
                             <CardContent>
                                 <Typography variant="h4" component="div" sx={{ fontWeight: '800', color: 'red' }}>
@@ -205,7 +205,7 @@ export default function Landing() {
                                             Latest Reviews
                                         </Typography>
                                     </Grid>
-                                    <Grid size={{ xs: 4, md: 4 }}>
+                                    <Grid display="flex" justifyContent="end" alignItems="center" size={{ xs: 4, md: 4 }}>
                                         <Button variant="contained" sx={{ color: 'white', bgcolor: 'red' }}>Create Review</Button>
                                     </Grid>
                                 </Grid>
