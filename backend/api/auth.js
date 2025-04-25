@@ -12,36 +12,45 @@ const SECRET_KEY = process.env.JWT_SECRET_KEY;
 // Login Route
 // POST /auth/login
 router.post('/login', async (req, res) => {
-  const { emailOrUsername, password } = req.body;
+  const { email, username, password } = req.body;
 
   try {
-    const user = await prisma.user.findFirst({
-      where: {
-        OR: [
-          { email: emailOrUsername },
-          { username: emailOrUsername }
-        ]
-      },
-    });
+    let user;
+
+    // Check if the request has an email or username
+    if (email) {
+      user = await prisma.user.findFirst({
+        where: { email }
+      });
+    } else if (username) {
+      user = await prisma.user.findFirst({
+        where: { username }
+      });
+    }
 
     if (!user) return res.status(404).json({ error: 'User not found' });
 
+    // Check if the password matches
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) return res.status(400).json({ error: 'Invalid credentials' });
 
+    // Generate JWT token
     const token = 'vertere@2025'
     // jwt.sign(
     //   { userId: user.id, email: user.email, accountType: user.accountType },
-    //   SECRET_KEY,
+    //   process.env.JWT_SECRET_KEY,  // Make sure to store this in .env
     //   { expiresIn: '1d' }
     // );
 
+    // Send the token as a response
     res.status(200).json({ token });
+
   } catch (error) {
-    console.error('Login error:', error);
+    console.error('Login error:', error.message);
     res.status(500).json({ error: 'An error occurred during login' });
   }
 });
+
 
 
 router.post('/register', async (req, res) => {
