@@ -8,20 +8,34 @@ const router = express.Router();
 router.post('/', async (req, res) => {
   const { name, price, description, storeId } = req.body;
 
+  // Data validation for required fields
   if (!name || !price || !description || !storeId) {
     return res.status(400).json({ error: 'All fields (name, price, description, storeId) are required' });
   }
 
+  // Validate that price is a number and a positive value (can include decimals)
+  const parsedPrice = parseFloat(price);
+
+  if (isNaN(parsedPrice)) {
+    return res.status(400).json({ error: 'Price must be a valid number' });
+  }
+
+  if (parsedPrice <= 0) {
+    return res.status(400).json({ error: 'Price must be a positive number' });
+  }
+
   try {
+    // Check if store exists
     const store = await prisma.store.findUnique({ where: { id: storeId } });
     if (!store) {
       return res.status(404).json({ error: 'Store not found' });
     }
 
+    // Create the food item
     const food = await prisma.food.create({
       data: {
         name,
-        price,
+        price: parsedPrice, // Use the validated and parsed price
         description,
         storeId,
       },
@@ -35,15 +49,21 @@ router.post('/', async (req, res) => {
 });
 
 // Get all foods for a store
-router.get('/', async (req, res) => {
-  const storeId = parseInt(req.params.storeId);
+router.get('/:storeId', async (req, res) => {
+  const storeId = parseInt(req.params.storeId, 10);
 
   if (isNaN(storeId)) {
     return res.status(400).json({ error: 'Invalid store ID' });
   }
 
   try {
-    const foods = await prisma.food.findMany({ where: { storeId } });
+    // Fetch foods and include relations if necessary (e.g., reviews)
+    const foods = await prisma.food.findMany({
+      where: { storeId },
+      include: {
+        reviews: true,  // Optionally include related reviews if you need them
+      },
+    });
 
     if (!foods.length) {
       return res.status(404).json({ error: 'No food items found for this store' });
@@ -58,14 +78,19 @@ router.get('/', async (req, res) => {
 
 // Get a single food item
 router.get('/:id', async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(req.params.id, 10);
 
   if (isNaN(id)) {
     return res.status(400).json({ error: 'Invalid food ID' });
   }
 
   try {
-    const food = await prisma.food.findUnique({ where: { id } });
+    const food = await prisma.food.findUnique({
+      where: { id },
+      include: {
+        reviews: true,  // Include related reviews if needed
+      },
+    });
 
     if (!food) {
       return res.status(404).json({ error: 'Food not found' });
@@ -80,11 +105,24 @@ router.get('/:id', async (req, res) => {
 
 // PATCH (Partial Update) a food item
 router.patch('/:id', async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(req.params.id, 10);
   const { name, price, description } = req.body;
 
   if (isNaN(id)) {
     return res.status(400).json({ error: 'Invalid food ID' });
+  }
+
+  // Validate price if provided
+  let updatedPrice = price;
+  if (updatedPrice) {
+    const parsedPrice = parseFloat(updatedPrice);
+    if (isNaN(parsedPrice)) {
+      return res.status(400).json({ error: 'Price must be a valid number' });
+    }
+    if (parsedPrice <= 0) {
+      return res.status(400).json({ error: 'Price must be a positive number' });
+    }
+    updatedPrice = parsedPrice;  // Assign validated price
   }
 
   try {
@@ -94,11 +132,12 @@ router.patch('/:id', async (req, res) => {
       return res.status(404).json({ error: 'Food not found' });
     }
 
+    // Update food item data
     const updatedFood = await prisma.food.update({
       where: { id },
       data: {
         name: name ?? food.name,
-        price: price ?? food.price,
+        price: updatedPrice ?? food.price,
         description: description ?? food.description,
       },
     });
@@ -110,9 +149,9 @@ router.patch('/:id', async (req, res) => {
   }
 });
 
-// DELETE a food item
+// DELETE a food item (with cascade delete on related reviews)
 router.delete('/:id', async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(req.params.id, 10);
 
   if (isNaN(id)) {
     return res.status(400).json({ error: 'Invalid food ID' });
@@ -125,9 +164,13 @@ router.delete('/:id', async (req, res) => {
       return res.status(404).json({ error: 'Food not found' });
     }
 
-    await prisma.food.delete({ where: { id } });
+    // Cascade delete related reviews and delete the food item
+    await prisma.$transaction([
+      prisma.review.deleteMany({ where: { foodId: id } }),
+      prisma.food.delete({ where: { id } }),
+    ]);
 
-    res.status(200).json({ message: 'Food deleted successfully' });
+    res.status(200).json({ message: 'Food and related reviews deleted successfully' });
   } catch (error) {
     console.error('Error deleting food:', error);
     res.status(500).json({ error: 'Failed to delete food' });
