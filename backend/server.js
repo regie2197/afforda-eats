@@ -14,7 +14,12 @@ dotenv.config();
 const app = express();
 const prisma = new PrismaClient(); // Initialize Prisma
 
-app.use(cors());
+const corsOptions = {
+  origin: 'http://localhost:3000', // Allow only frontend origin
+  credentials: true, // Allow cookies to be sent with requests
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Attach Prisma to each request

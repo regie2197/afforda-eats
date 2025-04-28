@@ -38,13 +38,7 @@ const Login = () => {
         password: form.password,
       });
   
-      if (response.status === 200) {
-        console.log('Login success:', response.data);
-  
-        router.push('/home'); // Redirect after successful login
-      } else {
-        alert('Invalid login attempt'); // Handle unexpected success responses
-      }
+      router.push('/home');
     } catch (error: any) {
       // Ensure error handling is catching the failed request
       console.error('Login failed:', error.response?.data?.message || error.message);
