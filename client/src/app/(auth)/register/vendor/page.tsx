@@ -18,7 +18,9 @@ import "@/styles/globals.css";
 export default function VendorRegister() {
   const router = useRouter();
   const [form, setForm] = useState({
-    businessName: "",
+    firstName: "",
+    lastName: "",
+    email: "",
     username: "",
     password: "",
   });
@@ -90,9 +92,25 @@ export default function VendorRegister() {
                 <CustomTextField
                   fullWidth
                   margin="normal"
-                  label="Business Name"
-                  name="businessName"
-                  value={form.businessName}
+                  label="First Name"
+                  name="FirstName"
+                  value={form.firstName}
+                  onChange={handleChange}
+                />
+                <CustomTextField
+                  fullWidth
+                  margin="normal"
+                  label="Last Name"
+                  name="lastName"
+                  value={form.lastName}
+                  onChange={handleChange}
+                />
+                <CustomTextField
+                  fullWidth
+                  margin="normal"
+                  label="Email"
+                  name="email"
+                  value={form.email}
                   onChange={handleChange}
                 />
                 <CustomTextField

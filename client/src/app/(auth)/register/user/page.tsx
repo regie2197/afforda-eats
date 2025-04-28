@@ -1,26 +1,28 @@
 "use client";
 
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Container,
-  Typography,
-  Link
-} from '@mui/material';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import CustomTextField from '@/components/CustomTextField';
-import Image from 'next/image';
-import '@/styles/globals.css';
+import { useState } from "react";
+import { 
+  Box, 
+  Button, 
+  Card, 
+  CardContent, 
+  Container, 
+  Typography, 
+  Link 
+} from "@mui/material";
+import { useRouter } from "next/navigation";
+import CustomTextField from "@/components/CustomTextField";
+import Image from "next/image";
+import "@/styles/globals.css";
 
 export default function Register() {
   const router = useRouter();
   const [form, setForm] = useState({
-    name: '',
-    username: '',
-    password: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    username: "",
+    password: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,53 +32,51 @@ export default function Register() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(form);
-    router.push('/user'); // Redirect to user dashboard by default
+    router.push("/user"); // Redirect to user dashboard
   };
 
   return (
     <Box
       sx={{
-        minHeight: '100vh',
-        bgcolor: '#c6c7cd',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        minHeight: "100vh",
+        bgcolor: "#c6c7cd",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       <Container maxWidth="md">
-      <Card
+        <Card
           sx={{
-            width: '100%',
-            display: 'flex',
+            width: "100%",
+            display: "flex",
             minHeight: 500,
-            overflow: 'hidden',
+            overflow: "hidden",
             borderRadius: 5,
             boxShadow: 4,
-            flexDirection: { xs: 'column', sm: 'row-reverse' },
-            bgcolor: 'white',
+            flexDirection: { xs: "column", sm: "row-reverse" },
+            bgcolor: "white",
             p: 1,
           }}
         >
           {/* Right Half - Image */}
           <Box
             sx={{
-              width: '50%',
-              position: 'relative',
-              display: { xs: 'none', sm: 'block' },
+              width: "50%",
+              position: "relative",
+              display: { xs: "none", sm: "block" },
             }}
           >
             <Image
               src="/user-login.jpg"
               alt="Register Visual"
               fill
-              style={{ objectFit: 'cover',
-                borderRadius: '12px',
-               }}
+              style={{ objectFit: "cover", borderRadius: "12px" }}
             />
           </Box>
 
           {/* Left Half - Form */}
-          <Box sx={{ width: { xs: '100%', sm: '50%' }, p: 4 }}>
+          <Box sx={{ width: { xs: "100%", sm: "50%" }, p: 4 }}>
             <CardContent>
               {/* Logo and Title */}
               <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
@@ -90,11 +90,27 @@ export default function Register() {
               </Typography>
               <form onSubmit={handleSubmit}>
                 <CustomTextField
+                    fullWidth
+                    margin="normal"
+                    label="First Name"
+                    name="firstName"
+                    value={form.firstName}
+                    onChange={handleChange}
+                />
+                <CustomTextField
                   fullWidth
                   margin="normal"
-                  label="Name"
-                  name="name"
-                  value={form.name}
+                  label="Last Name"
+                  name="lastName"
+                  value={form.lastName}
+                  onChange={handleChange}
+                />
+                <CustomTextField
+                  fullWidth
+                  margin="normal"
+                  label="Email"
+                  name="email"
+                  value={form.email}
                   onChange={handleChange}
                 />
                 <CustomTextField
@@ -123,8 +139,8 @@ export default function Register() {
                     mt: 2,
                     "&:hover": {
                       bgcolor: "green",
-                      color: "white"
-                    }
+                      color: "white",
+                    },
                   }}
                 >
                   Register
@@ -136,7 +152,7 @@ export default function Register() {
                 <Link
                   href="/login"
                   underline="hover"
-                  sx={{ fontWeight: 'bold', color: 'black' }}
+                  sx={{ fontWeight: "bold", color: "black" }}
                 >
                   Login
                 </Link>
