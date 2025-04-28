@@ -38,6 +38,25 @@ interface storeData {
 
 export default function Landing() {
 
+    const [cardsData, setCardsData] = useState<CardData[]>([]);
+    const [storeData, setStoreData] = useState<storeData>({
+        name: 'Affordaeats Jollijeep',
+        tags: 'Masarap • Mesherep • Meisirip',
+        about: 'Wise busy past both park when an ye no. Nay likely her length sooner thrown sex lively income. The expense windows adapted sir. Wrong widen drawn ample eat off doors money. Offending belonging promotion provision an be oh consulted ourselves it. Blessing welcomed ladyship she met humoured sir breeding her. Six curiosity day assurance bed necessary',
+        meal: {
+            name: '',
+            type: '',
+        },
+        location: '8th Floor Adamson Center, 121 L.P Leviste St. Salcedo Village, Makati City, 1227 Philippines',
+        time: 'Mon-Fri, 8:00am - 5:00pm',
+        rating: 3,
+    });
+    const [error, setError] = useState<string | null>(null);
+    
+    const [rating, setRating] = useState<number | null>(5);
+
+    const [feedback, setFeedback] = useState('');
+
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -48,20 +67,23 @@ export default function Landing() {
         setOpen(false);
     };
 
-    const [cardsData, setCardsData] = useState<CardData[]>([]);
-    const [storeData, setStoreData] = useState<storeData>({
-        name: '',
-        tags: '',
-        about: '',
-        meal: {
-            name: '',
-            type: '',
-        },
-        location: '',
-        time: '',
-        rating: 0,
-    });
-    const [error, setError] = useState<string | null>(null);
+    const handleSubmit = () => {
+        const reviewData = {
+            rating: rating ?? 0,
+            feedback,
+        };
+
+
+        axios.post('https://api.example.com/reviews', reviewData)
+            .then(response => {
+                console.log('Review submitted: ', response.data);
+                handleClose();
+            })
+            .catch(error => {
+                console.error('Error submitting review:', error)
+            })
+
+    }
 
 
     useEffect(() => {
@@ -202,7 +224,7 @@ export default function Landing() {
                                         </Box>
                                     </Grid>
                                     <Grid sx={{ display: 'flex', alignItems: 'left', pt: 2 }}>
-                                        <Rating name="half-rating" defaultValue={storeData.rating} precision={1} readOnly />
+                                        <Rating name="half-rating" value={storeData.rating} precision={1} readOnly />
                                         <Typography variant="body2" sx={{ ml: 1, fontSize: 20 }}>
                                             {storeData.rating} out of 5 stars (24 reviews)
                                         </Typography>
@@ -274,7 +296,7 @@ export default function Landing() {
                                                     </Typography>
                                                 </Grid>
                                                 <Grid item xs={10}>
-                                                    <Rating name="half-rating" defaultValue={5} precision={1} />
+                                                    <Rating name="half-rating" defaultValue={5} precision={1} value={rating} onChange={(event, newValue) => {setRating(newValue);}} />
                                                 </Grid>
 
                                                 {/* Feedback Section */}
@@ -296,12 +318,14 @@ export default function Landing() {
                                                             resize: "none",
                                                         }}
                                                         maxLength={500}
+                                                        value={feedback}
+                                                        onChange={(event) => setFeedback(event.target.value)}
                                                     />
                                                 </Grid>
                                             </Grid>
                                         </DialogContent>
                                         <DialogActions>
-                                            <Button onClick={handleClose} autoFocus>
+                                            <Button onClick={handleSubmit} autoFocus>
                                                 Submit
                                             </Button>
                                             <Button onClick={handleClose}>Cancel</Button>
@@ -333,7 +357,7 @@ export default function Landing() {
                                                     {card.description}
                                                 </Typography>
                                                 <Box sx={{ display: 'flex', alignItems: 'center', mt: 2, color: 'gray.600' }}>
-                                                    <Rating name="half-rating" defaultValue={card.rating} precision={1} readOnly value={1} />
+                                                    <Rating name="half-rating" value={card.rating} precision={1} readOnly />
                                                     <Typography variant="body2" sx={{ ml: 1 }}>
                                                         {card.rating} stars out of 5
                                                     </Typography>
