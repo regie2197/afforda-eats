@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "generated/prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int         @id @default(autoincrement())
+  email       String      @unique
+  username    String      @unique
+  password    String
+  firstName   String
+  lastName    String
+  accountType AccountType
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  reviews     Review[]
+  storeId     Int?
+  stores      Store[]
+}
+
+model Store {
+  id         Int          @id @default(autoincrement())
+  name       String
+  locationId Int          @unique
+  ownerId    Int
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  foods      Food[]
+  reviews    Review[]
+  location   Location     @relation(fields: [locationId], references: [id])
+  owner      User         @relation(fields: [ownerId], references: [id])
+  storeHours StoreHours[]
+}
+
+model Location {
+  id           Int     @id @default(autoincrement())
+  streetNumber String?
+  streetName   String
+  city         String
+  zipcode      String
+  country      String
+  store        Store?
+}
+
+model Food {
+  id          Int      @id @default(autoincrement())
+  name        String
+  price       Float
+  description String
+  storeId     Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  store       Store    @relation(fields: [storeId], references: [id])
+  reviews     Review[]
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  content   String
+  rating    Int
+  userId    Int
+  foodId    Int
+  storeId   Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  food      Food     @relation(fields: [foodId], references: [id])
+  store     Store?   @relation(fields: [storeId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model StoreHours {
+  id        Int    @id @default(autoincrement())
+  day       String
+  openTime  String
+  closeTime String
+  storeId   Int
+  store     Store  @relation(fields: [storeId], references: [id])
+}
+
+model Guest {
+  id        Int      @id @default(autoincrement())
+  sessionId String
+  createdAt DateTime @default(now())
+}
+
+enum AccountType {
+  ADMIN
+  USER
+  STORE_OWNER
+}

@@ -1,0 +1,58 @@
+{
+  "name": "afforda-eats",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Jolly Bus / Konbini Web Application made with NextJS &amp; Supabase DB and Cypress Test Automation",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run backend\" \"npm run client\"",
+    "build": "npm --prefix client run build",
+    "backend": "nodemon backend/server.js",
+    "client": "npm --prefix client run dev",
+    "db:validate": "npx prisma validate --schema backend/prisma/schema.prisma"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/regie2197/afforda-eats.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/regie2197/afforda-eats/issues"
+  },
+  "homepage": "https://github.com/regie2197/afforda-eats#readme",
+  "dependencies": {
+    "@fontsource/roboto": "^5.2.5",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^7.0.2",
+    "@mui/material": "^7.0.2",
+    "@next/font": "^14.2.15",
+    "@prisma/client": "^6.6.0",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.503.0",
+    "next": "15.3.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "nodemon": "^3.1.10"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "concurrently": "^9.1.2",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.1.4",
+    "@eslint/eslintrc": "^3",
+    "typescript": "^5"
+  },
+  "workspaces": [
+    "client",
+    "backend"
+  ]
+}
