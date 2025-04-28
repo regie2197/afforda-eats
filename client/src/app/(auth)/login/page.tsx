@@ -18,6 +18,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import CustomTextField from "@/components/CustomTextField";
 import '@/styles/globals.css';
+import api from '../../../../api/api';
 
 const Login = () => {
   const router = useRouter();
@@ -28,11 +29,29 @@ const Login = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const accountType = form.username === 'vendor' ? 'vendor' : 'user';
-    router.push(`/home`);
+    try {
+      // Use the imported `api` instance to make the login request
+      const response = await api.post('/login', {
+        username: form.username,
+        password: form.password,
+      });
+  
+      if (response.status === 200) {
+        console.log('Login success:', response.data);
+  
+        router.push('/home'); // Redirect after successful login
+      } else {
+        alert('Invalid login attempt'); // Handle unexpected success responses
+      }
+    } catch (error: any) {
+      // Ensure error handling is catching the failed request
+      console.error('Login failed:', error.response?.data?.message || error.message);
+      alert('Login failed: ' + (error.response?.data?.message || 'Please try again'));
+    }
   };
+  
 
   const handleOpenDialog = () => setOpenDialog(true);
   const handleCloseDialog = () => setOpenDialog(false);
