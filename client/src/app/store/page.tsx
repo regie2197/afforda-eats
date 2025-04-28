@@ -2,9 +2,10 @@
 
 import Image from "next/image";
 import { Box, Container, Typography, Card, CardContent, Divider, Grid, ImageList, ImageListItem, Button, Rating, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import TextareaAutosize from '@mui/material/TextareaAutosize';
-import AppBarComponent from "../../components/AppBarComponent"; // Correct import
+import AppBarComponent from "../../components/AppBarComponent";
+import axios from 'axios';
 
 
 function srcset(image: string, size: number, rows = 1, cols = 1) {
@@ -15,9 +16,48 @@ function srcset(image: string, size: number, rows = 1, cols = 1) {
     };
 }
 
+interface CardData {
+    title: string;
+    description: string;
+    rating: number;
+}
+
+interface storeData {
+    name: string;
+    tags: string;
+    about: string;
+    meal: {
+        name: string;
+        type: string;
+    };
+    location: string;
+    time: string;
+    rating: number;
+}
+
+
 export default function Landing() {
 
-    const [open, setOpen] = React.useState(false);
+    const [cardsData, setCardsData] = useState<CardData[]>([]);
+    const [storeData, setStoreData] = useState<storeData>({
+        name: 'Affordaeats Jollijeep',
+        tags: 'Masarap • Mesherep • Meisirip',
+        about: 'Wise busy past both park when an ye no. Nay likely her length sooner thrown sex lively income. The expense windows adapted sir. Wrong widen drawn ample eat off doors money. Offending belonging promotion provision an be oh consulted ourselves it. Blessing welcomed ladyship she met humoured sir breeding her. Six curiosity day assurance bed necessary',
+        meal: {
+            name: '',
+            type: '',
+        },
+        location: '8th Floor Adamson Center, 121 L.P Leviste St. Salcedo Village, Makati City, 1227 Philippines',
+        time: 'Mon-Fri, 8:00am - 5:00pm',
+        rating: 3,
+    });
+    const [error, setError] = useState<string | null>(null);
+
+    const [rating, setRating] = useState<number | null>(5);
+
+    const [feedback, setFeedback] = useState('');
+
+    const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -26,6 +66,61 @@ export default function Landing() {
     const handleClose = () => {
         setOpen(false);
     };
+
+
+    const [mapUrl, setMapUrl] = useState('');
+
+    useEffect(() => {
+        if (storeData) {
+            const encodedAddress = encodeURIComponent(storeData.location);
+            const url = 'https://maps.google.com/maps?q=' + encodedAddress  + '&t=&z=13&ie=UTF8&iwloc=&output=embed'
+            setMapUrl(url);
+        }
+    }, [])
+
+    
+
+    const handleSubmit = () => {
+        const reviewData = {
+            rating: rating ?? 0,
+            feedback,
+        };
+
+
+        axios.post('https://api.example.com/reviews', reviewData)
+            .then(response => {
+                console.log('Review submitted: ', response.data);
+                handleClose();
+            })
+            .catch(error => {
+                console.error('Error submitting review:', error)
+            })
+
+    }
+
+
+    useEffect(() => {
+        axios.get('https://api.example.com/cards')
+            .then(response => {
+                if (Array.isArray(response.data)) {
+                    setCardsData(response.data);
+                } else {
+                    setError('API response is not an array');
+                }
+            })
+            .catch(error => {
+                setError('Error fetching data: ' + error.message);
+            });
+
+        axios.get('https://api.example.com/store')
+            .then(response => {
+                setStoreData(response.data);
+            })
+            .catch(error => {
+                setError('Error fetching store data: ' + error.message);
+            });
+    }, []);
+
 
 
     return (
@@ -48,10 +143,10 @@ export default function Landing() {
                             <Card sx={{ flex: 1, p: 2 }}>
                                 <CardContent>
                                     <Typography variant="h4" component="div" sx={{ fontWeight: '800', color: 'red' }}>
-                                        Restaurant Name
+                                        {storeData.name}
                                     </Typography>
                                     <Typography variant="body2" sx={{ color: 'gray.400', pt: 1, pb: 1 }}>
-                                        Restaurant Tags
+                                        {storeData.tags}
                                     </Typography>
                                 </CardContent>
                                 <Divider sx={{ my: 2 }} />
@@ -60,13 +155,7 @@ export default function Landing() {
                                         About
                                     </Typography>
                                     <Typography variant="body2" sx={{ color: 'gray', pt: 1, pb: 1 }}>
-                                        Paragraph 1
-                                    </Typography>
-                                    <Typography variant="body2" sx={{ color: 'gray', pt: 1, pb: 1 }}>
-                                        Paragraph 2
-                                    </Typography>
-                                    <Typography variant="body2" sx={{ color: 'gray', pt: 1, pb: 1 }}>
-                                        Paragraph 3
+                                        {storeData.about}
                                     </Typography>
                                 </CardContent>
                             </Card>
@@ -78,7 +167,7 @@ export default function Landing() {
                                                 Menu
                                             </Typography>
                                         </Grid>
-                                        <Grid xs={6} md={6}>
+                                        {/* <Grid xs={6} md={6}>
                                             <Typography variant="body1" sx={{ fontWeight: 700, color: 'gray', pt: 1, pb: 1 }}>
                                                 Type of Meal
                                             </Typography>
@@ -117,7 +206,7 @@ export default function Landing() {
                                             <Typography variant="body2" sx={{ color: 'gray', pt: 1, pb: 1 }}>
                                                 Meal 5
                                             </Typography>
-                                        </Grid>
+                                        </Grid> */}
                                     </Grid>
                                 </CardContent>
                             </Card>
@@ -148,9 +237,9 @@ export default function Landing() {
                                         </Box>
                                     </Grid>
                                     <Grid sx={{ display: 'flex', alignItems: 'left', pt: 2 }}>
-                                        <Rating name="half-rating" defaultValue={4} precision={1} readOnly />
+                                        <Rating name="half-rating" value={storeData.rating} precision={1} readOnly />
                                         <Typography variant="body2" sx={{ ml: 1, fontSize: 20 }}>
-                                            4 out of 5 stars (24 reviews)
+                                            {storeData.rating} out of 5 stars (24 reviews)
                                         </Typography>
                                     </Grid>
                                 </CardContent>
@@ -166,7 +255,7 @@ export default function Landing() {
                                         </Box>
                                     </Grid>
                                     <Grid sx={{ display: 'flex', alignItems: 'left', alignContent: 'center', pt: 2 }}>
-                                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15447.105331519!2d121.02450585000001!3d14.55477925!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397c95b0494f8cf%3A0x38bcb0d8f0bb8b77!2sOne%20Ayala%20(Ayala%20Malls)!5e0!3m2!1sen!2sph!4v1745474030767!5m2!1sen!2sph" width="100%" height="450" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+                                        <iframe src={mapUrl} width="100%" height="450" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
                                     </Grid>
                                     <Grid container>
                                         <Grid xs={6} md={6}>
@@ -181,13 +270,12 @@ export default function Landing() {
                                         </Grid>
                                         <Grid xs={6} md={6}>
                                             <Typography variant="body2" sx={{ m: 1 }}>
-                                                911 Kapitan Tikong Street Corner Leon Guinto Street, Manila, 1004 Metro Manila, Philippines, Manila City
+                                                {storeData.location}
                                             </Typography>
                                         </Grid>
                                         <Grid xs={6} md={6}>
                                             <Typography variant="body2" sx={{ m: 1 }}>
-                                                Mon - Sun
-                                                10:00 AM - 12:00 AM
+                                                {storeData.time}
                                             </Typography>
                                         </Grid>
                                     </Grid>
@@ -211,152 +299,87 @@ export default function Landing() {
 
 
                                     <Dialog open={open} onClose={handleClose}>
-  <DialogTitle>Create a Review</DialogTitle>
-  <DialogContent>
-    <Grid container spacing={2} alignItems="center">
-      {/* Rating Section */}
-      <Grid item xs={2}>
-        <Typography variant="body1" sx={{ fontWeight: 600 }}>
-          Rating:
-        </Typography>
-      </Grid>
-      <Grid item xs={10}>
-        <Rating name="half-rating" defaultValue={5} precision={1} />
-      </Grid>
-
-      {/* Feedback Section */}
-      <Grid item xs={12}>
-        <Typography variant="body1" sx={{ fontWeight: 600 }}>
-          Feedback:
-        </Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <TextareaAutosize
-          aria-label="minimum height"
-          minRows={8}
-          maxRows={18}
-          style={{
-            width: "95%",
-            padding: "10px",
-            border: "1px solid #ccc",
-            borderRadius: "4px",
-            resize: "none",
-          }}
-          maxLength={500}
-        />
-      </Grid>
-    </Grid>
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={handleClose} autoFocus>
-      Submit
-    </Button>
-    <Button onClick={handleClose}>Cancel</Button>
-  </DialogActions>
-</Dialog>
-
-
-                                    <Card sx={{ border: 1, borderColor: 'gray.200', borderRadius: 2, boxShadow: 3, m: 2 }}>
-                                        <CardContent>
-                                            <Grid container>
-                                                <Grid xs={1} md={1} sx={{ ml: 1, mt: 0.5 }}>
-                                                    <svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                                                        <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                                                            <g id="Dribbble-Light-Preview" transform="translate(-140.000000, -2159.000000)" fill="#000000">
-                                                                <g id="icons" transform="translate(56.000000, 160.000000)">
-                                                                    <path d="M100.562548,2016.99998 L87.4381713,2016.99998 C86.7317804,2016.99998 86.2101535,2016.30298 86.4765813,2015.66198 C87.7127655,2012.69798 90.6169306,2010.99998 93.9998492,2010.99998 C97.3837885,2010.99998 100.287954,2012.69798 101.524138,2015.66198 C101.790566,2016.30298 101.268939,2016.99998 100.562548,2016.99998 M89.9166645,2004.99998 C89.9166645,2002.79398 91.7489936,2000.99998 93.9998492,2000.99998 C96.2517256,2000.99998 98.0830339,2002.79398 98.0830339,2004.99998 C98.0830339,2007.20598 96.2517256,2008.99998 93.9998492,2008.99998 C91.7489936,2008.99998 89.9166645,2007.20598 89.9166645,2004.99998 M103.955674,2016.63598 C103.213556,2013.27698 100.892265,2010.79798 97.837022,2009.67298 C99.4560048,2008.39598 100.400241,2006.33098 100.053171,2004.06998 C99.6509769,2001.44698 97.4235996,1999.34798 94.7348224,1999.04198 C91.0232075,1998.61898 87.8750721,2001.44898 87.8750721,2004.99998 C87.8750721,2006.88998 88.7692896,2008.57398 90.1636971,2009.67298 C87.1074334,2010.79798 84.7871636,2013.27698 84.044024,2016.63598 C83.7745338,2017.85698 84.7789973,2018.99998 86.0539717,2018.99998 L101.945727,2018.99998 C103.221722,2018.99998 104.226185,2017.85698 103.955674,2016.63598" id="profile_round-[#1342]"></path>
-                                                                </g>
-                                                            </g>
-                                                        </g>
-                                                    </svg>
-                                                </Grid>
-                                                <Grid xs={9} md={9}>
-                                                    <Typography variant="h6" component="div" sx={{ color: 'gray.800' }}>
-                                                        Classic Blue Jeans
+                                        <DialogTitle>Create a Review</DialogTitle>
+                                        <DialogContent>
+                                            <Grid container spacing={2} alignItems="center">
+                                                {/* Rating Section */}
+                                                <Grid item xs={2}>
+                                                    <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                                                        Rating:
                                                     </Typography>
                                                 </Grid>
-                                            </Grid>
-                                            <Typography variant="body2" sx={{ color: 'gray.600', mt: 1 }}>
-                                                Our classic blue jeans are a timeless addition to your wardrobe. Crafted
-                                                from premium denim, they offer both style and comfort. Perfect for any
-                                                casual occasion.
-                                            </Typography>
-                                            <Box sx={{ display: 'flex', alignItems: 'center', mt: 2, color: 'gray.600' }}>
-                                                <Rating name="half-rating" defaultValue={4} precision={1} readOnly />
-                                                <Typography variant="body2" sx={{ ml: 1 }}>
-                                                    4 stars out of 5
-                                                </Typography>
-                                            </Box>
-                                        </CardContent>
-                                    </Card>
-
-                                    <Card sx={{ border: 1, borderColor: 'gray.200', borderRadius: 2, boxShadow: 3, m: 2 }}>
-                                        <CardContent>
-                                            <Grid container>
-                                                <Grid xs={1} md={1} sx={{ ml: 1, mt: 0.5 }}>
-                                                    <svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                                                        <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                                                            <g id="Dribbble-Light-Preview" transform="translate(-140.000000, -2159.000000)" fill="#000000">
-                                                                <g id="icons" transform="translate(56.000000, 160.000000)">
-                                                                    <path d="M100.562548,2016.99998 L87.4381713,2016.99998 C86.7317804,2016.99998 86.2101535,2016.30298 86.4765813,2015.66198 C87.7127655,2012.69798 90.6169306,2010.99998 93.9998492,2010.99998 C97.3837885,2010.99998 100.287954,2012.69798 101.524138,2015.66198 C101.790566,2016.30298 101.268939,2016.99998 100.562548,2016.99998 M89.9166645,2004.99998 C89.9166645,2002.79398 91.7489936,2000.99998 93.9998492,2000.99998 C96.2517256,2000.99998 98.0830339,2002.79398 98.0830339,2004.99998 C98.0830339,2007.20598 96.2517256,2008.99998 93.9998492,2008.99998 C91.7489936,2008.99998 89.9166645,2007.20598 89.9166645,2004.99998 M103.955674,2016.63598 C103.213556,2013.27698 100.892265,2010.79798 97.837022,2009.67298 C99.4560048,2008.39598 100.400241,2006.33098 100.053171,2004.06998 C99.6509769,2001.44698 97.4235996,1999.34798 94.7348224,1999.04198 C91.0232075,1998.61898 87.8750721,2001.44898 87.8750721,2004.99998 C87.8750721,2006.88998 88.7692896,2008.57398 90.1636971,2009.67298 C87.1074334,2010.79798 84.7871636,2013.27698 84.044024,2016.63598 C83.7745338,2017.85698 84.7789973,2018.99998 86.0539717,2018.99998 L101.945727,2018.99998 C103.221722,2018.99998 104.226185,2017.85698 103.955674,2016.63598" id="profile_round-[#1342]"></path>
-                                                                </g>
-                                                            </g>
-                                                        </g>
-                                                    </svg>
+                                                <Grid item xs={10}>
+                                                    <Rating name="half-rating" defaultValue={5} precision={1} value={rating} onChange={(event, newValue) => { setRating(newValue); }} />
                                                 </Grid>
-                                                <Grid xs={9} md={9}>
-                                                    <Typography variant="h6" component="div" sx={{ color: 'gray.800' }}>
-                                                        Classic Blue Jeans
+
+                                                {/* Feedback Section */}
+                                                <Grid item xs={12}>
+                                                    <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                                                        Feedback:
                                                     </Typography>
                                                 </Grid>
+                                                <Grid item xs={12}>
+                                                    <TextareaAutosize
+                                                        aria-label="minimum height"
+                                                        minRows={8}
+                                                        maxRows={18}
+                                                        style={{
+                                                            width: "95%",
+                                                            padding: "10px",
+                                                            border: "1px solid #ccc",
+                                                            borderRadius: "4px",
+                                                            resize: "none",
+                                                        }}
+                                                        maxLength={500}
+                                                        value={feedback}
+                                                        onChange={(event) => setFeedback(event.target.value)}
+                                                    />
+                                                </Grid>
                                             </Grid>
-                                            <Typography variant="body2" sx={{ color: 'gray.600', mt: 1 }}>
-                                                Our classic blue jeans are a timeless addition to your wardrobe. Crafted
-                                                from premium denim, they offer both style and comfort. Perfect for any
-                                                casual occasion.
-                                            </Typography>
-                                            <Box sx={{ display: 'flex', alignItems: 'center', mt: 2, color: 'gray.600' }}>
-                                                <Rating name="half-rating" defaultValue={4} precision={1} readOnly />
-                                                <Typography variant="body2" sx={{ ml: 1 }}>
-                                                    4 stars out of 5
-                                                </Typography>
-                                            </Box>
-                                        </CardContent>
-                                    </Card>
+                                        </DialogContent>
+                                        <DialogActions>
+                                            <Button onClick={handleSubmit} autoFocus>
+                                                Submit
+                                            </Button>
+                                            <Button onClick={handleClose}>Cancel</Button>
+                                        </DialogActions>
+                                    </Dialog>
 
-                                    <Card sx={{ border: 1, borderColor: 'gray.200', borderRadius: 2, boxShadow: 3, m: 2 }}>
-                                        <CardContent>
-                                            <Grid container>
-                                                <Grid xs={1} md={1} sx={{ ml: 1, mt: 0.5 }}>
-                                                    <svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                                                        <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                                                            <g id="Dribbble-Light-Preview" transform="translate(-140.000000, -2159.000000)" fill="#000000">
-                                                                <g id="icons" transform="translate(56.000000, 160.000000)">
-                                                                    <path d="M100.562548,2016.99998 L87.4381713,2016.99998 C86.7317804,2016.99998 86.2101535,2016.30298 86.4765813,2015.66198 C87.7127655,2012.69798 90.6169306,2010.99998 93.9998492,2010.99998 C97.3837885,2010.99998 100.287954,2012.69798 101.524138,2015.66198 C101.790566,2016.30298 101.268939,2016.99998 100.562548,2016.99998 M89.9166645,2004.99998 C89.9166645,2002.79398 91.7489936,2000.99998 93.9998492,2000.99998 C96.2517256,2000.99998 98.0830339,2002.79398 98.0830339,2004.99998 C98.0830339,2007.20598 96.2517256,2008.99998 93.9998492,2008.99998 C91.7489936,2008.99998 89.9166645,2007.20598 89.9166645,2004.99998 M103.955674,2016.63598 C103.213556,2013.27698 100.892265,2010.79798 97.837022,2009.67298 C99.4560048,2008.39598 100.400241,2006.33098 100.053171,2004.06998 C99.6509769,2001.44698 97.4235996,1999.34798 94.7348224,1999.04198 C91.0232075,1998.61898 87.8750721,2001.44898 87.8750721,2004.99998 C87.8750721,2006.88998 88.7692896,2008.57398 90.1636971,2009.67298 C87.1074334,2010.79798 84.7871636,2013.27698 84.044024,2016.63598 C83.7745338,2017.85698 84.7789973,2018.99998 86.0539717,2018.99998 L101.945727,2018.99998 C103.221722,2018.99998 104.226185,2017.85698 103.955674,2016.63598" id="profile_round-[#1342]"></path>
+                                    {cardsData.map((card, index) => (
+                                        <Card key={index} sx={{ border: 1, borderColor: 'gray.200', borderRadius: 2, boxShadow: 3, m: 2 }}>
+                                            <CardContent>
+                                                <Grid container>
+                                                    <Grid xs={1} md={1} sx={{ ml: 1, mt: 0.5 }}>
+                                                        <svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                                            <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                                                                <g id="Dribbble-Light-Preview" transform="translate(-140.000000, -2159.000000)" fill="#000000">
+                                                                    <g id="icons" transform="translate(56.000000, 160.000000)">
+                                                                        <path d="M100.562548,2016.99998 L87.4381713,2016.99998 C86.7317804,2016.99998 86.2101535,2016.30298 86.4765813,2015.66198 C87.7127655,2012.69798 90.6169306,2010.99998 93.9998492,2010.99998 C97.3837885,2010.99998 100.287954,2012.69798 101.524138,2015.66198 C101.790566,2016.30298 101.268939,2016.99998 100.562548,2016.99998 M89.9166645,2004.99998 C89.9166645,2002.79398 91.7489936,2000.99998 93.9998492,2000.99998 C96.2517256,2000.99998 98.0830339,2002.79398 98.0830339,2004.99998 C98.0830339,2007.20598 96.2517256,2008.99998 93.9998492,2008.99998 C91.7489936,2008.99998 89.9166645,2007.20598 89.9166645,2004.99998 M103.955674,2016.63598 C103.213556,2013.27698 100.892265,2010.79798 97.837022,2009.67298 C99.4560048,2008.39598 100.400241,2006.33098 100.053171,2004.06998 C99.6509769,2001.44698 97.4235996,1999.34798 94.7348224,1999.04198 C91.0232075,1998.61898 87.8750721,2001.44898 87.8750721,2004.99998 C87.8750721,2006.88998 88.7692896,2008.57398 90.1636971,2009.67298 C87.1074334,2010.79798 84.7871636,2013.27698 84.044024,2016.63598 C83.7745338,2017.85698 84.7789973,2018.99998 86.0539717,2018.99998 L101.945727,2018.99998 C103.221722,2018.99998 104.226185,2017.85698 103.955674,2016.63598" id="profile_round-[#1342]"></path>
+                                                                    </g>
                                                                 </g>
                                                             </g>
-                                                        </g>
-                                                    </svg>
+                                                        </svg>
+                                                    </Grid>
+                                                    <Grid xs={9} md={9}>
+                                                        <Typography variant="h6" component="div" sx={{ color: 'gray.800' }}>
+                                                            {card.title}
+                                                        </Typography>
+                                                    </Grid>
                                                 </Grid>
-                                                <Grid xs={9} md={9}>
-                                                    <Typography variant="h6" component="div" sx={{ color: 'gray.800' }}>
-                                                        Classic Blue Jeans
-                                                    </Typography>
-                                                </Grid>
-                                            </Grid>
-                                            <Typography variant="body2" sx={{ color: 'gray.600', mt: 1 }}>
-                                                Our classic blue jeans are a timeless addition to your wardrobe. Crafted
-                                                from premium denim, they offer both style and comfort. Perfect for any
-                                                casual occasion.
-                                            </Typography>
-                                            <Box sx={{ display: 'flex', alignItems: 'center', mt: 2, color: 'gray.600' }}>
-                                                <Rating name="half-rating" defaultValue={4} precision={1} readOnly />
-                                                <Typography variant="body2" sx={{ ml: 1 }}>
-                                                    4 stars out of 5
+                                                <Typography variant="body2" sx={{ color: 'gray.600', mt: 1 }}>
+                                                    {card.description}
                                                 </Typography>
-                                            </Box>
-                                        </CardContent>
-                                    </Card>
+                                                <Box sx={{ display: 'flex', alignItems: 'center', mt: 2, color: 'gray.600' }}>
+                                                    <Rating name="half-rating" value={card.rating} precision={1} readOnly />
+                                                    <Typography variant="body2" sx={{ ml: 1 }}>
+                                                        {card.rating} stars out of 5
+                                                    </Typography>
+                                                </Box>
+                                            </CardContent>
+                                        </Card>
+                                    ))}
+
+
 
                                 </Grid>
                             </Card>
