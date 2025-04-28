@@ -12,6 +12,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.15.14",
+    "@tailwindcss/postcss": "^4.1.4",
     "afforda-eats": "file:",
     "axios": "^1.9.0",
     "enhanced-resolve": "^5.18.1",
