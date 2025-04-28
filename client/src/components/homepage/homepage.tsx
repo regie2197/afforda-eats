@@ -17,6 +17,11 @@ export default function HomePage() {
 
   const router = useRouter();
 
+  const handleStoreClick = (storeId: number) => {
+    // Navigate to the /store path with the store ID
+    router.push(`/store?id=${storeId}`);
+  };
+
   const handleLogout = () => {
     // Clear authentication data (e.g., tokens)
     localStorage.removeItem("authToken"); // Example: Remove token from localStorage
@@ -232,34 +237,42 @@ export default function HomePage() {
         <Grid container spacing={3}>
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((store) => (
             <Grid item xs={12} sm={6} md={4} key={store}>
-              <div className="container">
-                <Paper
-                  className="box"
-                >
-                  <img src="/Jollijeep1.jpg" alt="jollijeep" className="jeepPic" />
+              <div className="container" onClick={() => handleStoreClick(store)}>
+                <Paper className="box">
+                  <Box
+                  component="img"
+                  src="/Jollijeep1.jpg"
+                  alt="jollijeep"
+                  className="jeepPic"
+                  style={{
+                    width: "100%",
+                    height: "50%",
+                    objectFit: "cover", // Ensures the image fills the container without stretching
+                  }}
+                  />
                   <Typography
-                    variant="h6"
-                    className="title"
-                    sx={{ fontSize: "2rem", fontWeight: 500, letterSpacing: "0.1em" }}
+                  variant="h6"
+                  className="title"
+                  sx={{ fontSize: "2rem", fontWeight: 500, letterSpacing: "0.1em" }}
                   >
-                    Store {store}
+                  Store {store}
                   </Typography>
                   <Box>
-                    <Typography variant="subtitle1" fontWeight="bold" sx={{ display: "block", marginBottom: "0.5rem" }}>
-                      Jolli-Jeep {store}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{ margin: 0, fontSize: "0.9em", fontWeight: 300, letterSpacing: "0.1em" }}
-                    >
-                      Location address
-                    </Typography>
-                    <Typography variant="body2">
-                      <span style={{ fontSize: "0.7rem", fontWeight: 300 }}>Open</span>{" "}
-                      <span style={{ fontSize: "0.7rem", fontWeight: 500, marginRight: "0.2rem" }}>
-                        7:00 AM - 8:00 PM
-                      </span>
-                    </Typography>
+                  <Typography variant="subtitle1" fontWeight="bold" sx={{ display: "block", marginBottom: "0.5rem" }}>
+                    Jolli-Jeep {store}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ margin: 0, fontSize: "0.9em", fontWeight: 300, letterSpacing: "0.1em" }}
+                  >
+                    Location address
+                  </Typography>
+                  <Typography variant="body2">
+                    <span style={{ fontSize: "0.7rem", fontWeight: 300 }}>Open</span>{" "}
+                    <span style={{ fontSize: "0.7rem", fontWeight: 500, marginRight: "0.2rem" }}>
+                    7:00 AM - 8:00 PM
+                    </span>
+                  </Typography>
                   </Box>
                 </Paper>
               </div>

@@ -4,7 +4,6 @@ body {
     padding: 0;
     line-height: 1.6;
     width: 100%;
-    background-color: whitesmoke;
   }
 
   .headtitle {
@@ -39,7 +38,7 @@ body {
     position: sticky;
     top: 0;
     z-index: 1000;
-    background-color: #c6c7cd;
+    background-color: white;
     display: flex;
     justify-content: space-between; /* Space between left and right sections */
     height: 80px; /* Fixed height for consistent layout */
@@ -211,7 +210,7 @@ body {
   justify-content: "left"; 
   align-items: "center"; 
   gap: 1rem;
-  margin-left: 15.5rem;
+  margin-left: 20.5rem;
 }
 
 .selectBtn{
