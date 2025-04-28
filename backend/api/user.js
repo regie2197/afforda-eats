@@ -93,7 +93,7 @@ router.put('/:id', async (req, res) => {
         return res.status(400).json({ error: 'Invalid user ID' });
       }
   
-      const { email, username, password, firstName, lastName, accountType, storeId } = req.body;
+      const { email, username, password, firstName, lastName, accountType,  } = req.body;
   
       // Attempt to update the user
       const updatedUser = await prisma.user.update({
@@ -105,7 +105,6 @@ router.put('/:id', async (req, res) => {
           firstName,
           lastName,
           accountType,
-          storeId,
         },
       });
   
@@ -132,7 +131,7 @@ router.patch('/:id', async (req, res) => {
         return res.status(400).json({ error: 'Invalid user ID' });
       }
   
-      const { email, username, password, firstName, lastName, accountType, storeId } = req.body;
+      const { email, username, password, firstName, lastName, accountType} = req.body;
   
       // Find the user to partially update
       const updatedUser = await prisma.user.update({
@@ -144,7 +143,6 @@ router.patch('/:id', async (req, res) => {
           firstName,
           lastName,
           accountType,
-          storeId,
         },
       });
   

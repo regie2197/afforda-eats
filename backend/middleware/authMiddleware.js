@@ -1,23 +1,43 @@
-import jwt from 'jsonwebtoken';
-
-const SECRET_KEY = process.env.JWT_SECRET_KEY || 'your-secret-key';
-
-const authenticate = (req, res, next) => {
+import bcrypt from 'bcrypt';
+const authenticate = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  if (!authHeader || !authHeader.startsWith('Basic ')) {
     return res.status(401).json({ error: 'Authorization header missing or invalid' });
   }
 
-  const token = authHeader.split(' ')[1];
+  // Extract and decode the base64 credentials
+  const base64Credentials = authHeader.split(' ')[1];
+  const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
+  const [username, password] = credentials.split(':');
+
+  if (!username || !password) {
+    return res.status(401).json({ error: 'Username or password missing' });
+  }
 
   try {
-    const decoded = jwt.verify(token, SECRET_KEY); // Verifying the token
-    req.user = decoded; // Attach user info to request object
-    next(); // Proceed to the next middleware or route
+    // Use the prisma instance passed through req
+    const user = await req.prisma.user.findUnique({ where: { username } });
+
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+
+    // Assuming passwords are hashed — compare them
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+
+    // Authentication successful
+    req.user = user; // Attach user to request
+    next();
   } catch (err) {
-    return res.status(401).json({ error: 'Invalid or expired token' });
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
-export default authenticate;  // Correct export
+
+export default authenticate;

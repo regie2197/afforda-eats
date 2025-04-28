@@ -126,7 +126,8 @@ exports.Prisma.UserScalarFieldEnum = {
   lastName: 'lastName',
   accountType: 'accountType',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  storeId: 'storeId'
 };
 
 exports.Prisma.StoreScalarFieldEnum = {

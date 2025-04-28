@@ -12,6 +12,17 @@ router.post('/', async (req, res) => {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
+  // Validate content length: it should not exceed 500 words
+  const wordCount = content.split(/\s+/).length; // Split content by whitespace and count words
+  if (wordCount > 500) {
+    return res.status(400).json({ error: 'Content must be 500 words or fewer' });
+  }
+
+  // Validate rating: it should be an integer between 1 and 5
+  if (isNaN(rating) || rating < 1 || rating > 5 || !Number.isInteger(rating)) {
+    return res.status(400).json({ error: 'Rating must be an integer between 1 and 5' });
+  }
+
   try {
     const user = await prisma.user.findUnique({ where: { id: userId } });
     const food = await prisma.food.findUnique({ where: { id: foodId } });
@@ -89,6 +100,21 @@ router.patch('/:id', async (req, res) => {
     return res.status(400).json({ error: 'Nothing to update' });
   }
 
+  // Validate content length if provided: it should not exceed 500 words
+  if (content) {
+    const wordCount = content.split(/\s+/).length;
+    if (wordCount > 500) {
+      return res.status(400).json({ error: 'Content must be 500 words or fewer' });
+    }
+  }
+
+  // Validate rating if provided: it should be an integer between 1 and 5
+  if (rating) {
+    if (isNaN(rating) || rating < 1 || rating > 5 || !Number.isInteger(rating)) {
+      return res.status(400).json({ error: 'Rating must be an integer between 1 and 5' });
+    }
+  }
+
   try {
     const review = await prisma.review.findUnique({ where: { id: reviewId } });
 
@@ -99,8 +125,8 @@ router.patch('/:id', async (req, res) => {
     const updatedReview = await prisma.review.update({
       where: { id: reviewId },
       data: {
-        content,
-        rating,
+        content: content ?? review.content,
+        rating: rating ?? review.rating,
       },
     });
 
