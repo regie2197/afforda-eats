@@ -12,6 +12,9 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.15.14",
+    "@tailwindcss/postcss": "^4.1.4",
+    "afforda-eats": "file:",
+    "axios": "^1.9.0",
     "enhanced-resolve": "^5.18.1",
     "jiti": "^2.4.2",
     "lightningcss": "^1.29.3",
@@ -20,11 +23,10 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "tailwindcss": "^4",
+    "tailwindcss": "3",
     "typescript": "^5"
   }
 }
