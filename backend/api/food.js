@@ -49,7 +49,7 @@ router.post('/', async (req, res) => {
 });
 
 // Get all foods for a store
-router.get('store/:storeId', async (req, res) => {
+router.get('/store/:storeId', async (req, res) => {
   const storeId = parseInt(req.params.storeId, 10);
 
   if (isNaN(storeId)) {
