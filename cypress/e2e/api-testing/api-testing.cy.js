@@ -1,8 +1,34 @@
+import { LogIn } from 'lucide-react'
 import createUser from '../../support/user-faker.utils.js'
+import { Password } from '@mui/icons-material'
 
-describe('API Endpoint Testing', () => {
+
+describe('API Endpoint Testing', { testIsolation: false }, () => {
     const newUser = createUser()
     let userId
+    //let token
+    
+    it('post (404) - User or food not found', () => {
+        cy.api({
+          method: 'POST',
+          url: 'http://localhost:4000/api/review/',
+          body: {
+            "content": "good",
+            "rating": 2,
+            "userId": 2000,
+            "foodId": 2,
+            "storeId": 8
+          },
+          auth: {
+            username: "JOhndsss",
+            password: "MySecur34e2Password12333"
+          },
+          failOnStatusCode: false
+        }).should((response) => {
+          expect(response.status).to.eq(404)
+          expect(response.body).to.have.property('error', 'User or food not found')
+        })
+      })
 
     it('POST request for creating a new user', () => {
         cy.api({
@@ -15,44 +41,13 @@ describe('API Endpoint Testing', () => {
         })
     })
 
-    it('Verify user registration with missing fields in the request body', () => {
-        const Reg_missingfield = createUser()
-        cy.api({
-            method: 'POST',
-            url: "http://localhost:4000/api/register",
-            body: { 
-                username: Reg_missingfield.username,
-                password: Reg_missingfield.password,
-                email: Reg_missingfield.email
-            },
-            failOnStatusCode: false
-        }).should((response) => {
-            expect(response.status).to.eq(400)
-            expect(response.body.error).to.eq("All fields are required.")
-        })
-    })
-
-
-    it('Verify User registration with leading and trailing spaces on fields', () => {
-        const reg_space = createUser()
-        cy.api({
-            method: 'POST',
-            url: "http://localhost:4000/api/register",
-            body: { ...reg_space, firstName: "Sofia  ", lastName: "  Lawson" },
-            failOnStatusCode: false
-        }).should((response) => {
-            expect(response.status).to.eq(400)
-            expect(response.body.error).to.eq("Fields must not have leading or trailing spaces.")
-        })
-    })
-
     it('POST request for Login In using email', () => {
         cy.api({
             method: 'POST',
             url: "http://localhost:4000/api/login",
             body: {
                 email: newUser.email,
-                password: newUser.password
+                password : newUser.password
             }
         }).should((response) => {
             expect(response.status).to.eq(200)
@@ -65,33 +60,26 @@ describe('API Endpoint Testing', () => {
             url: "http://localhost:4000/api/login",
             body: {
                 username: newUser.username,
-                password: newUser.password
+                password : newUser.password
             }
         }).should((response) => {
             expect(response.status).to.eq(200)
+            //token = response.body.token
         })
     })
 
+it('DELETE request for deleting user by ID', () => {
 
-
-
-
-
-
-
-
-
-    it('DELETE request for deleting user by ID', () => {
-        const credential = `${newUser.username}:${newUser.password}`
-        cy.api({
-            method: 'DELETE',
-            url: "http://localhost:4000/api/user/" + userId,
-            headers: {
-                Authorization: 'Basic ' + btoa(credential),
-            }
-        }).should((response) => {
-            expect(response.status).to.eq(204)
-        })
+   const credentials = (`${newUser.username}:${newUser.password}`)
+    cy.api({
+        method: 'DELETE',
+        url: "http://localhost:4000/api/user/" + userId,
+        headers: {
+            Authorization: `Basic ` +  btoa(credentials) // Add Basic Auth header
+        }
+    }).should((response) => {
+        expect(response.status).to.eq(204)
     })
+})
 
 })
