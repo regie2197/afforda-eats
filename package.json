@@ -33,6 +33,7 @@
     "afforda-eats": "^0.1.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
+    "cypress": "^14.3.2",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
@@ -48,6 +49,9 @@
     "@types/react-dom": "^19.1.2",
     "autoprefixer": "^10.4.21",
     "concurrently": "^9.1.2",
+    "cypress-downloadfile": "^1.2.4",
+    "cypress-mochawesome-reporter": "^3.8.2",
+    "cypress-xpath": "^2.0.1",
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
     "typescript": "^5"
