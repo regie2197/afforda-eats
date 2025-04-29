@@ -18,6 +18,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import CustomTextField from "@/components/CustomTextField";
 import '@/styles/globals.css';
+import api from '../../../../api/api';
 
 const Login = () => {
   const router = useRouter();
@@ -28,11 +29,23 @@ const Login = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const accountType = form.username === 'vendor' ? 'vendor' : 'user';
-    router.push(`/home`);
+    try {
+      // Use the imported `api` instance to make the login request
+      const response = await api.post('/login', {
+        username: form.username,
+        password: form.password,
+      });
+  
+      router.push('/home');
+    } catch (error: any) {
+      // Ensure error handling is catching the failed request
+      console.error('Login failed:', error.response?.data?.message || error.message);
+      alert('Login failed: ' + (error.response?.data?.message || 'Please try again'));
+    }
   };
+  
 
   const handleOpenDialog = () => setOpenDialog(true);
   const handleCloseDialog = () => setOpenDialog(false);
@@ -97,6 +110,7 @@ const Login = () => {
                 <CustomTextField
                   fullWidth
                   margin="normal"
+                  data-testid="username"
                   label="Username"
                   name="username"
                   value={form.username}
@@ -106,6 +120,7 @@ const Login = () => {
                 <CustomTextField
                   fullWidth
                   margin="normal"
+                  data-testid="password"
                   label="Password"
                   name="password"
                   type="password"
@@ -114,6 +129,7 @@ const Login = () => {
                 />
                 <Button 
                   type="submit" 
+                  data-testid="login-button"
                   variant="outlined" 
                   color="success" 
                   fullWidth 
@@ -132,7 +148,8 @@ const Login = () => {
               <Box mt={2} textAlign="center">
                 <Typography component="span">Don’t have an account? </Typography>
                 <Link 
-                  component="button" 
+                  component="button"
+                  data-testid="go-to-register"
                   onClick={handleOpenDialog} 
                   underline="hover" 
                   sx={{ fontWeight: 'bold', color: 'black' }} // Makes "Register" bold and black
