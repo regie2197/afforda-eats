@@ -110,6 +110,7 @@ const Login = () => {
                 <CustomTextField
                   fullWidth
                   margin="normal"
+                  data-testid="username"
                   label="Username"
                   name="username"
                   value={form.username}
@@ -119,6 +120,7 @@ const Login = () => {
                 <CustomTextField
                   fullWidth
                   margin="normal"
+                  data-testid="password"
                   label="Password"
                   name="password"
                   type="password"
@@ -127,6 +129,7 @@ const Login = () => {
                 />
                 <Button 
                   type="submit" 
+                  data-testid="login-button"
                   variant="outlined" 
                   color="success" 
                   fullWidth 
@@ -145,7 +148,8 @@ const Login = () => {
               <Box mt={2} textAlign="center">
                 <Typography component="span">Don’t have an account? </Typography>
                 <Link 
-                  component="button" 
+                  component="button"
+                  data-testid="go-to-register"
                   onClick={handleOpenDialog} 
                   underline="hover" 
                   sx={{ fontWeight: 'bold', color: 'black' }} // Makes "Register" bold and black
