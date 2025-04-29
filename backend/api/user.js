@@ -1,6 +1,7 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 const router = express.Router();
+import bcrypt from 'bcrypt'
 
 const prisma = new PrismaClient();
 
@@ -12,17 +13,17 @@ router.post('/', async (req, res) => {
       if (!email || !username || !password || !firstName || !lastName || !accountType) {
         return res.status(400).json({ error: 'Missing required fields' });
       }
-  
+      
       const existingUser = await prisma.user.findUnique({ where: { email } });
       if (existingUser) {
         return res.status(400).json({ error: 'User with this email already exists' });
       }
-  
+      const hashedPassword = await bcrypt.hash(password, 10);
       const newUser = await prisma.user.create({
         data: {
           email,
           username,
-          password,
+          password: hashedPassword,
           firstName,
           lastName,
           accountType,
@@ -94,14 +95,14 @@ router.put('/:id', async (req, res) => {
       }
   
       const { email, username, password, firstName, lastName, accountType,  } = req.body;
-  
+      const hashedPassword = await bcrypt.hash(password, 10);
       // Attempt to update the user
       const updatedUser = await prisma.user.update({
         where: { id: userId },
         data: {
           email,
           username,
-          password,
+          password : hashedPassword,
           firstName,
           lastName,
           accountType,
@@ -132,14 +133,14 @@ router.patch('/:id', async (req, res) => {
       }
   
       const { email, username, password, firstName, lastName, accountType} = req.body;
-  
+      const hashedPassword = await bcrypt.hash(password, 10);
       // Find the user to partially update
       const updatedUser = await prisma.user.update({
         where: { id: userId },
         data: {
           email,
           username,
-          password,
+          password:hashedPassword,
           firstName,
           lastName,
           accountType,
