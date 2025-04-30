@@ -110,7 +110,6 @@ const Login = () => {
                 <CustomTextField
                   fullWidth
                   margin="normal"
-                  data-testid="username"
                   label="Username"
                   name="username"
                   value={form.username}
@@ -120,7 +119,6 @@ const Login = () => {
                 <CustomTextField
                   fullWidth
                   margin="normal"
-                  data-testid="password"
                   label="Password"
                   name="password"
                   type="password"
