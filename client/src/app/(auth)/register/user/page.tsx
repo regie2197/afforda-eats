@@ -35,6 +35,8 @@ export default function Register() {
     try {
       // Use the imported `api` instance to make the register request
       const response = await api.post('/register', {
+        firstName: form.firstName,
+        lastName: form.lastName,
         username: form.username,
         email: form.email,
         password: form.password,
