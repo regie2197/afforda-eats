@@ -10,3 +10,13 @@ export function createUser(){
         "accountType": "USER"
     }
 }
+
+export function createReview(){
+    return {
+        "userId": 25,
+        "foodId": 4,
+        "storeId" : 4, 
+        "content": faker.string.sample({length : 30}),
+        "rating" : faker.number.int({ min: 1, max: 5 })
+    }
+}

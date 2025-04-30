@@ -1,4 +1,4 @@
-import { createUser, generateEmail, generateUsername } from '../../support/user-faker.utils.js'
+import { createUser} from '../../support/user-faker.utils.js'
 
 describe('API - REGISTRATION testing', () => {
     const newUser = createUser()
