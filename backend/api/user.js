@@ -124,42 +124,41 @@ router.put('/:id', async (req, res) => {
   });
 // PATCH Partially Update User by ID
 router.patch('/:id', async (req, res) => {
-    try {
-      const userId = parseInt(req.params.id);
-  
-      // 400 Bad Request if ID is invalid
-      if (isNaN(userId)) {
-        return res.status(400).json({ error: 'Invalid user ID' });
-      }
-  
-      const { email, username, password, firstName, lastName, accountType} = req.body;
-      const hashedPassword = await bcrypt.hash(password, 10);
-      // Find the user to partially update
-      const updatedUser = await prisma.user.update({
-        where: { id: userId },
-        data: {
-          email,
-          username,
-          password:hashedPassword,
-          firstName,
-          lastName,
-          accountType,
-        },
-      });
-  
-      // 200 OK
-      res.status(200).json(updatedUser);
-    } catch (error) {
-      // 404 Not Found if Prisma can't find the user to update
-      if (error.code === 'P2025') {
-        return res.status(404).json({ error: 'User not found' });
-      }
-  
-      // 500 Internal Server Error for anything else
-      console.error('Partial update error:', error);
-      res.status(500).json({ error: 'Internal server error' });
+  try {
+    const userId = parseInt(req.params.id);
+
+    if (isNaN(userId)) {
+      return res.status(400).json({ error: 'Invalid user ID' });
     }
-  });
+
+    const { email, username, password, firstName, lastName, accountType } = req.body;
+
+    // Build update data object conditionally
+    const updateData = {};
+    if (email !== undefined) updateData.email = email;
+    if (username !== undefined) updateData.username = username;
+    if (password !== undefined) {
+      updateData.password = await bcrypt.hash(password, 10);
+    }
+    if (firstName !== undefined) updateData.firstName = firstName;
+    if (lastName !== undefined) updateData.lastName = lastName;
+    if (accountType !== undefined) updateData.accountType = accountType;
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: updateData,
+    });
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    if (error.code === 'P2025') {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    console.error('Partial update error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
     
 
 // DELETE User by ID
