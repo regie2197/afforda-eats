@@ -91,6 +91,54 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// PUT: Fully replace a review
+router.put('/:id', async (req, res) => {
+  const reviewId = parseInt(req.params.id);
+  const { content, rating } = req.body;
+
+  if (isNaN(reviewId)) {
+    return res.status(400).json({ error: 'Invalid review ID' });
+  }
+
+  // All fields must be present
+  if (!content || rating === undefined) {
+    return res.status(400).json({ error: 'Both content and rating are required' });
+  }
+
+  // Validate content length: it should not exceed 500 words
+  const wordCount = content.split(/\s+/).length;
+  if (wordCount > 500) {
+    return res.status(400).json({ error: 'Content must be 500 words or fewer' });
+  }
+
+  // Validate rating: must be integer 1–5
+  if (isNaN(rating) || rating < 1 || rating > 5 || !Number.isInteger(rating)) {
+    return res.status(400).json({ error: 'Rating must be an integer between 1 and 5' });
+  }
+
+  try {
+    const existingReview = await prisma.review.findUnique({ where: { id: reviewId } });
+
+    if (!existingReview) {
+      return res.status(404).json({ error: 'Review not found' });
+    }
+
+    const updatedReview = await prisma.review.update({
+      where: { id: reviewId },
+      data: {
+        content,
+        rating,
+      },
+    });
+
+    res.status(200).json(updatedReview);
+  } catch (error) {
+    console.error('Error replacing review:', error);
+    res.status(500).json({ error: 'Failed to update review' });
+  }
+});
+
+
 // Update a review
 router.patch('/:id', async (req, res) => {
   const reviewId = parseInt(req.params.id);
