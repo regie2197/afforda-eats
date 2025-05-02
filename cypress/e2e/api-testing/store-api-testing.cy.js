@@ -7,7 +7,7 @@ describe('Store API Testing', () => {
         cy.createStore();
         cy.createVendor();
 
-        cy.readFile('cypress/fixtures/userData.json').then((data) => {
+        cy.readFile('cypress/fixtures/vendorData.json').then((data) => {
             vendorData = data;
         });
 
