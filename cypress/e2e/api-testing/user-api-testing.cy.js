@@ -16,7 +16,7 @@ describe('API - REGISTRATION testing', () => {
             auth: authCred
         }).should((response) => {
             expect(response.status).to.eq(200)
-            userId =response.body.id
+            userId = response.body.id
         })
     })
 
@@ -37,7 +37,6 @@ describe('API - REGISTRATION testing', () => {
             expect(response.body.error).to.eq("Missing required fields")
         })
     })
-
 
     it('Verify unsuccessful user registration when the required field values contains leading and trailing spaces', () => {
         const reg_spaceAround = createUser()
@@ -177,7 +176,7 @@ describe('API - REGISTRATION testing', () => {
     it.only('Verify successful GET request for fetching user data by ID', () => {
         cy.api({
             method: 'GET',
-            url: "http://localhost:4000/api/user/" + userId ,
+            url: "http://localhost:4000/api/user/" + userId,
             body: newUser,
             auth: authCred
         }).should((response) => {
@@ -188,7 +187,7 @@ describe('API - REGISTRATION testing', () => {
     it.only('Verify unsuccessful fetching of user data when the id is not a number', () => {
         cy.api({
             method: 'GET',
-            url: "http://localhost:4000/api/user/" + 'hello' ,
+            url: "http://localhost:4000/api/user/" + 'hello',
             body: newUser,
             auth: authCred,
             failOnStatusCode: false
@@ -200,7 +199,7 @@ describe('API - REGISTRATION testing', () => {
     it.only('Verify unsuccessful fetching of user data when user does not exist', () => {
         cy.api({
             method: 'GET',
-            url: "http://localhost:4000/api/user/" + '3000' ,
+            url: "http://localhost:4000/api/user/" + '3000',
             body: newUser,
             auth: authCred,
             failOnStatusCode: false
@@ -211,7 +210,7 @@ describe('API - REGISTRATION testing', () => {
     it.skip('Verify unsuccessful fetching of user data when the server is down', () => {
         cy.api({
             method: 'GET',
-            url: "http://localhost:5000/api/user/" + userId ,
+            url: "http://localhost:5000/api/user/" + userId,
             body: newUser,
             auth: authCred,
             failOnStatusCode: false
@@ -222,11 +221,134 @@ describe('API - REGISTRATION testing', () => {
 
     // PUT request
 
+    const updateUser = createUser()
+
     it.skip('Verify successful PUT Request for Updating User by ID', () => {
         cy.api({
             method: 'PUT',
             url: "http://localhost:4000/api/user/" + userId,
-            body: newUser,
+            body: { ...newUser, firstName: updateUser.firstName, lastName: updateUser.lastName },
+            auth: authCred
+        }).should((response) => {
+            expect(response.status).to.eq(200)
+        })
+    })
+
+    it.skip('Verify unsuccessful overwriting of user data when the user id is invalid', () => {
+        cy.api({
+            method: 'PUT',
+            url: "http://localhost:4000/api/user/" + 'userId',
+            body: { ...newUser, firstName: updateUser.firstName, lastName: updateUser.lastName },
+            auth: authCred
+        }).should((response) => {
+            expect(response.status).to.eq(400)
+        })
+    })
+
+    it.skip('Verify unsuccessful overwriting of user data when the user does not exist', () => {
+        cy.api({
+            method: 'PUT',
+            url: "http://localhost:4000/api/user/" + '3000',
+            body: { ...newUser, firstName: updateUser.firstName, lastName: updateUser.lastName },
+            auth: authCred
+        }).should((response) => {
+            expect(response.status).to.eq(404)
+        })
+    })
+
+    it.skip('Verify unsuccessful overwriting of user data when an internal server error occurs', () => {
+        cy.api({
+            method: 'PUT',
+            url: "http://localhost:4000/api/user/" + 'userId',
+            body: { ...newUser, firstName: updateUser.firstName, lastName: updateUser.lastName },
+            auth: authCred
+        }).should((response) => {
+            expect(response.status).to.eq(500)
+        })
+    })
+
+    // PATCH requests
+
+    it.skip('Verify successful PATCH request to modify user data', () => {
+        cy.api({
+            method: 'PUT',
+            url: "http://localhost:4000/api/user/" + userId,
+            body: { firstName: 'George' },
+            auth: authCred
+        }).should((response) => {
+            expect(response.status).to.eq(200)
+        })
+    })
+
+    it.skip('Verify unsuccessful modification of user data when the inputted user id is non numeric', () => {
+        cy.api({
+            method: 'PUT',
+            url: "http://localhost:4000/api/user/" + 'userId',
+            body: { lastName: 'Adams' },
+            auth: authCred
+        }).should((response) => {
+            expect(response.status).to.eq(400)
+        })
+    })
+
+    it.skip('Verify unsuccessful modification of user data when the user does not exist', () => {
+        cy.api({
+            method: 'PUT',
+            url: "http://localhost:4000/api/user/" + '3000',
+            body: { lastName: 'Adams' },
+            auth: authCred
+        }).should((response) => {
+            expect(response.status).to.eq(404)
+        })
+    })
+
+    it.skip("Verify unsuccessful modification of user data when there's an internal server error", () => {
+        cy.api({
+            method: 'PUT',
+            url: "http://localhost:5000/api/user/" + userId,
+            body: { lastName: 'Adams' },
+            auth: authCred
+        }).should((response) => {
+            expect(response.status).to.eq(500)
+        })
+    })
+
+    // DELETE request
+
+    it.skip('Verify successful DELETE request to remove user data in the database', () => {
+        cy.api({
+            method: 'DELETE',
+            url: "http://localhost:4000/api/user/" + userId - 1,
+            auth: authCred
+        }).should((response) => {
+            expect(response.status).to.eq(200)
+        })
+    })
+
+    it.skip('Verify unsuccessful deletion of user when the user Id is non-numeric', () => {
+        cy.api({
+            method: 'DELETE',
+            url: "http://localhost:4000/api/user/" + 'userId',
+            auth: authCred
+        }).should((response) => {
+            expect(response.status).to.eq(200)
+        })
+    })
+
+    it.skip('Verify unsuccessful deletion of user when the user does not exist', () => {
+        cy.api({
+            method: 'DELETE',
+            url: "http://localhost:4000/api/user/" + '3000',
+            auth: authCred
+        }).should((response) => {
+            expect(response.status).to.eq(200)
+        })
+    })
+
+    it.skip("Verify unsuccessful deletion of user data when there's an internal server error", () => {
+        cy.api({
+            method: 'DELETE',
+            url: "http://localhost:4000/api/user/" + '3000',
             auth: authCred
         }).should((response) => {
             expect(response.status).to.eq(200)
@@ -237,6 +359,14 @@ describe('API - REGISTRATION testing', () => {
 
 
 
-   
+
+
+
+
+
+
+
+
+
 
 })
