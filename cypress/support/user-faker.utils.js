@@ -32,3 +32,12 @@ export function createStore(){
         country : faker.location.country() 
     }
 }
+
+export function createFood() {
+    return {
+        name: faker.commerce.productName(),
+        price: faker.number.int({ min: 49.99, max: 350.99, precision: 0.01 }),
+        description: faker.commerce.productDescription(),
+        storeId: 1
+    };
+}

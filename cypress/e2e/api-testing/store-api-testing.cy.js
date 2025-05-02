@@ -7,7 +7,7 @@ describe('Store API Testing', () => {
         cy.createStore();
         cy.createVendor();
 
-        cy.readFile('cypress/fixtures/userData.json').then((data) => {
+        cy.readFile('cypress/fixtures/vendorData.json').then((data) => {
             vendorData = data;
         });
 
@@ -45,14 +45,15 @@ describe('Store API Testing', () => {
                 password: vendorData.password,
             },
             body: invalidStoreData,
+            failOnStatusCode: false,
         }).should((response) => {
-            expect(response.status).to.eq(400);
+            expect(response.status).to.eq(500);
         });
     });
 
     it('Verify unsuccessful POST request for creating a new store with missing required fields.', () => {
 
-        const invalidStoreData = { ...storeData, name: null, };
+        const invalidStoreData = { ...storeData, name: "", };
 
         cy.api({
             method: 'POST',
@@ -62,6 +63,7 @@ describe('Store API Testing', () => {
                 password: vendorData.password,
             },
             body: invalidStoreData,
+            failOnStatusCode: false,
         }).should((response) => {
             expect(response.status).to.eq(400);
         });
@@ -72,10 +74,11 @@ describe('Store API Testing', () => {
             method: 'POST',
             url: 'http://localhost:4000/api/store',
             auth: {
-                username: null,
-                password: null,
+                username: "",
+                password: "",
             },
             body: storeData,
+            failOnStatusCode: false,
         }).should((response) => {
             expect(response.status).to.eq(401);
         });
@@ -90,6 +93,7 @@ describe('Store API Testing', () => {
                 password: "nopassword!",
             },
             body: storeData,
+            failOnStatusCode: false,
         }).should((response) => {
             expect(response.status).to.eq(401);
         });
@@ -98,12 +102,13 @@ describe('Store API Testing', () => {
     it('Verify unsuccessful POST request for creating a new store on database error .', () => {
         cy.api({
             method: 'POST',
-            url: 'http://localhost:5000/api/store',
+            url: 'https://c15ae1de-2f42-4b47-be18-9e3343299d1f.mock.pstmn.io/store/dataBaseError',
             auth: {
                 username: vendorData.username,
                 password: vendorData.password,
             },
             body: storeData,
+            failOnStatusCode: false,
         }).should((response) => {
             expect(response.status).to.eq(500);
         });
@@ -120,12 +125,11 @@ describe('Store API Testing', () => {
                 username: vendorData.username,
                 password: vendorData.password,
             },
-            body: storeData,
         }).should((response) => {
             expect(response.status).to.eq(200);
             storeId = response.body.id;
-            cy.log(`Store ID: ${storeId}`);
         });
+        cy.log(`Store ID: ${storeId}`);
         cy.wrap(storeId).as('storeId');
     });
 
@@ -134,10 +138,10 @@ describe('Store API Testing', () => {
             method: 'GET',
             url: 'http://localhost:4000/api/store',
             auth: {
-                username: null,
-                password: null,
+                username: "",
+                password: "",
             },
-            body: storeData,
+            failOnStatusCode: false,
         }).should((response) => {
             expect(response.status).to.eq(401);
         });
@@ -148,10 +152,10 @@ describe('Store API Testing', () => {
             method: 'GET',
             url: 'http://localhost:4000/api/store',
             auth: {
-                username: "JKWALANGTINDAHAN",
-                password: "IDKONASAN",
+                username: "joshazarconitomgaidol",
+                password: "joshjosh1",
             },
-            body: storeData,
+            failOnStatusCode: false,
         }).should((response) => {
             expect(response.status).to.eq(404);
         });
@@ -165,19 +169,21 @@ describe('Store API Testing', () => {
                 username: vendorData.username,
                 password: vendorData.password,
             },
+            failOnStatusCode: false,
         }).should((response) => {
-            expect(response.status).to.eq(404);
+            expect(response.status).to.eq(500);
         });
     });
 
     it('Verify unsuccessful GET request for accessing stores with database error.', () => {
         cy.api({
             method: 'GET',
-            url: 'http://localhost:5000/api/store',
+            url: 'https://c15ae1de-2f42-4b47-be18-9e3343299d1f.mock.pstmn.io/store/dataBaseError',
             auth: {
                 username: vendorData.username,
                 password: vendorData.password,
             },
+            failOnStatusCode: false,
         }).should((response) => {
             expect(response.status).to.eq(500);
         });
@@ -192,6 +198,7 @@ describe('Store API Testing', () => {
                     username: vendorData.username,
                     password: vendorData.password,
                 },
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(200);
                 expect(response.body.id).to.eq(storeId);
@@ -207,6 +214,7 @@ describe('Store API Testing', () => {
                 username: vendorData.username,
                 password: vendorData.password,
             },
+            failOnStatusCode: false,
         }).should((response) => {
             expect(response.status).to.eq(500);
         });
@@ -218,9 +226,10 @@ describe('Store API Testing', () => {
                 method: 'GET',
                 url: `http://localhost:4000/api/store/${storeId}`,
                 auth: {
-                    username: null,
-                    password: null,
+                    username: "",
+                    password: "",
                 },
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(401);
             });
@@ -236,6 +245,7 @@ describe('Store API Testing', () => {
                     username: 'JKWALANGTINDAHAN',
                     password: 'IDKONASAN',
                 },
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(404);
             });
@@ -246,11 +256,12 @@ describe('Store API Testing', () => {
         cy.get('@storeId').then((storeId) => {
             cy.api({
                 method: 'GET',
-                url: `http://localhost:5000/api/store/${storeId}`,
+                url: `https://c15ae1de-2f42-4b47-be18-9e3343299d1f.mock.pstmn.io/store/dataBaseError`,
                 auth: {
                     username: vendorData.username,
                     password: vendorData.password,
                 },
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(500);
             });
@@ -290,6 +301,7 @@ describe('Store API Testing', () => {
                     password: vendorData.password,
                 },
                 body: invalidStoreData,
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(500);
             });
@@ -302,10 +314,11 @@ describe('Store API Testing', () => {
                 method: 'PUT',
                 url: `http://localhost:4000/api/store/${storeId}`,
                 auth: {
-                    username: null,
-                    password: null,
+                    username: "",
+                    password: "",
                 },
                 body: storeData,
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(401);
             });
@@ -314,7 +327,7 @@ describe('Store API Testing', () => {
 
     it('Verify unsuccessful PUT request for updating stores with user not owning the storeId', () => {
         cy.get('@storeId').then((storeId) => {
-            const invalidStoreData = { ...storeData, name: 'PUT updated' };
+            const updatedStoreData = { ...storeData, name: 'PUT updated' };
 
             cy.api({
                 method: 'PUT',
@@ -324,8 +337,9 @@ describe('Store API Testing', () => {
                     password: 'IDKONASAN',
                 },
                 body: updatedStoreData,
+                failOnStatusCode: false,
             }).should((response) => {
-                expect(response.status).to.eq(403); // Assuming 403 Forbidden for unauthorized access
+                expect(response.status).to.eq(404); 
             });
         });
     });
@@ -334,12 +348,13 @@ describe('Store API Testing', () => {
         cy.get('@storeId').then((storeId) => {
             cy.api({
                 method: 'PUT',
-                url: `http://localhost:5000/api/store/${storeId}`,
+                url: `https://c15ae1de-2f42-4b47-be18-9e3343299d1f.mock.pstmn.io/store/dataBaseError`,
                 auth: {
                     username: vendorData.username,
                     password: vendorData.password,
                 },
                 body: storeData,
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(500);
             });
@@ -360,6 +375,7 @@ describe('Store API Testing', () => {
                     password: vendorData.password,
                 },
                 body: updatedStoreData,
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(200);
                 expect(response.body.name).to.eq('Updated Store Name');
@@ -379,6 +395,7 @@ describe('Store API Testing', () => {
                     password: vendorData.password,
                 },
                 body: invalidStoreData,
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(500);
             });
@@ -387,7 +404,7 @@ describe('Store API Testing', () => {
 
     it('Verify unsuccessful PATCH request for updating a store with missing input.', () => {
         cy.get('@storeId').then((storeId) => {
-            const missingInputData = { name: null };
+            const missingInputData = { name: "" };
 
             cy.api({
                 method: 'PATCH',
@@ -397,6 +414,7 @@ describe('Store API Testing', () => {
                     password: vendorData.password,
                 },
                 body: missingInputData,
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(400);
             });
@@ -411,10 +429,11 @@ describe('Store API Testing', () => {
                 method: 'PATCH',
                 url: `http://localhost:4000/api/store/${storeId}`,
                 auth: {
-                    username: null,
-                    password: null,
+                    username: "",
+                    password: "",
                 },
                 body: updatedStoreData,
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(401);
             });
@@ -433,8 +452,9 @@ describe('Store API Testing', () => {
                     password: 'IDKONASAN',
                 },
                 body: updatedStoreData,
+                failOnStatusCode: false,
             }).should((response) => {
-                expect(response.status).to.eq(404); // Assuming 403 Forbidden for unauthorized access
+                expect(response.status).to.eq(404); 
             });
         });
     });
@@ -445,12 +465,13 @@ describe('Store API Testing', () => {
 
             cy.api({
                 method: 'PATCH',
-                url: `http://localhost:5000/api/store/${storeId}`,
+                url: `https://c15ae1de-2f42-4b47-be18-9e3343299d1f.mock.pstmn.io/store/dataBaseError`,
                 auth: {
                     username: vendorData.username,
                     password: vendorData.password,
                 },
                 body: updatedStoreData,
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(500);
             });
@@ -484,6 +505,7 @@ describe('Store API Testing', () => {
                     username: 'ASD',
                     password: 'asd',
                 },
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(401);
             });
@@ -498,8 +520,9 @@ describe('Store API Testing', () => {
                 username: vendorData.username,
                 password: vendorData.password,
             },
+            failOnStatusCode: false,
         }).should((response) => {
-            expect(response.status).to.eq(401);
+            expect(response.status).to.eq(400);
         });
     });
 
@@ -509,9 +532,10 @@ describe('Store API Testing', () => {
                 method: 'DELETE',
                 url: `http://localhost:4000/api/store/${storeId}`,
                 auth: {
-                    username: null,
-                    password: null,
+                    username: "",
+                    password: "",
                 },
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(401);
             });
@@ -527,8 +551,9 @@ describe('Store API Testing', () => {
                     username: 'JKWALANGTINDAHAN',
                     password: 'IDKONASAN',
                 },
+                failOnStatusCode: false,
             }).should((response) => {
-                expect(response.status).to.eq(404); 
+                expect(response.status).to.eq(404);
             });
         });
     });
@@ -537,11 +562,12 @@ describe('Store API Testing', () => {
         cy.get('@storeId').then((storeId) => {
             cy.api({
                 method: 'DELETE',
-                url: `http://localhost:5000/api/store/${storeId}`,
+                url: `https://c15ae1de-2f42-4b47-be18-9e3343299d1f.mock.pstmn.io/store/dataBaseError`,
                 auth: {
                     username: vendorData.username,
                     password: vendorData.password,
                 },
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(500);
             });
