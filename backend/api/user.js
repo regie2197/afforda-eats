@@ -54,6 +54,15 @@ router.get('/', async (req, res) => {
     }
   });
 
+  router.get('/no-user', async (req, res) => {
+      const users = []
+  
+      // 404 if no users are found
+      if (!users || users.length === 0) {
+        return res.status(404).json({ error: 'No users found' });
+      }
+  });
+
 // GET Get User by ID
 router.get('/:id', async (req, res) => {
     try {

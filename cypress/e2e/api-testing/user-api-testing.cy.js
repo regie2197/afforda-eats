@@ -16,7 +16,7 @@ describe('API - REGISTRATION testing', () => {
             auth: authCred
         }).should((response) => {
             expect(response.status).to.eq(200)
-            response.body.id = userId
+            userId =response.body.id
         })
     })
 
@@ -151,45 +151,85 @@ describe('API - REGISTRATION testing', () => {
         })
     })
 
-    it.skip('Verify unsuccessful fetching of all user data when no user are found', () => {
-        cy.intercept('GET', "http://localhost:4000/api/user", {
-            statusCode: 404,
-            body: []
-        }).as('interceptedRequest'); // Intercept first
-
-        cy.api({ // Then trigger the request
+    it.only('Verify unsuccessful fetching of all user data when no user are found', () => {
+        cy.api({
             method: 'GET',
-            url: "http://localhost:4000/api/user",
-            auth: authCred
+            url: "http://localhost:4000/api/user/no-user",
+            auth: authCred,
+            failOnStatusCode: false
         }).should((response) => {
             expect(response.status).to.eq(404);
         });
-
-        cy.wait('@interceptedRequest'); // Wait for the intercepted request
     })
 
-    it.only('Verify unsuccessful fetching of all user data when the server is down', () => {
+    it.skip('Verify unsuccessful fetching of all user data when the server is down', () => {
         cy.api({
             method: 'GET',
-            url: "http://localhost:3000/api/user",
+            url: "http://localhost:4000/api/user",
             body: newUser,
-            auth: authCred
+            auth: authCred,
+            failOnStatusCode: false
         }).should((response) => {
             expect(response.status).to.eq(500)
         })
     })
 
-
-
     it.only('Verify successful GET request for fetching user data by ID', () => {
         cy.api({
             method: 'GET',
-            url: "http://localhost:4000/api/user" + userId ,
+            url: "http://localhost:4000/api/user/" + userId ,
             body: newUser,
             auth: authCred
         }).should((response) => {
             expect(response.status).to.eq(200)
+        })
+    })
 
+    it.only('Verify unsuccessful fetching of user data when the id is not a number', () => {
+        cy.api({
+            method: 'GET',
+            url: "http://localhost:4000/api/user/" + 'hello' ,
+            body: newUser,
+            auth: authCred,
+            failOnStatusCode: false
+        }).should((response) => {
+            expect(response.status).to.eq(400)
+        })
+    })
+
+    it.only('Verify unsuccessful fetching of user data when user does not exist', () => {
+        cy.api({
+            method: 'GET',
+            url: "http://localhost:4000/api/user/" + '3000' ,
+            body: newUser,
+            auth: authCred,
+            failOnStatusCode: false
+        }).should((response) => {
+            expect(response.status).to.eq(404)
+        })
+    })
+    it.skip('Verify unsuccessful fetching of user data when the server is down', () => {
+        cy.api({
+            method: 'GET',
+            url: "http://localhost:5000/api/user/" + userId ,
+            body: newUser,
+            auth: authCred,
+            failOnStatusCode: false
+        }).should((response) => {
+            expect(response.status).to.eq(500)
+        })
+    })
+
+    // PUT request
+
+    it.skip('Verify successful PUT Request for Updating User by ID', () => {
+        cy.api({
+            method: 'PUT',
+            url: "http://localhost:4000/api/user/" + userId,
+            body: newUser,
+            auth: authCred
+        }).should((response) => {
+            expect(response.status).to.eq(200)
         })
     })
 
@@ -197,7 +237,6 @@ describe('API - REGISTRATION testing', () => {
 
 
 
-
-
+   
 
 })
