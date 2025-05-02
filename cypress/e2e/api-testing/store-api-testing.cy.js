@@ -102,7 +102,7 @@ describe('Store API Testing', () => {
     it('Verify unsuccessful POST request for creating a new store on database error .', () => {
         cy.api({
             method: 'POST',
-            url: 'http://localhost:5000/api/store',
+            url: 'https://c15ae1de-2f42-4b47-be18-9e3343299d1f.mock.pstmn.io/store/dataBaseError',
             auth: {
                 username: vendorData.username,
                 password: vendorData.password,
@@ -181,7 +181,7 @@ describe('Store API Testing', () => {
     it('Verify unsuccessful GET request for accessing stores with database error.', () => {
         cy.api({
             method: 'GET',
-            url: 'http://localhost:5000/api/store',
+            url: 'https://c15ae1de-2f42-4b47-be18-9e3343299d1f.mock.pstmn.io/store/dataBaseError',
             auth: {
                 username: vendorData.username,
                 password: vendorData.password,
@@ -259,7 +259,7 @@ describe('Store API Testing', () => {
         cy.get('@storeId').then((storeId) => {
             cy.api({
                 method: 'GET',
-                url: `http://localhost:5000/api/store/${storeId}`,
+                url: `https://c15ae1de-2f42-4b47-be18-9e3343299d1f.mock.pstmn.io/store/dataBaseError`,
                 auth: {
                     username: vendorData.username,
                     password: vendorData.password,
@@ -351,7 +351,7 @@ describe('Store API Testing', () => {
         cy.get('@storeId').then((storeId) => {
             cy.api({
                 method: 'PUT',
-                url: `http://localhost:5000/api/store/${storeId}`,
+                url: `https://c15ae1de-2f42-4b47-be18-9e3343299d1f.mock.pstmn.io/store/dataBaseError`,
                 auth: {
                     username: vendorData.username,
                     password: vendorData.password,
@@ -468,7 +468,7 @@ describe('Store API Testing', () => {
 
             cy.api({
                 method: 'PATCH',
-                url: `http://localhost:5000/api/store/${storeId}`,
+                url: `https://c15ae1de-2f42-4b47-be18-9e3343299d1f.mock.pstmn.io/store/dataBaseError`,
                 auth: {
                     username: vendorData.username,
                     password: vendorData.password,
@@ -565,7 +565,7 @@ describe('Store API Testing', () => {
         cy.get('@storeId').then((storeId) => {
             cy.api({
                 method: 'DELETE',
-                url: `http://localhost:5000/api/store/${storeId}`,
+                url: `https://c15ae1de-2f42-4b47-be18-9e3343299d1f.mock.pstmn.io/store/dataBaseError`,
                 auth: {
                     username: vendorData.username,
                     password: vendorData.password,
