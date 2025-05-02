@@ -1,4 +1,4 @@
-import { reviewData } from "../support/reviewdata"
+import { reviewData } from "../support/fakerdata"
 
 describe('negative', () => {
   it('post (400) - missing required fields', () => {
@@ -428,7 +428,7 @@ describe('positive', () => {
     const data = reviewData();
     cy.api({
       method: 'GET',
-      url: 'http://localhost:4000/api/review/7',
+      url: 'http://localhost:4000/api/review/1',
       body: data,
       auth: {
         username: "JOhndsss", 
@@ -436,14 +436,14 @@ describe('positive', () => {
       }
     }).should((response) => {
       expect(response.status).to.eq(200)
-      expect(response.body).to.have.property('id', 7)
+      expect(response.body).to.have.property('id', 1)
     })
   })
 
   it('patch', () => {
     cy.api({
       method: 'PATCH',
-      url: 'http://localhost:4000/api/review/7',
+      url: 'http://localhost:4000/api/review/1',
       body: {
         "content": "bad",
         "rating": 3
@@ -461,7 +461,7 @@ describe('positive', () => {
   it('put', () => {
     cy.api({
       method: 'PUT',
-      url: 'http://localhost:4000/api/review/7',
+      url: 'http://localhost:4000/api/review/2',
       body: {
         "content": "bad",
         "rating": 3
@@ -477,16 +477,11 @@ describe('positive', () => {
   })
 
   it('Delete', () => {
+    const data = reviewData();
     cy.api({
       method: 'POST',
       url: 'http://localhost:4000/api/review/',
-      body: {
-        "content": "good",
-        "rating": 3,
-        "userId": 15,
-        "foodId": 4,
-        "storeId": 5
-      },
+      body: data,
       auth: {
         username: "JOhndsss", 
         password: "MySecur34e2Password12333"
