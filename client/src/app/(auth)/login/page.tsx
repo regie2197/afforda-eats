@@ -127,6 +127,7 @@ const Login = () => {
                 />
                 <Button 
                   type="submit" 
+                  data-testid="login-button"
                   variant="outlined" 
                   color="success" 
                   fullWidth 
@@ -145,7 +146,8 @@ const Login = () => {
               <Box mt={2} textAlign="center">
                 <Typography component="span">Don’t have an account? </Typography>
                 <Link 
-                  component="button" 
+                  component="button"
+                  data-testid="go-to-register"
                   onClick={handleOpenDialog} 
                   underline="hover" 
                   sx={{ fontWeight: 'bold', color: 'black' }} // Makes "Register" bold and black
