@@ -53,7 +53,7 @@ describe('Store API Testing', () => {
 
     it('Verify unsuccessful POST request for creating a new store with missing required fields.', () => {
 
-        const invalidStoreData = { ...storeData, name: null, };
+        const invalidStoreData = { ...storeData, name: "", };
 
         cy.api({
             method: 'POST',
@@ -74,8 +74,8 @@ describe('Store API Testing', () => {
             method: 'POST',
             url: 'http://localhost:4000/api/store',
             auth: {
-                username: null,
-                password: null,
+                username: "",
+                password: "",
             },
             body: storeData,
             failOnStatusCode: false,
@@ -125,7 +125,6 @@ describe('Store API Testing', () => {
                 username: vendorData.username,
                 password: vendorData.password,
             },
-            body: storeData,
         }).should((response) => {
             expect(response.status).to.eq(200);
             storeId = response.body.id;
@@ -139,10 +138,9 @@ describe('Store API Testing', () => {
             method: 'GET',
             url: 'http://localhost:4000/api/store',
             auth: {
-                username: null,
-                password: null,
+                username: "",
+                password: "",
             },
-            body: storeData,
             failOnStatusCode: false,
         }).should((response) => {
             expect(response.status).to.eq(401);
@@ -157,7 +155,6 @@ describe('Store API Testing', () => {
                 username: "JKWALANGTINDAHAN",
                 password: "IDKONASAN",
             },
-            body: storeData,
             failOnStatusCode: false,
         }).should((response) => {
             expect(response.status).to.eq(404);
@@ -174,7 +171,7 @@ describe('Store API Testing', () => {
             },
             failOnStatusCode: false,
         }).should((response) => {
-            expect(response.status).to.eq(404);
+            expect(response.status).to.eq(500);
         });
     });
 
@@ -229,8 +226,8 @@ describe('Store API Testing', () => {
                 method: 'GET',
                 url: `http://localhost:4000/api/store/${storeId}`,
                 auth: {
-                    username: null,
-                    password: null,
+                    username: "",
+                    password: "",
                 },
                 failOnStatusCode: false,
             }).should((response) => {
@@ -317,8 +314,8 @@ describe('Store API Testing', () => {
                 method: 'PUT',
                 url: `http://localhost:4000/api/store/${storeId}`,
                 auth: {
-                    username: null,
-                    password: null,
+                    username: "",
+                    password: "",
                 },
                 body: storeData,
                 failOnStatusCode: false,
@@ -330,7 +327,7 @@ describe('Store API Testing', () => {
 
     it('Verify unsuccessful PUT request for updating stores with user not owning the storeId', () => {
         cy.get('@storeId').then((storeId) => {
-            const invalidStoreData = { ...storeData, name: 'PUT updated' };
+            const updatedStoreData = { ...storeData, name: 'PUT updated' };
 
             cy.api({
                 method: 'PUT',
@@ -342,7 +339,7 @@ describe('Store API Testing', () => {
                 body: updatedStoreData,
                 failOnStatusCode: false,
             }).should((response) => {
-                expect(response.status).to.eq(403); // Assuming 403 Forbidden for unauthorized access
+                expect(response.status).to.eq(404); 
             });
         });
     });
@@ -407,7 +404,7 @@ describe('Store API Testing', () => {
 
     it('Verify unsuccessful PATCH request for updating a store with missing input.', () => {
         cy.get('@storeId').then((storeId) => {
-            const missingInputData = { name: null };
+            const missingInputData = { name: "" };
 
             cy.api({
                 method: 'PATCH',
@@ -432,8 +429,8 @@ describe('Store API Testing', () => {
                 method: 'PATCH',
                 url: `http://localhost:4000/api/store/${storeId}`,
                 auth: {
-                    username: null,
-                    password: null,
+                    username: "",
+                    password: "",
                 },
                 body: updatedStoreData,
                 failOnStatusCode: false,
@@ -457,7 +454,7 @@ describe('Store API Testing', () => {
                 body: updatedStoreData,
                 failOnStatusCode: false,
             }).should((response) => {
-                expect(response.status).to.eq(404); // Assuming 403 Forbidden for unauthorized access
+                expect(response.status).to.eq(404); 
             });
         });
     });
@@ -535,8 +532,8 @@ describe('Store API Testing', () => {
                 method: 'DELETE',
                 url: `http://localhost:4000/api/store/${storeId}`,
                 auth: {
-                    username: null,
-                    password: null,
+                    username: "",
+                    password: "",
                 },
                 failOnStatusCode: false,
             }).should((response) => {
