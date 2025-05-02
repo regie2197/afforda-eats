@@ -7,7 +7,7 @@ describe('Store API Testing', () => {
         cy.createStore();
         cy.createVendor();
 
-        cy.readFile('cypress/fixtures/userData.json').then((data) => {
+        cy.readFile('cypress/fixtures/vendorData.json').then((data) => {
             vendorData = data;
         });
 
@@ -45,6 +45,7 @@ describe('Store API Testing', () => {
                 password: vendorData.password,
             },
             body: invalidStoreData,
+            failOnStatusCode: false,
         }).should((response) => {
             expect(response.status).to.eq(400);
         });
@@ -62,6 +63,7 @@ describe('Store API Testing', () => {
                 password: vendorData.password,
             },
             body: invalidStoreData,
+            failOnStatusCode: false,
         }).should((response) => {
             expect(response.status).to.eq(400);
         });
@@ -76,6 +78,7 @@ describe('Store API Testing', () => {
                 password: null,
             },
             body: storeData,
+            failOnStatusCode: false,
         }).should((response) => {
             expect(response.status).to.eq(401);
         });
@@ -90,6 +93,7 @@ describe('Store API Testing', () => {
                 password: "nopassword!",
             },
             body: storeData,
+            failOnStatusCode: false,
         }).should((response) => {
             expect(response.status).to.eq(401);
         });
@@ -104,6 +108,7 @@ describe('Store API Testing', () => {
                 password: vendorData.password,
             },
             body: storeData,
+            failOnStatusCode: false,
         }).should((response) => {
             expect(response.status).to.eq(500);
         });
@@ -138,6 +143,7 @@ describe('Store API Testing', () => {
                 password: null,
             },
             body: storeData,
+            failOnStatusCode: false,
         }).should((response) => {
             expect(response.status).to.eq(401);
         });
@@ -152,6 +158,7 @@ describe('Store API Testing', () => {
                 password: "IDKONASAN",
             },
             body: storeData,
+            failOnStatusCode: false,
         }).should((response) => {
             expect(response.status).to.eq(404);
         });
@@ -165,6 +172,7 @@ describe('Store API Testing', () => {
                 username: vendorData.username,
                 password: vendorData.password,
             },
+            failOnStatusCode: false,
         }).should((response) => {
             expect(response.status).to.eq(404);
         });
@@ -178,6 +186,7 @@ describe('Store API Testing', () => {
                 username: vendorData.username,
                 password: vendorData.password,
             },
+            failOnStatusCode: false,
         }).should((response) => {
             expect(response.status).to.eq(500);
         });
@@ -192,6 +201,7 @@ describe('Store API Testing', () => {
                     username: vendorData.username,
                     password: vendorData.password,
                 },
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(200);
                 expect(response.body.id).to.eq(storeId);
@@ -207,6 +217,7 @@ describe('Store API Testing', () => {
                 username: vendorData.username,
                 password: vendorData.password,
             },
+            failOnStatusCode: false,
         }).should((response) => {
             expect(response.status).to.eq(500);
         });
@@ -221,6 +232,7 @@ describe('Store API Testing', () => {
                     username: null,
                     password: null,
                 },
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(401);
             });
@@ -236,6 +248,7 @@ describe('Store API Testing', () => {
                     username: 'JKWALANGTINDAHAN',
                     password: 'IDKONASAN',
                 },
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(404);
             });
@@ -251,6 +264,7 @@ describe('Store API Testing', () => {
                     username: vendorData.username,
                     password: vendorData.password,
                 },
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(500);
             });
@@ -290,6 +304,7 @@ describe('Store API Testing', () => {
                     password: vendorData.password,
                 },
                 body: invalidStoreData,
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(500);
             });
@@ -306,6 +321,7 @@ describe('Store API Testing', () => {
                     password: null,
                 },
                 body: storeData,
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(401);
             });
@@ -324,6 +340,7 @@ describe('Store API Testing', () => {
                     password: 'IDKONASAN',
                 },
                 body: updatedStoreData,
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(403); // Assuming 403 Forbidden for unauthorized access
             });
@@ -340,6 +357,7 @@ describe('Store API Testing', () => {
                     password: vendorData.password,
                 },
                 body: storeData,
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(500);
             });
@@ -360,6 +378,7 @@ describe('Store API Testing', () => {
                     password: vendorData.password,
                 },
                 body: updatedStoreData,
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(200);
                 expect(response.body.name).to.eq('Updated Store Name');
@@ -379,6 +398,7 @@ describe('Store API Testing', () => {
                     password: vendorData.password,
                 },
                 body: invalidStoreData,
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(500);
             });
@@ -397,6 +417,7 @@ describe('Store API Testing', () => {
                     password: vendorData.password,
                 },
                 body: missingInputData,
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(400);
             });
@@ -415,6 +436,7 @@ describe('Store API Testing', () => {
                     password: null,
                 },
                 body: updatedStoreData,
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(401);
             });
@@ -433,6 +455,7 @@ describe('Store API Testing', () => {
                     password: 'IDKONASAN',
                 },
                 body: updatedStoreData,
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(404); // Assuming 403 Forbidden for unauthorized access
             });
@@ -451,6 +474,7 @@ describe('Store API Testing', () => {
                     password: vendorData.password,
                 },
                 body: updatedStoreData,
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(500);
             });
@@ -484,6 +508,7 @@ describe('Store API Testing', () => {
                     username: 'ASD',
                     password: 'asd',
                 },
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(401);
             });
@@ -498,6 +523,7 @@ describe('Store API Testing', () => {
                 username: vendorData.username,
                 password: vendorData.password,
             },
+            failOnStatusCode: false,
         }).should((response) => {
             expect(response.status).to.eq(401);
         });
@@ -512,6 +538,7 @@ describe('Store API Testing', () => {
                     username: null,
                     password: null,
                 },
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(401);
             });
@@ -527,8 +554,9 @@ describe('Store API Testing', () => {
                     username: 'JKWALANGTINDAHAN',
                     password: 'IDKONASAN',
                 },
+                failOnStatusCode: false,
             }).should((response) => {
-                expect(response.status).to.eq(404); 
+                expect(response.status).to.eq(404);
             });
         });
     });
@@ -542,6 +570,7 @@ describe('Store API Testing', () => {
                     username: vendorData.username,
                     password: vendorData.password,
                 },
+                failOnStatusCode: false,
             }).should((response) => {
                 expect(response.status).to.eq(500);
             });
