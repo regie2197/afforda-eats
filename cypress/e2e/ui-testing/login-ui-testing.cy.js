@@ -1,49 +1,68 @@
-describe('Login Workflow', () => {
-    const username = 'johnDoe12433433';
-    const password = 'MySecur34e2Password12333';
-  
-    beforeEach(() => {
-      cy.visit('http://localhost:3000/login');
-    });
-  
-    it('should display the login form', () => {
-      cy.get('input[name="username"]').should('exist');
-      cy.get('input[name="password"]').should('exist');
-      cy.get('[data-testid="login-button"]').should('exist');
-    });
-  
-    it('should show error on empty submission', () => {
-      cy.get('[data-testid="login-button"]').click();
-      // Assuming some alert is shown or form validation message appears
-      cy.on('window:alert', (txt) => {
-        expect(txt).to.include('Login failed');
+
+    // const username = 'johnDoe12433433';
+    // const password = 'MySecur34e2Password12333';
+    describe('Login Page Workflow', () => {
+        const validUsername = 'johnDoe12433433';
+        const validPassword = 'MySecur34e2Password12333';
+        const invalidPassword = 'wrongPassword';
+      
+        beforeEach(() => {
+          cy.visit('http://localhost:3000/login'); // Adjust the URL if needed
+        });
+      
+        it('logs in with valid credentials and redirects to /home', () => {
+          cy.get('input[name="username"]').type(validUsername);
+          cy.get('input[name="password"]').type(validPassword);
+          cy.get('[data-testid="login-button"]').click();
+      
+          // Assert redirected to /home
+          cy.url({ timeout: 10000 }).should('include', '/home');
+        });
+      
+        it('shows an alert on login with incorrect password', () => {
+          cy.get('input[name="username"]').type(validUsername);
+          cy.get('input[name="password"]').type(invalidPassword);
+          cy.get('[data-testid="login-button"]').click();
+      
+          // Alert should appear
+          cy.on('window:alert', (str) => {
+            expect(str).to.contain('Login failed');
+          });
+      
+          cy.url().should('include', '/login');
+        });
+      
+        it('shows an alert on login with a non-existent user', () => {
+          cy.get('input[name="username"]').type('ghostUser');
+          cy.get('input[name="password"]').type('somePassword');
+          cy.get('[data-testid="login-button"]').click();
+      
+          cy.on('window:alert', (str) => {
+            expect(str).to.contain('Login failed');
+          });
+      
+          cy.url().should('include', '/login');
+        });
+      
+        it('does not allow login with empty fields', () => {
+          cy.get('[data-testid="login-button"]').click();
+      
+          cy.url().should('include', '/login');
+        });
+      
+        it('opens register dialog on clicking register link', () => {
+          cy.get('[data-testid="go-to-register"]').click();
+      
+          cy.contains('Select Account Type').should('be.visible');
+          cy.contains('button', 'User').should('exist');
+          cy.contains('button', 'Vendor').should('exist');
+        });
+      
+        it('redirects to /register/user when "User" is clicked in dialog', () => {
+          cy.get('[data-testid="go-to-register"]').click();
+          cy.contains('button', 'User').click();
+      
+          cy.url().should('include', '/register/user');
+        });
       });
-    });
-  
-    it('should fail with wrong credentials', () => {
-      cy.get('input[name="username"]').type('wronguser');
-      cy.get('input[name="password"]').type('wrongpass');
-      cy.get('[data-testid="login-button"]').click();
-  
-      cy.on('window:alert', (txt) => {
-        expect(txt).to.include('Login failed');
-      });
-    });
-  
-    it('should login with valid credentials', () => {
-      cy.get('input[name="username"]').type(username);
-      cy.get('input[name="password"]').type(password);
-      cy.get('[data-testid="login-button"]').click();
-  
-      // After successful login, should be redirected to /home
-      cy.url().should('include', '/home');
-    });
-  
-    it('should open account type dialog from register link', () => {
-      cy.get('[data-testid="go-to-register"]').click();
-      cy.contains('Select Account Type').should('be.visible');
-      cy.contains('User').should('exist');
-      cy.contains('Vendor').should('exist');
-    });
-  });
-  
+      

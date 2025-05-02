@@ -113,7 +113,7 @@ export default function VendorRegister() {
                   fullWidth
                   margin="normal"
                   label="First Name"
-                  name="FirstName"
+                  name="firstName"
                   value={form.firstName}
                   onChange={handleChange}
                 />
