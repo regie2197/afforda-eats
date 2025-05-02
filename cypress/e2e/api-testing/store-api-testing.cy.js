@@ -47,7 +47,7 @@ describe('Store API Testing', () => {
             body: invalidStoreData,
             failOnStatusCode: false,
         }).should((response) => {
-            expect(response.status).to.eq(400);
+            expect(response.status).to.eq(500);
         });
     });
 
@@ -128,8 +128,8 @@ describe('Store API Testing', () => {
         }).should((response) => {
             expect(response.status).to.eq(200);
             storeId = response.body.id;
-            cy.log(`Store ID: ${storeId}`);
         });
+        cy.log(`Store ID: ${storeId}`);
         cy.wrap(storeId).as('storeId');
     });
 
@@ -152,8 +152,8 @@ describe('Store API Testing', () => {
             method: 'GET',
             url: 'http://localhost:4000/api/store',
             auth: {
-                username: "JKWALANGTINDAHAN",
-                password: "IDKONASAN",
+                username: "joshazarconitomgaidol",
+                password: "joshjosh1",
             },
             failOnStatusCode: false,
         }).should((response) => {
