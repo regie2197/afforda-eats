@@ -18,8 +18,8 @@ describe('API Testing - Review Endpoint', () => {
         },
         body: {
           userId: 25,
-          foodId: 4,
-          storeId: 4,
+          foodId: 1,
+          storeId: 1,
           content: 'Great and delicious food',
           rating: 5
         }
@@ -27,10 +27,10 @@ describe('API Testing - Review Endpoint', () => {
         expect(response.status).to.eq(200);
         expect(response.body).to.have.property('id');
         expect(response.body).to.have.property('userId', 25);
-        expect(response.body).to.have.property('foodId', 4);
-        expect(response.body).to.have.property('storeId', 4);
-        expect(response.body).to.have.property('content', 'Great and delicious food');
-        expect(response.body).to.have.property('rating', 5);
+        expect(response.body).to.have.property('foodId', 1);
+        expect(response.body).to.have.property('storeId', 1);
+        expect(response.body).to.have.property('content', 'Great and delicious food');
+        expect(response.body).to.have.property('rating', 5);
 
         reviewID = response.body.id;
         cy.log('Review ID:', reviewID);
@@ -764,6 +764,10 @@ describe('API Testing - Review Endpoint', () => {
           auth: {
             username: authUser,
             password: authPass
+          },
+          body: {
+            content: "Very rude staff",
+            rating : 1
           },
           failOnStatusCode: false
         }).then((response) => {
