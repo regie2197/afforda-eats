@@ -35,7 +35,7 @@ describe('Positive', () => {
 
 describe('negative', () => {
   const data = authData()
-  it('Verify unsuccesful account registration - All fields are required', () => {
+  it('Verify unsuccessful account registration - All fields are required', () => {
     cy.api({
       method: 'POST',
       url: 'http://localhost:4000/api/register/',
@@ -52,7 +52,7 @@ describe('negative', () => {
       expect(response.body.error).to.eq('All fields are required.')
     })
   })
-  it('Verify unsuccesful account registration - Fields must not have leading or trailing spaces', () => {
+  it('Verify unsuccessful account registration - Fields must not have leading or trailing spaces', () => {
     cy.api({
       method: 'POST',  
       url: 'http://localhost:4000/api/register/',
@@ -70,7 +70,7 @@ describe('negative', () => {
       expect(response.body.error).to.eq('Fields must not have leading or trailing spaces.')
     })
   })
-  it('Verify unsuccesful account registration - Email must not contain spaces', () => {
+  it('Verify unsuccessful account registration - Email must not contain spaces', () => {
     cy.api({
       method: 'POST',  
       url: 'http://localhost:4000/api/register/',
@@ -88,7 +88,7 @@ describe('negative', () => {
       expect(response.body.error).to.eq('Email must not contain spaces.')
     })
   })
-  it('Verify unsuccesful account registration - Username must not contain spaces', () => {
+  it('Verify unsuccessful account registration - Username must not contain spaces', () => {
     cy.api({
       method: 'POST',  
       url: 'http://localhost:4000/api/register/',
@@ -106,7 +106,7 @@ describe('negative', () => {
       expect(response.body.error).to.eq('Username must not contain spaces.')
     })
   })
-  it('Verify unsuccesful account registration - Invalid email format', () => {
+  it('Verify unsuccessful account registration - Invalid email format', () => {
     cy.api({
       method: 'POST',  
       url: 'http://localhost:4000/api/register/',
@@ -124,7 +124,7 @@ describe('negative', () => {
       expect(response.body.error).to.eq('Invalid email format.')
     })
   })
-  it('Verify unsuccesful account registration - Password must be at least 6 characters long', () => {
+  it('Verify unsuccessful account registration - Password must be at least 6 characters long', () => {
     cy.api({
       method: 'POST',  
       url: 'http://localhost:4000/api/register/',
@@ -142,7 +142,7 @@ describe('negative', () => {
       expect(response.body.error).to.eq('Password must be at least 6 characters long.')
     })
   })
-  it('Verify unsuccesful account registration - Email is already taken', () => {
+  it('Verify unsuccessful account registration - Email is already taken', () => {
     cy.api({
       method: 'POST',
       url: 'http://localhost:4000/api/register/',
@@ -160,7 +160,7 @@ describe('negative', () => {
       expect(response.body.error).to.eq('Email is already taken.')
     })
   })
-  it('Verify unsuccesful account registration - Username is already taken', () => {
+  it('Verify unsuccessful account registration - Username is already taken', () => {
     cy.api({
       method: 'POST',
       url: 'http://localhost:4000/api/register/',
@@ -179,7 +179,7 @@ describe('negative', () => {
     })
   })
 
-  it('Verify unsuccesful account login - User not found', () => {
+  it('Verify unsuccessful account login - User not found', () => {
     cy.api({
       method: 'POST',
       url: 'http://localhost:4000/api/login/',

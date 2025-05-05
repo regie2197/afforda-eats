@@ -1,7 +1,7 @@
 import { reviewData } from "../../support/fakerdata"
 
 describe('negative', () => {
-  it('Verify unsuccesful review POST request - missing required fields', () => {
+  it('Verify unsuccessful review POST request - missing required fields', () => {
     const data = reviewData();
     cy.api({
       method: 'POST',
@@ -22,7 +22,7 @@ describe('negative', () => {
     })
   })
 
-  it('Verify unsuccesful review POST request - Content must be 500 words or fewer', () => {
+  it('Verify unsuccessful review POST request - Content must be 500 words or fewer', () => {
     cy.api({
       method: 'POST',
       url: 'http://localhost:4000/api/review/',
@@ -44,7 +44,7 @@ describe('negative', () => {
     })
   })
 
-  it('Verify unsuccesful review POST request - Rating must be an integer between 1 and 5', () => {
+  it('Verify unsuccessful review POST request - Rating must be an integer between 1 and 5', () => {
     cy.api({
       method: 'POST',
       url: 'http://localhost:4000/api/review/', 
@@ -66,7 +66,7 @@ describe('negative', () => {
     })
   })
 
-  it('Verify unsuccesful review POST request - User or food not found (Food)', () => {
+  it('Verify unsuccessful review POST request - User or food not found (Food)', () => {
     cy.api({
       method: 'POST',
       url: 'http://localhost:4000/api/review/',
@@ -88,7 +88,7 @@ describe('negative', () => {
     })
   })
 
-  it('Verify unsuccesful review POST request - User or food not found (User)', () => {
+  it('Verify unsuccessful review POST request - User or food not found (User)', () => {
     cy.api({
       method: 'POST',
       url: 'http://localhost:4000/api/review/',
@@ -110,7 +110,7 @@ describe('negative', () => {
     })
   })
 
-  it('Verify unsuccesful review GET request - Review not found', () => {
+  it('Verify unsuccessful review GET request - Review not found', () => {
     cy.api({
       method: 'GET',
       url: 'http://localhost:4000/api/review/1000',
@@ -125,7 +125,7 @@ describe('negative', () => {
     })
   })
 
-  it('Verify unsuccesful review PATCH request - Nothing to update', () => {
+  it('Verify unsuccessful review PATCH request - Nothing to update', () => {
     cy.api({
       method: 'PATCH',
       url: 'http://localhost:4000/api/review/7',
@@ -141,7 +141,7 @@ describe('negative', () => {
     });
   });
 
-  it('Verify unsuccesful review PATCH request - Content must be 500 words or fewer', () => {
+  it('Verify unsuccessful review PATCH request - Content must be 500 words or fewer', () => {
     cy.api({
       method: 'PATCH',
       url: 'http://localhost:4000/api/review/23',
@@ -160,7 +160,7 @@ describe('negative', () => {
     })
   })
 
-  it('Verify unsuccesful review PATCH request - Rating must be an integer between 1 and 5', () => {
+  it('Verify unsuccessful review PATCH request - Rating must be an integer between 1 and 5', () => {
     cy.api({
       method: 'PATCH',
       url: 'http://localhost:4000/api/review/7',
@@ -179,7 +179,7 @@ describe('negative', () => {
     })
   });
 
-  it('Verify unsuccesful review PATCH request - Review not found', () => {
+  it('Verify unsuccessful review PATCH request - Review not found', () => {
     cy.api({
         method: 'PATCH',
         url: 'http://localhost:4000/api/review/2000',
@@ -198,7 +198,7 @@ describe('negative', () => {
     })
   })
 
-  it('Verify unsuccesful review PUT request - Invalid review ID', () => {
+  it('Verify unsuccessful review PUT request - Invalid review ID', () => {
     cy.api({
         method: 'PUT',
         url: 'http://localhost:4000/api/review/abc',
@@ -217,7 +217,7 @@ describe('negative', () => {
     })
     })
 
-it('Verify unsuccesful review PUT request - Both content and rating are required', () => {
+it('Verify unsuccessful review PUT request - Both content and rating are required', () => {
     cy.api({
         method: 'PUT',
         url: 'http://localhost:4000/api/review/7',
@@ -235,7 +235,7 @@ it('Verify unsuccesful review PUT request - Both content and rating are required
     })
   })
 
-  it('Verify unsuccesful review PUT request - Content must be 500 words or fewer', () => {
+  it('Verify unsuccessful review PUT request - Content must be 500 words or fewer', () => {
     cy.api({
         method: 'PUT',
         url: 'http://localhost:4000/api/review/7',
@@ -254,7 +254,7 @@ it('Verify unsuccesful review PUT request - Both content and rating are required
     })
     })
 
-    it('Verify unsuccesful review PUT request - Rating must be an integer between 1 and 5', () => {
+    it('Verify unsuccessful review PUT request - Rating must be an integer between 1 and 5', () => {
         cy.api({
             method: 'PUT',
             url: 'http://localhost:4000/api/review/7',
@@ -273,7 +273,7 @@ it('Verify unsuccesful review PUT request - Both content and rating are required
         })
     })
 
-    it('Verify unsuccesful review PUT request - Review not found', () => {
+    it('Verify unsuccessful review PUT request - Review not found', () => {
         cy.api({
             method: 'PUT',
             url: 'http://localhost:4000/api/review/5000',
@@ -293,7 +293,7 @@ it('Verify unsuccesful review PUT request - Both content and rating are required
     })  
 
 
-  it('Verify unsuccesful review DELETE request - Review not found', () => {
+  it('Verify unsuccessful review DELETE request - Review not found', () => {
     cy.api({
       method: 'DELETE',
       url: 'http://localhost:4000/api/review/1000',
@@ -311,7 +311,7 @@ it('Verify unsuccesful review PUT request - Both content and rating are required
 })
 
 describe('500', () => {
-    it('Verify unsuccesful review POST request', () => {
+    it('Verify unsuccessful review POST request', () => {
         cy.api({
             method: 'POST',
             url: 'http://localhost:4000/api/review/',
@@ -332,7 +332,7 @@ describe('500', () => {
             expect(response.body).to.have.property('error', 'Failed to create review')
         })
     })
-    it('Verify unsuccesful review GET request', () => {
+    it('Verify unsuccessful review GET request', () => {
         cy.api({
             method: 'GET',
             url: 'http://localhost:4000/api/review/abc',
@@ -378,7 +378,7 @@ describe('500', () => {
             expect(response.status).to.eq(500)
         })
     })
-    it('Verify unsuccesful review DELETE request', () => {
+    it('Verify unsuccessful review DELETE request', () => {
         cy.api({
             method: 'DELETE',
             url: 'http://localhost:4000/api/review/haha',
@@ -394,7 +394,7 @@ describe('500', () => {
 })
 
 describe('positive', () => {
-  it('Verify succesful review POST request', () => {
+  it('Verify successful review POST request', () => {
     const data = reviewData();
     cy.api({
       method: 'POST',
@@ -410,7 +410,7 @@ describe('positive', () => {
     })
   })
 
-  it('Verify succesful review GET request', () => {
+  it('Verify successful review GET request', () => {
     const data = reviewData();
     cy.api({
       method: 'GET',
@@ -440,7 +440,7 @@ describe('positive', () => {
     })
   })
 
-  it('Verify succesful review PATCH request', () => {
+  it('Verify successful review PATCH request', () => {
     cy.api({
       method: 'PATCH',
       url: 'http://localhost:4000/api/review/1',
@@ -458,7 +458,7 @@ describe('positive', () => {
     })
   })
 
-  it('Verify succesful review PUT request', () => {
+  it('Verify successful review PUT request', () => {
     cy.api({
       method: 'PUT',
       url: 'http://localhost:4000/api/review/2',
@@ -476,7 +476,7 @@ describe('positive', () => {
     })
   })
 
-  it('Verify succesful review DELETE request', () => {
+  it('Verify successful review DELETE request', () => {
     const data = reviewData();
     cy.api({
       method: 'POST',
