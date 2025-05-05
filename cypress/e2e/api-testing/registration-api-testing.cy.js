@@ -49,7 +49,10 @@ describe('API - REGISTRATION testing', () => {
         cy.api({
             method: 'POST',
             url: "http://localhost:4000/api/register",
-            body: { ...reg_emailWhitespace, email: "sofia @email.com"},
+            body: {
+                ...reg_emailWhitespace, 
+                email: `${reg_emailWhitespace.firstName} @email.com`
+            },
             failOnStatusCode: false
         }).should((response) => {
             expect(response.status).to.eq(400)
@@ -62,7 +65,9 @@ describe('API - REGISTRATION testing', () => {
         cy.api({
             method: 'POST',
             url: "http://localhost:4000/api/register",
-            body: { ...reg_usernameWhitespace, username: "John Carl"},
+            body: { ...reg_usernameWhitespace, 
+                username: `${reg_usernameWhitespace.firstName} ${reg_usernameWhitespace.lastName}` 
+            },
             failOnStatusCode: false
         }).should((response) => {
             expect(response.status).to.eq(400)
