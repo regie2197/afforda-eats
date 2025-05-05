@@ -240,8 +240,8 @@ Cypress.Commands.add('createVendor', () => {
         body: vendorData
     }).should((response) => {
         expect(response.status).to.eq(201)
-        /expect(response.body).to.have.property('email', `${vendorData.email}`)
-         expect(response.body).to.have.property('username', `${vendorData.username}`)
+        expect(response.body).to.have.property('email', `${vendorData.email}`)
+        expect(response.body).to.have.property('username', `${vendorData.username}`)
     })
 });
 
@@ -250,19 +250,26 @@ Cypress.Commands.add('createStore', () => {
     cy.writeFile('cypress/fixtures/storeData.json', storeData);
 })
 
-Cypress.Commands.add('createFood', () =>{
-    let foodData = createFoodData()
+Cypress.Commands.add('createFood', () => {
+    const foodData = createFoodData();
     cy.writeFile('cypress/fixtures/foodData.json', foodData);
-    
-    cy.api({
+  
+    cy.readFile('cypress/fixtures/vendorData.json').then((vendorData) => {
+      cy.api({
         method: 'POST',
         url: 'http://localhost:4000/api/food',
-        body: foodData
-    }).should((response) => {
-        expect(response.status).to.eq(200)
-        expect(response.body).to.have.property('name', `${foodData.name}`)
-    })
-})
+        body: foodData,
+        auth: {
+          username: vendorData.username,
+          password: vendorData.password,
+        },
+      }).should((response) => {
+        expect(response.status).to.eq(200);
+        expect(response.body).to.have.property('name', foodData.name);
+      });
+    });
+  });
+  
 
 
 /* ----------------------------- LOGIN UI COMMANDS ----------------------------- */
