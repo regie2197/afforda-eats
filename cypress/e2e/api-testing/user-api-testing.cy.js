@@ -1,14 +1,15 @@
 import { createUser } from '../../support/user-faker.utils.js'
 
-describe('API - REGISTRATION testing', () => {
+describe('USER API Testing', () => {
     const newUser = createUser()
+    const mockUrl = 'https://5b381790-b05b-424d-80b7-54f5d3408db2.mock.pstmn.io'
     let userId
     const authCred = {
         "username": 'lemonsquare',
         "password": 'lemon123'
     }
 
-    it.only('Verify successful POST request for creating a new user', () => {
+    it('Verify successful POST request for creating a new user', () => {
         cy.api({
             method: 'POST',
             url: "http://localhost:4000/api/user",
@@ -160,18 +161,18 @@ describe('API - REGISTRATION testing', () => {
         })
     }) // 500 no error message
 
-    it.skip('Verify unsuccessful fetching of user data when the server is down', () => {
+    it('Verify unsuccessful fetching of user data when the server is down', () => {
         cy.api({
             method: 'GET',
-            url: "http://localhost:5000/api/user",
+            url: mockUrl + "/api/user",
             body: newUser,
             auth: authCred,
             failOnStatusCode: false
         }).should((response) => {
             expect(response.status).to.eq(500)
+            expect(response.body.error).to.be.eql("Internal server error")
         })
-    }) // not tested
-
+    })
 
     // GET ALL request
 
@@ -241,17 +242,19 @@ describe('API - REGISTRATION testing', () => {
 
         })
     })
-    it.skip('Verify unsuccessful fetching of user data when the server is down', () => {
+
+    it('Verify unsuccessful fetching of user data when the server is down', () => {
         cy.api({
             method: 'GET',
-            url: "http://localhost:5000/api/user/" + userId,
+            url: mockUrl + "/api/user/" + userId,
             body: newUser,
             auth: authCred,
             failOnStatusCode: false
         }).should((response) => {
             expect(response.status).to.eq(500)
+            expect(response.body.error).to.be.eql("Internal server error")
         })
-    }) // not tested
+    })
 
     // PUT request
 
@@ -319,21 +322,23 @@ describe('API - REGISTRATION testing', () => {
         })
     })
 
-    it.skip('Verify unsuccessful overwriting of user data when an internal server error occurs', () => {
+    it('Verify unsuccessful overwriting of user data when an internal server error occurs', () => {
         cy.api({
             method: 'PUT',
-            url: "http://localhost:4000/api/user/" + 'userId',
+            url: mockUrl + "/api/user/" + userId,
             body: { ...newUser, firstName: updateUser.firstName, lastName: updateUser.lastName },
             auth: authCred,
             failOnStatusCode: false
         }).should((response) => {
             expect(response.status).to.eq(500)
+            expect(response.body.error).to.be.eql("Internal server error")
+
         })
-    }) // not tested
+    })
 
     // PATCH requests
 
-    it.only('Verify successful PATCH request to modify user data', () => {
+    it('Verify successful PATCH request to modify user data', () => {
         cy.api({
             method: 'PATCH',
             url: "http://localhost:4000/api/user/" + userId,
@@ -372,31 +377,32 @@ describe('API - REGISTRATION testing', () => {
         })
     })
 
-    it.skip("Verify unsuccessful modification of user data when there's an internal server error", () => {
+    it("Verify unsuccessful modification of user data when there's an internal server error", () => {
         cy.api({
             method: 'PATCH',
-            url: "http://localhost:5000/api/user/" + userId,
+            url: mockUrl + "/api/user/" + userId,
             body: { lastName: 'Adams' },
             auth: authCred,
             failOnStatusCode: false  
         }).should((response) => {
             expect(response.status).to.eq(500)
+            expect(response.body.error).to.be.eql("Internal server error")
         })
     })
 
     // DELETE request
-    it.only('Verify successful DELETE request to remove user data in the database', () => {
+    it('Verify successful DELETE request to remove user data in the database', () => {
         cy.api({
             method: 'DELETE',
             url: "http://localhost:4000/api/user/" + userId,
             auth: authCred,
             failOnStatusCode: false
         }).should((response) => {
-            expect(response.status).to.eq(200)
+            expect(response.status).to.eq(204)
         })
-    }) // doesnt work "User Not found"
+    })
 
-    it.only('Verify unsuccessful deletion of user when the user Id is non-numeric', () => {
+    it('Verify unsuccessful deletion of user when the user Id is non-numeric', () => {
         cy.api({
             method: 'DELETE',
             url: "http://localhost:4000/api/user/" + 'userId',
@@ -408,7 +414,7 @@ describe('API - REGISTRATION testing', () => {
         })
     })
 
-    it.only('Verify unsuccessful deletion of user when the user does not exist', () => {
+    it('Verify unsuccessful deletion of user when the user does not exist', () => {
         cy.api({
             method: 'DELETE',
             url: "http://localhost:4000/api/user/" + '30000',
@@ -420,29 +426,16 @@ describe('API - REGISTRATION testing', () => {
         })
     })
 
-    it.skip("Verify unsuccessful deletion of user data when there's an internal server error", () => {
+    it("Verify unsuccessful deletion of user data when there's an internal server error", () => {
         cy.api({
             method: 'DELETE',
-            url: "http://localhost5000/api/user/" + '3000',
+            url: mockUrl + "/api/user/30000",
             auth: authCred,
             failOnStatusCode: false
         }).should((response) => {
-            expect(response.status).to.eq(200)
+            expect(response.status).to.eq(500)
+            expect(response.body.error).to.be.eql("Internal server error")
         })
-    }) // not tested
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    })
 
 })

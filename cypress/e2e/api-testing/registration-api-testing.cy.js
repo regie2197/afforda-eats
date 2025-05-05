@@ -1,7 +1,9 @@
 import { createUser} from '../../support/user-faker.utils.js'
 
-describe('API - REGISTRATION testing', () => {
+describe('REGISTRATION API Testing', () => {
     const newUser = createUser()
+    const mockUrl = 'https://c2631718-8156-4703-8a6d-4329986600ac.mock.pstmn.io'
+    
 
     it('Verify successful POST request for creating a new user', () => {
         cy.api({
@@ -124,6 +126,21 @@ describe('API - REGISTRATION testing', () => {
         }).should((response) => {
             expect(response.status).to.eq(400)
             expect(response.body.error).to.eq('Username is already taken.')
+        })
+    })
+
+    it("Verify unsuccessful user registration when a server error occurs", () => {
+        cy.api({
+            method: 'POST',
+            url: mockUrl + "/api/register",
+            failOnStatusCode: false,
+            body: {
+                username: newUser.username,
+                password: newUser.password
+            }
+        }).should((response) => {
+            expect(response.status).to.eq(500)
+            expect(response.body.error).to.be.eql("Internal server error")
         })
     })
 
