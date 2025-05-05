@@ -1,9 +1,9 @@
 describe('TC-HOME: Home Page Test Suite', () => {
   // const baseUrl = "https://afforda-eats.vercel.app";
-  const baseUrl = "http://localhost:3000/";
+  const baseUrl = "http://localhost:4000/";
 
   beforeEach(() => {
-    cy.visit(`${baseUrl}/home`);
+    cy.visit(`${baseUrl}home`);
     cy.url().should('include', '/home')
   });
 
