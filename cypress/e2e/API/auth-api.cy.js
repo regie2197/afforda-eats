@@ -103,7 +103,7 @@ describe('AffordaEats API: Register user tests (Negative)', () => {
       failOnStatusCode: false
     }).should((response) => {
       expect(response.status).to.eq(400)
-      expect(response.body.error).to.eq('Username must not contain spaces.')
+      expect(response.body.error).to.eq('Fields must not have leading or trailing spaces.')
     })
   })
   it('Verify unsuccessful account registration - Invalid email format', () => {
