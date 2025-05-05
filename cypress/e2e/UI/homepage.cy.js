@@ -158,7 +158,7 @@ describe('TC-HOME: Home Page Test Suite', () => {
     cy.url().should('include', '/home');
     
     // Select the search bar and search for a store
-    cy.get('input[type="text"]').type('Store 1').should('have.value', searchInput);
+    cy.get('input[type="text"]').type(searchInput).should('have.value', searchInput);
     cy.contains('button', 'Search').click();
     cy.wait(1500);
     
