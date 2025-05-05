@@ -1,0 +1,22 @@
+{
+    "authUser": "Hel200123",
+    "authPass":  "Hel1234",
+    "invalidUser": "WWWWWW",
+    "invalidPass": "password123414",
+    "invalidReviewID": 2000,
+    "NaNReviewID": "invalidReviewID",
+    "userID": 25,
+    "invalidUserID": 1000,
+    "foodID": 1,
+    "invalidFoodID": 2500,
+    "storeID": 1,
+    "content": "Great and delicious food",
+    "content500Words": "Nestled in the heart of the city, The Culinary Haven is a gem that promises an unforgettable dining experience. From the moment you step through its doors, you are greeted with an ambiance that is both warm and inviting. The decor is a tasteful blend of modern elegance and rustic charm, with soft lighting that creates a cozy atmosphere perfect for any occasion. The menu at The Culinary Haven is a testament to the chef's creativity and passion for food. It features a diverse array of dishes that cater to a wide range of tastes and preferences. Whether you are a fan of traditional cuisine or looking to explore something new, there is something for everyone. To start, I opted for the Roasted Beet Salad. This dish was a delightful combination of flavors and textures. The beets were perfectly roasted, bringing out their natural sweetness, while the goat cheese added a creamy richness. The salad was topped with candied walnuts, which provided a satisfying crunch, and a balsamic reduction that tied all the elements together beautifully. For the main course, I chose the Pan-Seared Sea Bass. This dish was a true masterpiece. The sea bass was cooked to perfection, with a crispy skin and tender, flaky flesh. It was served on a bed of saffron risotto, which was creamy and flavorful, with just the right amount of saffron to give it a subtle yet distinctive taste. The dish was garnished with a medley of seasonal vegetables, adding a burst of color and freshness. My dining companion opted for the Braised Lamb Shank, which was equally impressive. The lamb was incredibly tender, falling off the bone with ease. It was served with a rich, savory sauce that complemented the meat beautifully. The accompanying mashed potatoes were smooth and creamy, and the roasted root vegetables added a hearty touch to the dish. No meal at The Culinary Haven would be complete without dessert, and the Chocolate Fondant did not disappoint. This decadent dessert featured a warm, gooey center that oozed out when cut into, paired with a scoop of vanilla bean ice cream. The combination of the rich chocolate and the creamy ice cream was pure bliss, making it the perfect ending to a fantastic meal. The service at The Culinary Haven was impeccable. The staff were attentive and knowledgeable, providing excellent recommendations and ensuring that our dining experience was nothing short of perfect. They were friendly and professional, making us feel welcome and valued throughout our visit. In addition to the outstanding food and service, The Culinary Haven also boasts an impressive wine list. The selection includes a variety of wines from around the world, carefully curated to complement the menu. Whether you are a wine connoisseur or simply looking to enjoy a glass with your meal, you are sure to find something that suits your taste. Overall, The Culinary Haven is a restaurant that truly lives up to its name. It offers a dining experience that is both memorable and enjoyable, with exceptional food, service, and ambiance. Whether you are celebrating a special occasion or simply looking for a great meal, The Culinary Haven is the perfect choice. I highly recommend it to anyone who appreciates fine dining and is looking for a place that delivers on all fronts.",
+    "rating": 5,
+    "invalidRating": 10,
+    "updatedContent": "Beautiful staff",
+    "updatedContent2": "Accommodating staff",
+    "patchContent": "Food was bad this time",
+    "patchContent2": "Very rude staff",
+    "patchRating": 1
+}
