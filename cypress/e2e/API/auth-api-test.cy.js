@@ -1,4 +1,4 @@
-import { authData } from "../support/fakerdata"
+import { authData } from "../../support/fakerdata"
 
 describe('Positive', () => {
   const data = authData()

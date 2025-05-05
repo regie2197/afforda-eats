@@ -49,5 +49,21 @@ Cypress.Commands.add('writeFeedback', (n) => {
     
 })
 
-//
+// Joshua ----------------
+Cypress.Commands.add('generateLocalAPIFile', (NewLocalUser) => {
+    cy.writeFile('cypress/fixtures/LocalUser.json', NewLocalUser)
+})
+
+
+Cypress.Commands.add('AffordEatsGenerateUserFile', (NewAffordaEatsUser) => {
+    cy.writeFile('cypress/fixtures/AffordaEatsUser.json', NewAffordaEatsUser)
+} )
+
+Cypress.Commands.add('AffordEatsGenerateFoodFile', (NewAffordaEatsFood) => {
+    cy.writeFile('cypress/fixtures/AffordaEatsFood.json', NewAffordaEatsFood)
+} )
+
+Cypress.Commands.add('AffordaEatsGenerateStoreFile', (NewStore) => {
+    cy.writeFile('cypress/fixtures/AffordaEatsStoreInfo.json', NewStore)
+})
 

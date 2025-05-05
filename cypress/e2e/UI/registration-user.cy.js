@@ -1,6 +1,6 @@
-import { userRegister } from '../support/registeruser';
-import { RegistrationPage } from '../support/pages/register-page.page';
-import { LoginPage } from '../support/pages/login-page.page';
+import { userRegister } from '../../support/registeruser';
+import { RegistrationPage } from '../../support/pages/register-page.page';
+import { LoginPage } from '../../support/pages/login-page.page';
 import { Login } from '@mui/icons-material';
 
 const registrationPage = new RegistrationPage();
