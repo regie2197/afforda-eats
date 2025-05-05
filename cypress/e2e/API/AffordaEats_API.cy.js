@@ -1,4 +1,4 @@
-import { generateAffordaEatsFoodItem } from "../../support/utils"
+import { generateAffordaEatsFoodItem } from "../../support/fakerdata"
 
 
 //ok
