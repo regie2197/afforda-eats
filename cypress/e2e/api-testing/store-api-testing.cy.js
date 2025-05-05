@@ -13,7 +13,21 @@ describe('Store API Testing', () => {
 
         cy.readFile('cypress/fixtures/storeData.json').then((data) => {
             storeData = data;
+            cy.api({
+                method: 'POST',
+                url: 'http://localhost:4000/api/store',
+                auth: {
+                    username: vendorData.username,
+                    password: vendorData.password,
+                },
+                body: storeData,
+            }).then((response) => {
+                expect(response.status).to.eq(200);
+                storeId = response.body.id;
+                cy.wrap(storeId).as('storeId');
+            });
         });
+
     });
 
     /* ----------------------------- POST METHOD ----------------------------- */
@@ -28,8 +42,10 @@ describe('Store API Testing', () => {
                 password: vendorData.password,
             },
             body: storeData,
-        }).should((response) => {
+        }).then((response) => {
             expect(response.status).to.eq(200);
+            storeId = response.body.id;
+            cy.wrap(storeId).as('storeId');
         });
     });
 
@@ -178,7 +194,7 @@ describe('Store API Testing', () => {
     it('Verify unsuccessful GET request for accessing stores with database error.', () => {
         cy.api({
             method: 'GET',
-            url: 'https://c15ae1de-2f42-4b47-be18-9e3343299d1f.mock.pstmn.io/store/dataBaseError',
+            url: 'https://c15ae1de-2f42-4b47-be18-9e3343299d1f.mock.pstmn.io/dataerror',
             auth: {
                 username: vendorData.username,
                 password: vendorData.password,
@@ -190,19 +206,17 @@ describe('Store API Testing', () => {
     });
 
     it('Verify successful GET request for accessing stores with valid storeId.', () => {
-        cy.get('@storeId').then((storeId) => {
-            cy.api({
-                method: 'GET',
-                url: `http://localhost:4000/api/store/${storeId}`,
-                auth: {
-                    username: vendorData.username,
-                    password: vendorData.password,
-                },
-                failOnStatusCode: false,
-            }).should((response) => {
-                expect(response.status).to.eq(200);
-                expect(response.body.id).to.eq(storeId);
-            });
+        cy.api({
+            method: 'GET',
+            url: `http://localhost:4000/api/store/${storeId}`,
+            auth: {
+                username: vendorData.username,
+                password: vendorData.password,
+            },
+            failOnStatusCode: false,
+        }).should((response) => {
+            expect(response.status).to.eq(200);
+            expect(response.body.id).to.eq(storeId);
         });
     });
 
@@ -221,50 +235,44 @@ describe('Store API Testing', () => {
     });
 
     it('Verify unsuccessful GET request for accessing stores with valid storeId without account logged on.', () => {
-        cy.get('@storeId').then((storeId) => {
-            cy.api({
-                method: 'GET',
-                url: `http://localhost:4000/api/store/${storeId}`,
-                auth: {
-                    username: "",
-                    password: "",
-                },
-                failOnStatusCode: false,
-            }).should((response) => {
-                expect(response.status).to.eq(401);
-            });
+        cy.api({
+            method: 'GET',
+            url: `http://localhost:4000/api/store/${storeId}`,
+            auth: {
+                username: "",
+                password: "",
+            },
+            failOnStatusCode: false,
+        }).should((response) => {
+            expect(response.status).to.eq(401);
         });
     });
 
     it('Verify unsuccessful GET request for accessing stores with user not owning the storeId.', () => {
-        cy.get('@storeId').then((storeId) => {
-            cy.api({
-                method: 'GET',
-                url: `http://localhost:4000/api/store/${storeId}`,
-                auth: {
-                    username: 'JKWALANGTINDAHAN',
-                    password: 'IDKONASAN',
-                },
-                failOnStatusCode: false,
-            }).should((response) => {
-                expect(response.status).to.eq(404);
-            });
+        cy.api({
+            method: 'GET',
+            url: `http://localhost:4000/api/store/${storeId}`,
+            auth: {
+                username: 'JKWALANGTINDAHAN',
+                password: 'IDKONASAN',
+            },
+            failOnStatusCode: false,
+        }).should((response) => {
+            expect(response.status).to.eq(404);
         });
     });
 
     it('Verify unsuccessful GET request for accessing stores with database error.', () => {
-        cy.get('@storeId').then((storeId) => {
-            cy.api({
-                method: 'GET',
-                url: `https://c15ae1de-2f42-4b47-be18-9e3343299d1f.mock.pstmn.io/store/dataBaseError`,
-                auth: {
-                    username: vendorData.username,
-                    password: vendorData.password,
-                },
-                failOnStatusCode: false,
-            }).should((response) => {
-                expect(response.status).to.eq(500);
-            });
+        cy.api({
+            method: 'GET',
+            url: `https://c15ae1de-2f42-4b47-be18-9e3343299d1f.mock.pstmn.io/store/dataBaseError`,
+            auth: {
+                username: vendorData.username,
+                password: vendorData.password,
+            },
+            failOnStatusCode: false,
+        }).should((response) => {
+            expect(response.status).to.eq(500);
         });
     });
 
@@ -272,209 +280,187 @@ describe('Store API Testing', () => {
     /* ----------------------------- PUT METHOD ----------------------------- */
 
     it('Verify successful PUT request for updating a store with valid inputs.', () => {
-        cy.get('@storeId').then((storeId) => {
-            const updatedStoreData = { ...storeData, name: 'Updated Store Name' };
+        const updatedStoreData = { ...storeData, name: 'Updated Store Name' };
 
-            cy.api({
-                method: 'PUT',
-                url: `http://localhost:4000/api/store/${storeId}`,
-                auth: {
-                    username: vendorData.username,
-                    password: vendorData.password,
-                },
-                body: updatedStoreData,
-            }).should((response) => {
-                expect(response.status).to.eq(200);
-            });
+        cy.api({
+            method: 'PUT',
+            url: `http://localhost:4000/api/store/${storeId}`,
+            auth: {
+                username: vendorData.username,
+                password: vendorData.password,
+            },
+            body: updatedStoreData,
+        }).should((response) => {
+            expect(response.status).to.eq(200);
         });
     });
 
     it('Verify unsuccessful PUT request for updating a store with invalid inputs.', () => {
-        cy.get('@storeId').then((storeId) => {
-            const invalidStoreData = { ...storeData, zipcode: 'invalidZip' };
+        const invalidStoreData = { ...storeData, zipcode: 'invalidZip' };
 
-            cy.api({
-                method: 'PUT',
-                url: `http://localhost:4000/api/store/${storeId}`,
-                auth: {
-                    username: vendorData.username,
-                    password: vendorData.password,
-                },
-                body: invalidStoreData,
-                failOnStatusCode: false,
-            }).should((response) => {
-                expect(response.status).to.eq(500);
-            });
+        cy.api({
+            method: 'PUT',
+            url: `http://localhost:4000/api/store/${storeId}`,
+            auth: {
+                username: vendorData.username,
+                password: vendorData.password,
+            },
+            body: invalidStoreData,
+            failOnStatusCode: false,
+        }).should((response) => {
+            expect(response.status).to.eq(500);
         });
     });
 
     it('Verify unsuccessful PUT request for updating a store with no account logged in.', () => {
-        cy.get('@storeId').then((storeId) => {
-            cy.api({
-                method: 'PUT',
-                url: `http://localhost:4000/api/store/${storeId}`,
-                auth: {
-                    username: "",
-                    password: "",
-                },
-                body: storeData,
-                failOnStatusCode: false,
-            }).should((response) => {
-                expect(response.status).to.eq(401);
-            });
+        cy.api({
+            method: 'PUT',
+            url: `http://localhost:4000/api/store/${storeId}`,
+            auth: {
+                username: "",
+                password: "",
+            },
+            body: storeData,
+            failOnStatusCode: false,
+        }).should((response) => {
+            expect(response.status).to.eq(401);
         });
     });
 
     it('Verify unsuccessful PUT request for updating stores with user not owning the storeId', () => {
-        cy.get('@storeId').then((storeId) => {
-            const updatedStoreData = { ...storeData, name: 'PUT updated' };
+        const updatedStoreData = { ...storeData, name: 'PUT updated' };
 
-            cy.api({
-                method: 'PUT',
-                url: `http://localhost:4000/api/store/${storeId}`,
-                auth: {
-                    username: 'JKWALANGTINDAHAN',
-                    password: 'IDKONASAN',
-                },
-                body: updatedStoreData,
-                failOnStatusCode: false,
-            }).should((response) => {
-                expect(response.status).to.eq(404); 
-            });
+        cy.api({
+            method: 'PUT',
+            url: `http://localhost:4000/api/store/${storeId}`,
+            auth: {
+                username: 'JKWALANGTINDAHAN',
+                password: 'IDKONASAN',
+            },
+            body: updatedStoreData,
+            failOnStatusCode: false,
+        }).should((response) => {
+            expect(response.status).to.eq(404);
         });
     });
 
     it('Verify unsuccessful PUT request for updating a store with database error.', () => {
-        cy.get('@storeId').then((storeId) => {
-            cy.api({
-                method: 'PUT',
-                url: `https://c15ae1de-2f42-4b47-be18-9e3343299d1f.mock.pstmn.io/store/dataBaseError`,
-                auth: {
-                    username: vendorData.username,
-                    password: vendorData.password,
-                },
-                body: storeData,
-                failOnStatusCode: false,
-            }).should((response) => {
-                expect(response.status).to.eq(500);
-            });
+        cy.api({
+            method: 'PUT',
+            url: `https://c15ae1de-2f42-4b47-be18-9e3343299d1f.mock.pstmn.io/store/dataBaseError`,
+            auth: {
+                username: vendorData.username,
+                password: vendorData.password,
+            },
+            body: storeData,
+            failOnStatusCode: false,
+        }).should((response) => {
+            expect(response.status).to.eq(500);
         });
     });
 
     /* ----------------------------- PATCH METHOD ----------------------------- */
 
     it('Verify successful PATCH request for updating a store with valid inputs.', () => {
-        cy.get('@storeId').then((storeId) => {
-            const updatedStoreData = { name: 'Updated Store Name - PATCH' };
+        const updatedStoreData = { name: 'Updated Store Name - PATCH' };
 
-            cy.api({
-                method: 'PATCH',
-                url: `http://localhost:4000/api/store/${storeId}`,
-                auth: {
-                    username: vendorData.username,
-                    password: vendorData.password,
-                },
-                body: updatedStoreData,
-                failOnStatusCode: false,
-            }).should((response) => {
-                expect(response.status).to.eq(200);
-                expect(response.body.name).to.eq('Updated Store Name');
-            });
+        cy.api({
+            method: 'PATCH',
+            url: `http://localhost:4000/api/store/${storeId}`,
+            auth: {
+                username: vendorData.username,
+                password: vendorData.password,
+            },
+            body: updatedStoreData,
+            failOnStatusCode: false,
+        }).should((response) => {
+            expect(response.status).to.eq(200);
+            expect(response.body.name).to.eq('Updated Store Name');
         });
     });
 
     it('Verify unsuccessful PATCH request for updating a store with invalid inputs.', () => {
-        cy.get('@storeId').then((storeId) => {
-            const invalidStoreData = { zipcode: 'invalidZipPatch' };
+        const invalidStoreData = { zipcode: 'invalidZipPatch' };
 
-            cy.api({
-                method: 'PATCH',
-                url: `http://localhost:4000/api/store/${storeId}`,
-                auth: {
-                    username: vendorData.username,
-                    password: vendorData.password,
-                },
-                body: invalidStoreData,
-                failOnStatusCode: false,
-            }).should((response) => {
-                expect(response.status).to.eq(500);
-            });
+        cy.api({
+            method: 'PATCH',
+            url: `http://localhost:4000/api/store/${storeId}`,
+            auth: {
+                username: vendorData.username,
+                password: vendorData.password,
+            },
+            body: invalidStoreData,
+            failOnStatusCode: false,
+        }).should((response) => {
+            expect(response.status).to.eq(500);
         });
     });
 
     it('Verify unsuccessful PATCH request for updating a store with missing input.', () => {
-        cy.get('@storeId').then((storeId) => {
-            const missingInputData = { name: "" };
+        const missingInputData = { name: "" };
 
-            cy.api({
-                method: 'PATCH',
-                url: `http://localhost:4000/api/store/${storeId}`,
-                auth: {
-                    username: vendorData.username,
-                    password: vendorData.password,
-                },
-                body: missingInputData,
-                failOnStatusCode: false,
-            }).should((response) => {
-                expect(response.status).to.eq(400);
-            });
+        cy.api({
+            method: 'PATCH',
+            url: `http://localhost:4000/api/store/${storeId}`,
+            auth: {
+                username: vendorData.username,
+                password: vendorData.password,
+            },
+            body: missingInputData,
+            failOnStatusCode: false,
+        }).should((response) => {
+            expect(response.status).to.eq(400);
         });
     });
 
     it('Verify unsuccessful PATCH request for updating a store with no account logged in.', () => {
-        cy.get('@storeId').then((storeId) => {
-            const updatedStoreData = { name: 'Updated Store Name - PATCH' };
+        const updatedStoreData = { name: 'Updated Store Name - PATCH' };
 
-            cy.api({
-                method: 'PATCH',
-                url: `http://localhost:4000/api/store/${storeId}`,
-                auth: {
-                    username: "",
-                    password: "",
-                },
-                body: updatedStoreData,
-                failOnStatusCode: false,
-            }).should((response) => {
-                expect(response.status).to.eq(401);
-            });
+        cy.api({
+            method: 'PATCH',
+            url: `http://localhost:4000/api/store/${storeId}`,
+            auth: {
+                username: "",
+                password: "",
+            },
+            body: updatedStoreData,
+            failOnStatusCode: false,
+        }).should((response) => {
+            expect(response.status).to.eq(401);
         });
     });
 
     it('Verify unsuccessful PATCH request for updating stores with user not owning the storeId.', () => {
-        cy.get('@storeId').then((storeId) => {
-            const updatedStoreData = { name: 'Updated Store Name' };
+        const updatedStoreData = { name: 'Updated Store Name' };
 
-            cy.api({
-                method: 'PATCH',
-                url: `http://localhost:4000/api/store/${storeId}`,
-                auth: {
-                    username: 'JKWALANGTINDAHAN',
-                    password: 'IDKONASAN',
-                },
-                body: updatedStoreData,
-                failOnStatusCode: false,
-            }).should((response) => {
-                expect(response.status).to.eq(404); 
-            });
+        cy.api({
+            method: 'PATCH',
+            url: `http://localhost:4000/api/store/${storeId}`,
+            auth: {
+                username: 'JKWALANGTINDAHAN',
+                password: 'IDKONASAN',
+            },
+            body: updatedStoreData,
+            failOnStatusCode: false,
+        }).should((response) => {
+            expect(response.status).to.eq(404);
         });
     });
 
     it('Verify unsuccessful PATCH request for updating stores with database error.', () => {
-        cy.get('@storeId').then((storeId) => {
-            const updatedStoreData = { name: 'Updated Store Name' };
+        const updatedStoreData = { name: 'Updated Store Name' };
 
-            cy.api({
-                method: 'PATCH',
-                url: `https://c15ae1de-2f42-4b47-be18-9e3343299d1f.mock.pstmn.io/store/dataBaseError`,
-                auth: {
-                    username: vendorData.username,
-                    password: vendorData.password,
-                },
-                body: updatedStoreData,
-                failOnStatusCode: false,
-            }).should((response) => {
-                expect(response.status).to.eq(500);
-            });
+        cy.api({
+            method: 'PATCH',
+            url: `https://c15ae1de-2f42-4b47-be18-9e3343299d1f.mock.pstmn.io/store/dataBaseError`,
+            auth: {
+                username: vendorData.username,
+                password: vendorData.password,
+            },
+            body: updatedStoreData,
+            failOnStatusCode: false,
+        }).should((response) => {
+            expect(response.status).to.eq(500);
         });
     });
 
@@ -482,33 +468,29 @@ describe('Store API Testing', () => {
     /* ----------------------------- DELETE METHOD ----------------------------- */
 
     it('Verify successful DELETE request for deleting a store with valid userId and storeId.', () => {
-        cy.get('@storeId').then((storeId) => {
-            cy.api({
-                method: 'DELETE',
-                url: `http://localhost:4000/api/store/${storeId}`,
-                auth: {
-                    username: vendorData.username,
-                    password: vendorData.password,
-                },
-            }).should((response) => {
-                expect(response.status).to.eq(200);
-            });
+        cy.api({
+            method: 'DELETE',
+            url: `http://localhost:4000/api/store/${storeId}`,
+            auth: {
+                username: vendorData.username,
+                password: vendorData.password,
+            },
+        }).should((response) => {
+            expect(response.status).to.eq(200);
         });
     });
 
     it('Verify unsuccessful DELETE request for deleting a store with invalid userId.', () => {
-        cy.get('@storeId').then((storeId) => {
-            cy.api({
-                method: 'DELETE',
-                url: `http://localhost:4000/api/store/${storeId}`,
-                auth: {
-                    username: 'ASD',
-                    password: 'asd',
-                },
-                failOnStatusCode: false,
-            }).should((response) => {
-                expect(response.status).to.eq(401);
-            });
+        cy.api({
+            method: 'DELETE',
+            url: `http://localhost:4000/api/store/${storeId}`,
+            auth: {
+                username: 'ASD',
+                password: 'asd',
+            },
+            failOnStatusCode: false,
+        }).should((response) => {
+            expect(response.status).to.eq(401);
         });
     });
 
@@ -527,50 +509,46 @@ describe('Store API Testing', () => {
     });
 
     it('Verify unsuccessful DELETE request for deleting a store with no account logged in.', () => {
-        cy.get('@storeId').then((storeId) => {
-            cy.api({
-                method: 'DELETE',
-                url: `http://localhost:4000/api/store/${storeId}`,
-                auth: {
-                    username: "",
-                    password: "",
-                },
-                failOnStatusCode: false,
-            }).should((response) => {
-                expect(response.status).to.eq(401);
-            });
+        cy.api({
+            method: 'DELETE',
+            url: `http://localhost:4000/api/store/${storeId}`,
+            auth: {
+                username: "",
+                password: "",
+            },
+            failOnStatusCode: false,
+        }).should((response) => {
+            expect(response.status).to.eq(401);
         });
+        
     });
 
     it('Verify unsuccessful DELETE request for deleting stores with user not owning the storeId.', () => {
-        cy.get('@storeId').then((storeId) => {
-            cy.api({
-                method: 'DELETE',
-                url: `http://localhost:4000/api/store/${storeId}`,
-                auth: {
-                    username: 'JKWALANGTINDAHAN',
-                    password: 'IDKONASAN',
-                },
-                failOnStatusCode: false,
-            }).should((response) => {
-                expect(response.status).to.eq(404);
-            });
+        cy.api({
+            method: 'DELETE',
+            url: `http://localhost:4000/api/store/${storeId}`,
+            auth: {
+                username: 'JKWALANGTINDAHAN',
+                password: 'IDKONASAN',
+            },
+            failOnStatusCode: false,
+        }).should((response) => {
+            expect(response.status).to.eq(404);
         });
+
     });
 
     it('Verify unsuccessful DELETE request for deleting a store with database error.', () => {
-        cy.get('@storeId').then((storeId) => {
-            cy.api({
-                method: 'DELETE',
-                url: `https://c15ae1de-2f42-4b47-be18-9e3343299d1f.mock.pstmn.io/store/dataBaseError`,
-                auth: {
-                    username: vendorData.username,
-                    password: vendorData.password,
-                },
-                failOnStatusCode: false,
-            }).should((response) => {
-                expect(response.status).to.eq(500);
-            });
+        cy.api({
+            method: 'DELETE',
+            url: `https://c15ae1de-2f42-4b47-be18-9e3343299d1f.mock.pstmn.io/store/dataBaseError`,
+            auth: {
+                username: vendorData.username,
+                password: vendorData.password,
+            },
+            failOnStatusCode: false,
+        }).should((response) => {
+            expect(response.status).to.eq(500);
         });
     });
 });
