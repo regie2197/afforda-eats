@@ -1,7 +1,7 @@
 import { vendorRegister } from '../../support/registervendor';
 import { RegistrationPage } from '../../support/pages/register-page.page';
 import { LoginPage } from '../../support/pages/login-page.page';
-import { Login } from '@mui/icons-material';
+import { Login, TimerOutlined } from '@mui/icons-material';
 
 const registrationPage = new RegistrationPage();
 const loginPage = new LoginPage();
@@ -182,7 +182,7 @@ describe('Registration - VENDOR', () => {
         testVendor.password = 'password#123'
         registrationPage.fillFormVendor(testVendor);
         registrationPage.clickSubmit();
-        cy.get("Redirected")
+        cy.url().should('include', 'http://localhost:3000/home', { timeout: 15000 })
         //no error should occur
     })
     it('Verify user registration with "Password" field accept credentials with special characters and has 5 and below characters', () => { //Accept White Spaces
@@ -194,7 +194,10 @@ describe('Registration - VENDOR', () => {
         testVendor.password = 'p#123'
         registrationPage.fillForm(testVendor);
         registrationPage.clickSubmit();
-        cy.get("Redirected")
+        cy.on('window:alert', (text) => {
+            expect(text).to.equal('Registration failed: Please try again');
+        });
+        cy.url().should('contain', '/vendor', { timeout: 15000 }) // Waits up to 10 seconds
 
         //error should occur
     })
@@ -207,7 +210,10 @@ describe('Registration - VENDOR', () => {
         testVendor.password = 'password123'
         registrationPage.fillFormVendor(testVendor);
         registrationPage.clickSubmit();
-        cy.get("Error Prompt ")
+        cy.on('window:alert', (text) => {
+            expect(text).to.equal('Registration failed: Please try again');
+        });
+        cy.url().should('contain', '/vendor', { timeout: 15000 }) // Waits up to 10 seconds
         //error should occur
     })
     it('Verify user registration with "Password" field without special characters on credential with 5 characters and below', () => { //Accept White Spaces
@@ -219,7 +225,10 @@ describe('Registration - VENDOR', () => {
         testVendor.password = 'p123'
         registrationPage.fillForm(testVendor);
         registrationPage.clickSubmit();
-        cy.get("Error Prompt ")
+        cy.on('window:alert', (text) => {
+            expect(text).to.equal('Registration failed: Please try again');
+        });
+        cy.url().should('contain', '/vendor', { timeout: 15000 }) // Waits up to 10 seconds
         //error should occur
     })
     it('Verify user registration with a registered "Username"', () => { //not Accept White Spaces
@@ -231,7 +240,10 @@ describe('Registration - VENDOR', () => {
         testVendor.password = 'user'
         registrationPage.fillFormVendor(testVendor);
         registrationPage.clickSubmit();
-        cy.get("Error Prompt ")
+        cy.on('window:alert', (text) => {
+            expect(text).to.equal('Registration failed: Please try again');
+        });
+        cy.url().should('contain', '/vendor', { timeout: 15000 }) // Waits up to 10 seconds
         //error should occur
     }) 
     it('Verify user registration with a registered "Email"', () => { //not Accept White Spaces
@@ -243,7 +255,10 @@ describe('Registration - VENDOR', () => {
         testVendor.password = 'email'
         registrationPage.fillFormVendor(testVendor);
         registrationPage.clickSubmit();
-        cy.get("Error Prompt ")
+        cy.on('window:alert', (text) => {
+            expect(text).to.equal('Registration failed: Please try again');
+        });
+        cy.url().should('contain', '/vendor', { timeout: 15000 }) // Waits up to 10 seconds
         //error should occur
     }) 
     it('Verify user registration with password is masked or hidden', () => { //not Accept White Spaces
