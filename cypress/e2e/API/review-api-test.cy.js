@@ -1,4 +1,4 @@
-import { reviewData } from "../support/fakerdata"
+import { reviewData } from "../../support/fakerdata"
 
 describe('negative', () => {
   it('post (400) - missing required fields', () => {
