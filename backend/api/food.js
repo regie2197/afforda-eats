@@ -49,7 +49,7 @@ router.post('/', async (req, res) => {
 });
 
 // Get all foods for a store
-router.get('/:storeId', async (req, res) => {
+router.get('/store/:storeId', async (req, res) => {
   const storeId = parseInt(req.params.storeId, 10);
 
   if (isNaN(storeId)) {
@@ -102,6 +102,45 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch food' });
   }
 });
+
+// PUT: Fully replace a food item
+router.put('/:id', async (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const { name, price, description } = req.body;
+
+  if (isNaN(id)) {
+    return res.status(400).json({ error: 'Invalid food ID' });
+  }
+
+  // Validate input
+  if (!name || !price || !description) {
+    return res.status(400).json({ error: 'All fields (name, price, description) are required for full update' });
+  }
+
+  const parsedPrice = parseFloat(price);
+  if (isNaN(parsedPrice) || parsedPrice <= 0) {
+    return res.status(400).json({ error: 'Price must be a positive number' });
+  }
+
+  try {
+    const existingFood = await prisma.food.findUnique({ where: { id } });
+
+    if (!existingFood) {
+      return res.status(404).json({ error: 'Food not found' });
+    }
+
+    const updatedFood = await prisma.food.update({
+      where: { id },
+      data: { name, price: parsedPrice, description },
+    });
+
+    res.status(200).json(updatedFood);
+  } catch (error) {
+    console.error('Error replacing food:', error);
+    res.status(500).json({ error: 'Failed to update food' });
+  }
+});
+
 
 // PATCH (Partial Update) a food item
 router.patch('/:id', async (req, res) => {

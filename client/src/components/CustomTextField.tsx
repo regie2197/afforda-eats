@@ -6,19 +6,20 @@ import { TextField, TextFieldProps } from "@mui/material";
 const CustomTextField = (props: TextFieldProps) => {
   return (
     <TextField
-      {...props} // Pass all standard TextField props dynamically
+      {...props}
+      data-testid={props.name} 
       sx={{
         "& .MuiOutlinedInput-root": {
           "&.Mui-focused fieldset": {
-            borderColor: "green", // ✅ Green border when selected
+            borderColor: "green",
           },
           "&:hover fieldset": {
-            borderColor: "green", // Optional: Orange border on hover (example)
+            borderColor: "green",
           },
         },
         "& .MuiInputLabel-root": {
           "&.Mui-focused": {
-            color: "green", // ✅ Green label when selected
+            color: "green",
           },
         },
       }}

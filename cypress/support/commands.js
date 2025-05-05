@@ -1,6 +1,5 @@
-/// <reference types="cypress" />
 // ***********************************************
-// This example commands.ts shows you how to
+// This example commands.js shows you how to
 // create various custom commands and overwrite
 // existing commands.
 //
@@ -24,76 +23,47 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-//
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
-import 'cypress-plugin-api';
-// import { userRegister } from '../support/registeruser';
-// import { vendorRegister } from '../support/registervendor';
 
-// // Cypress.Commands.add('registerUser', ()=>{
-// //     cy.get('button').should('contain', 'Register').and('not.be.disabled');
-// //     cy.get('.MuiTypography-inherit').click()
-// //     cy.get('#«Rl3rnb»').should('contain', 'Select Account Type');
-// //     cy.get('.MuiDialogActions-root > :nth-child(1)').should('be.visible')
-// //     cy.get('.MuiDialogActions-root > :nth-child(2)').should('be.visible')
-// //     cy.get('.MuiDialogActions-root > :nth-child(1)').click()
-    
-// // })
-// Cypress.Commands.add('registerVendor', ()=>{
-//     cy.get('button').should('contain', 'Register').and('not.be.disabled');
-//     cy.get('.MuiTypography-inherit').click()
-//     cy.get('#«Rl3rnb»').should('contain', 'Select Account Type');
-//     cy.get('.MuiDialogActions-root > :nth-child(1)').should('be.visible')
-//     cy.get('.MuiDialogActions-root > :nth-child(2)').should('be.visible')
-//     cy.get('.MuiDialogActions-root > :nth-child(2)').click()
-    
-// })
-// Cypress.Commands.add('fields', ()=>{
-//     cy.get('input[type="text"][name="firstName"]').should('be.visible')
-//     cy.get('input[type="text"][name="lastName"]').should('be.visible')
-//     cy.get('input[type="text"][name="email"]').should('be.visible')
-//     cy.get('input[type="text"][name="username"]').should('be.visible')
-//     cy.get('input[type="password"][name="password"]').should('be.visible')
-    
-// })
-// Cypress.Commands.add('fieldsvendor', ()=>{
-//     cy.get('input[type="text"][name="FirstName"]').should('be.visible')
-//     cy.get('input[type="text"][name="lastName"]').should('be.visible')
-//     cy.get('input[type="text"][name="email"]').should('be.visible')
-//     cy.get('input[type="text"][name="username"]').should('be.visible')
-//     cy.get('input[type="password"][name="password"]').should('be.visible')
-    
-// })
+import loginPage from "./pages/login.page" 
+import { faker } from '@faker-js/faker';
 
-// Cypress.Commands.add('faker', ()=>{
-//     const userReg = userRegister();
-//     cy.get('input[type="text"][name="firstName"]').type(userReg.firstName)
-//     cy.get('input[type="text"][name="lastName"]').type(userReg.lastName)
-//     cy.get('input[type="text"][name="email"]').type(userReg.email)
-//     cy.get('input[type="text"][name="username"]').type(userReg.username)
-//     cy.get('input[type="password"][name="password"]').type(userReg.password)
-//     cy.get('button[type="submit"]').should('be.visible').and('not.be.disabled');
-//     cy.get('button[type="submit"]').click()
-    
-// })
+// Sharlin ----------------
+var fakeMessage
 
-// Cypress.Commands.add('fakervendor', ()=>{
-//     const vendorReg = vendorRegister();
-//     cy.get('input[type="text"][name="FirstName"]').type(vendorReg.FirstName)
-//     cy.get('input[type="text"][name="lastName"]').type(vendorReg.lastName)
-//     cy.get('input[type="text"][name="email"]').type(vendorReg.email)
-//     cy.get('input[type="text"][name="username"]').type(vendorReg.username)
-//     cy.get('input[type="password"][name="password"]').type(vendorReg.password)
-//     cy.get('button[type="submit"]').should('be.visible').and('not.be.disabled');
-//     cy.get('button[type="submit"]').click()
+Cypress.Commands.add('Login', (username, password) => {
+    loginPage.fillLoginForm(username, password)
+})
+
+Cypress.Commands.add('VerifyErrMes', (errorcode) => {
+    loginPage.verifyErrMessage(errorcode)
+})
+
+Cypress.Commands.add('writeFeedback', (n) => {
+    fakeMessage = faker.string.alpha(n);; // Limits the text to 100 characters
+    cy.get('[rows="8"]').should('be.visible').type(fakeMessage)
+    if (n < 500){
+        cy.get('[rows="8"]').invoke('val').should('have.length', n);
+    } else if (n > 500) {
+        cy.get('[rows="8"]').invoke('val').should('have.length', 500); // Checks if it has exactly 500 characters
+    }
     
-// })
+})
+
+// Joshua ----------------
+Cypress.Commands.add('generateLocalAPIFile', (NewLocalUser) => {
+    cy.writeFile('cypress/fixtures/LocalUser.json', NewLocalUser)
+})
+
+
+Cypress.Commands.add('AffordEatsGenerateUserFile', (NewAffordaEatsUser) => {
+    cy.writeFile('cypress/fixtures/AffordaEatsUser.json', NewAffordaEatsUser)
+} )
+
+Cypress.Commands.add('AffordEatsGenerateFoodFile', (NewAffordaEatsFood) => {
+    cy.writeFile('cypress/fixtures/AffordaEatsFood.json', NewAffordaEatsFood)
+} )
+
+Cypress.Commands.add('AffordaEatsGenerateStoreFile', (NewStore) => {
+    cy.writeFile('cypress/fixtures/AffordaEatsStoreInfo.json', NewStore)
+})
+

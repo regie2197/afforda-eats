@@ -15,3 +15,9 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands'
+import 'cypress-mochawesome-reporter/register';
+import './fakerdata'
+import './registeruser'
+import './registervendor'
+import 'cypress-plugin-api'
+import '@faker-js/faker'
