@@ -3,7 +3,7 @@ describe('TC-HOME: Home Page Test Suite', () => {
   const baseUrl = "http://localhost:4000/";
 
   beforeEach(() => {
-    cy.visit(`${baseUrl}/home`);
+    cy.visit(`${baseUrl}home`);
     cy.url().should('include', '/home')
   });
 

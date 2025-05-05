@@ -1,5 +1,3 @@
-const { before, after } = require("mocha")
-
 const expectedStructure = {
     id: "number",
     email: "string",

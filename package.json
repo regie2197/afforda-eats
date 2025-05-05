@@ -34,10 +34,16 @@
     "axios": "^1.9.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
+<<<<<<< HEAD
+    "cypress": "^14.3.2",
+    "cypress-plugin-api": "^2.11.2",
+=======
+>>>>>>> c4b753eb502f8c8970d824f0b52f9447d5d5fb6c
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.503.0",
+    "mocha": "^11.2.2",
     "next": "15.3.1",
     "nodemon": "^3.1.10",
     "prisma": "^6.7.0",
