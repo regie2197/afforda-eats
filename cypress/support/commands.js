@@ -5,7 +5,13 @@ import { createFoodData } from '../support/user-faker.utils.js';
 
 
 /* ----------------------------- GLOBAL COMMANDS ------------------------------ */
+Cypress.Commands.add('takeScreenshot', (prefix = '') => {
+    const timestamp = new Date().toISOString().split('T')[0]; 
+    const testName = Cypress.mocha.getRunner().suite.title + '-' + Cypress.mocha.getRunner().test.title;
 
+    const screenshotName = `${prefix}-${testName}-${timestamp}`;
+    cy.screenshot(screenshotName); // 
+  });
 
 
 
@@ -111,7 +117,18 @@ import { createFoodData } from '../support/user-faker.utils.js';
 
 /* ----------------------------- FOOD API COMMANDS ----------------------------- */
 
-
+Cypress.Commands.add('createFood', () =>{
+    let foodData = createFoodData()
+    cy.writeFile('cypress/fixtures/foodData.json', foodData);
+    cy.api({
+        method: 'POST',
+        url: 'http://localhost:4000/api/food',
+        body: foodData
+    }).should((response) => {
+        expect(response.status).to.eq(200)
+        expect(response.body).to.have.property('name', `${foodData.name}`)
+    })
+})
 
 
 
@@ -233,18 +250,27 @@ Cypress.Commands.add('createStore', () => {
     cy.writeFile('cypress/fixtures/storeData.json', storeData);
 })
 
-Cypress.Commands.add('createFood', () =>{
-    let foodData = createFoodData()
-    cy.writeFile('cypress/fixtures/foodData.json', foodData);
-    cy.api({
-        method: 'POST',
-        url: 'http://localhost:4000/api/food',
-        body: foodData
-    }).should((response) => {
-        expect(response.status).to.eq(200)
-        expect(response.body).to.have.property('name', `${foodData.name}`)
-    })
-})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* ----------------------------- LOGIN UI COMMANDS ----------------------------- */
@@ -311,7 +337,9 @@ Cypress.Commands.add('createFood', () =>{
 
 /* ----------------------------- REGIST UI COMMANDS ----------------------------- */
 
-
+Cypress.Commands.add('NavLogIn', () => {
+    cy.get('[data-testid=go-to-register]').click();
+});
 
 
 

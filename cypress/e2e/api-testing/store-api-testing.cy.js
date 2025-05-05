@@ -4,15 +4,13 @@ describe('Store API Testing', () => {
     let storeId;
 
     before(() => {
-        cy.createStore();
-        cy.createVendor();
-
         cy.readFile('cypress/fixtures/vendorData.json').then((data) => {
             vendorData = data;
-        });
-
-        cy.readFile('cypress/fixtures/storeData.json').then((data) => {
+            return cy.readFile('cypress/fixtures/storeData.json');
+        }).then((data) => {
             storeData = data;
+    
+            // Create a store and assign the storeId to the global variable
             cy.api({
                 method: 'POST',
                 url: 'http://localhost:4000/api/store',
@@ -23,11 +21,9 @@ describe('Store API Testing', () => {
                 body: storeData,
             }).then((response) => {
                 expect(response.status).to.eq(200);
-                storeId = response.body.id;
-                cy.wrap(storeId).as('storeId');
+                storeId = response.body.id; // Assign storeId to the global variable
             });
         });
-
     });
 
     /* ----------------------------- POST METHOD ----------------------------- */
