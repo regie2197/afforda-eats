@@ -1,6 +1,6 @@
 import { createUser} from '../../support/user-faker.utils.js'
 
-describe('API - REGISTRATION testing', () => {
+describe('REGISTRATION API Testing', () => {
     const newUser = createUser()
 
     it('Verify successful POST request for creating a new user', () => {

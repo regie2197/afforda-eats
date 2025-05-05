@@ -1,6 +1,6 @@
 import { createUser } from '../../support/user-faker.utils.js'
 
-describe('API - REGISTRATION testing', () => {
+describe('USER API Testing', () => {
     const newUser = createUser()
     let userId
     const authCred = {
