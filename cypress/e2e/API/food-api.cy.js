@@ -518,7 +518,6 @@ describe('AffordaEats API: Patch specific food test', () => {
         cy.api({
             method: "PATCH",
             url: BASE_URL + '/food/' + FoodId,
-            url: BASE_URL + '/food/19',
             auth: {
                 username: uname,
                 password: pword
@@ -657,8 +656,7 @@ describe('AffordaEats API: Delete specific food menu', () => {
     it('200: Successfully deleted specific food menu', () => {
         cy.api({
             method: 'DELETE',
-            // url: BASE_URL + '/food/' + FoodID,
-            url: BASE_URL + '/food/19',
+            url: BASE_URL + '/food/' + FoodID,
             auth: {
                 username: uname,
                 password: pword
