@@ -78,9 +78,9 @@ describe('Feature 1 - Login Test Suite', () => {
         cy.url().should('include', '/home')
     })
 
+    it('Verify that User is unable to go to the home page without logging in', () => {
+        cy.visit('http://localhost:3000/home')
+        cy.url().should('include', '/login')
+    })
     
-    
-
-    
-
 })
