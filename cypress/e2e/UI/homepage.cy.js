@@ -178,7 +178,7 @@ describe('TC-HOME: Home Page Test Suite', () => {
   ];
   
   testCases.forEach(({ id, input, results, assertion, group }) => {
-    it(`TC-HOME-0${id} - Home Page - Testing the Search Bar Using BVA: ${group}`, () => {
+    it(`TC-HOME-0${id} - Home Page - Testing the Search Bar Using EQ: ${group}`, () => {
       // Select a search bar and type the corresponding input
       cy.get('input[type="text"]').type(input).should('have.value', input.substring(0, 25));
       cy.contains("button", "Search").click();

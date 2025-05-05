@@ -1,7 +1,8 @@
 import { reviewData } from "../../support/fakerdata"
 
-describe('negative', () => {
-  it('post (400) - missing required fields', () => {
+
+describe('AffordaEats API: Register Review tests (Negative) ', () => {
+  it('Verify unsuccessful review POST request - missing required fields', () => {
     const data = reviewData();
     cy.api({
       method: 'POST',
@@ -22,7 +23,7 @@ describe('negative', () => {
     })
   })
 
-  it('post (400) - Content must be 500 words or fewer', () => {
+  it('Verify unsuccessful review POST request - Content must be 500 words or fewer', () => {
     cy.api({
       method: 'POST',
       url: 'http://localhost:4000/api/review/',
@@ -44,7 +45,7 @@ describe('negative', () => {
     })
   })
 
-  it('post (400) - Rating must be an integer between 1 and 5', () => {
+  it('Verify unsuccessful review POST request - Rating must be an integer between 1 and 5', () => {
     cy.api({
       method: 'POST',
       url: 'http://localhost:4000/api/review/', 
@@ -66,7 +67,7 @@ describe('negative', () => {
     })
   })
 
-  it('post (404) - User or food not found (Food)', () => {
+  it('Verify unsuccessful review POST request - User or food not found (Food)', () => {
     cy.api({
       method: 'POST',
       url: 'http://localhost:4000/api/review/',
@@ -88,7 +89,7 @@ describe('negative', () => {
     })
   })
 
-  it('post (404) - User or food not found (User)', () => {
+  it('Verify unsuccessful review POST request - User or food not found (User)', () => {
     cy.api({
       method: 'POST',
       url: 'http://localhost:4000/api/review/',
@@ -110,7 +111,7 @@ describe('negative', () => {
     })
   })
 
-  it('get (404) - Review not found', () => {
+  it('Verify unsuccessful review GET request - Review not found', () => {
     cy.api({
       method: 'GET',
       url: 'http://localhost:4000/api/review/1000',
@@ -125,7 +126,7 @@ describe('negative', () => {
     })
   })
 
-  it('patch (400) - Nothing to update', () => {
+  it('Verify unsuccessful review PATCH request - Nothing to update', () => {
     cy.api({
       method: 'PATCH',
       url: 'http://localhost:4000/api/review/7',
@@ -141,7 +142,7 @@ describe('negative', () => {
     });
   });
 
-  it('patch (400) - Content must be 500 words or fewer', () => {
+  it('Verify unsuccessful review PATCH request - Content must be 500 words or fewer', () => {
     cy.api({
       method: 'PATCH',
       url: 'http://localhost:4000/api/review/23',
@@ -160,7 +161,7 @@ describe('negative', () => {
     })
   })
 
-  it('patch (400) - Rating must be an integer between 1 and 5', () => {
+  it('Verify unsuccessful review PATCH request - Rating must be an integer between 1 and 5', () => {
     cy.api({
       method: 'PATCH',
       url: 'http://localhost:4000/api/review/7',
@@ -179,7 +180,7 @@ describe('negative', () => {
     })
   });
 
-  it('patch (404) - Review not found', () => {
+  it('Verify unsuccessful review PATCH request - Review not found', () => {
     cy.api({
         method: 'PATCH',
         url: 'http://localhost:4000/api/review/2000',
@@ -198,7 +199,7 @@ describe('negative', () => {
     })
   })
 
-  it('put (400) - Invalid review ID', () => {
+  it('Verify unsuccessful review PUT request - Invalid review ID', () => {
     cy.api({
         method: 'PUT',
         url: 'http://localhost:4000/api/review/abc',
@@ -217,7 +218,7 @@ describe('negative', () => {
     })
     })
 
-it('put (400) - Both content and rating are required', () => {
+it('Verify unsuccessful review PUT request - Both content and rating are required', () => {
     cy.api({
         method: 'PUT',
         url: 'http://localhost:4000/api/review/7',
@@ -235,7 +236,7 @@ it('put (400) - Both content and rating are required', () => {
     })
   })
 
-  it('put (400) - Content must be 500 words or fewer', () => {
+  it('Verify unsuccessful review PUT request - Content must be 500 words or fewer', () => {
     cy.api({
         method: 'PUT',
         url: 'http://localhost:4000/api/review/7',
@@ -254,7 +255,7 @@ it('put (400) - Both content and rating are required', () => {
     })
     })
 
-    it('put (400) - Rating must be an integer between 1 and 5', () => {
+    it('Verify unsuccessful review PUT request - Rating must be an integer between 1 and 5', () => {
         cy.api({
             method: 'PUT',
             url: 'http://localhost:4000/api/review/7',
@@ -273,7 +274,7 @@ it('put (400) - Both content and rating are required', () => {
         })
     })
 
-    it('put (400) - Review not found', () => {
+    it('Verify unsuccessful review PUT request - Review not found', () => {
         cy.api({
             method: 'PUT',
             url: 'http://localhost:4000/api/review/5000',
@@ -293,7 +294,7 @@ it('put (400) - Both content and rating are required', () => {
     })  
 
 
-  it('delete (404) - Review not found', () => {
+  it('Verify unsuccessful review DELETE request - Review not found', () => {
     cy.api({
       method: 'DELETE',
       url: 'http://localhost:4000/api/review/1000',
@@ -310,8 +311,8 @@ it('put (400) - Both content and rating are required', () => {
 
 })
 
-describe('500', () => {
-    it('post (500)', () => {
+describe('AffordaEats API: Register Food tests (Negative [500])', () => {
+    it('Verify unsuccessful review POST request', () => {
         cy.api({
             method: 'POST',
             url: 'http://localhost:4000/api/review/',
@@ -332,7 +333,7 @@ describe('500', () => {
             expect(response.body).to.have.property('error', 'Failed to create review')
         })
     })
-    it('get by id (500)', () => {
+    it('Verify unsuccessful review GET request', () => {
         cy.api({
             method: 'GET',
             url: 'http://localhost:4000/api/review/abc',
@@ -345,7 +346,7 @@ describe('500', () => {
             expect(response.status).to.eq(500)
         })
     })
-    it('patch (500)', () => {
+    it('Verify unsuccesful review PATCH request', () => {
         cy.api({
             method: 'PATCH',
             url: 'http://localhost:4000/api/review/abc',
@@ -362,7 +363,7 @@ describe('500', () => {
             expect(response.status).to.eq(500)
         })
     })
-    it('put (500)', () => {
+    it('Verify unsuccesful review PUT request', () => {
         cy.api({
             method: 'PUT',
             url: 'http://localhost:4000/api/review/abc',
@@ -378,7 +379,7 @@ describe('500', () => {
             expect(response.status).to.eq(500)
         })
     })
-    it('delete (500)', () => {
+    it('Verify unsuccessful review DELETE request', () => {
         cy.api({
             method: 'DELETE',
             url: 'http://localhost:4000/api/review/haha',
@@ -393,8 +394,8 @@ describe('500', () => {
     })
 })
 
-describe('positive', () => {
-  it('post', () => {
+describe('AffordaEats API: Register Food tests', () => {
+  it('Verify successful review POST request', () => {
     const data = reviewData();
     cy.api({
       method: 'POST',
@@ -410,7 +411,7 @@ describe('positive', () => {
     })
   })
 
-  it('get', () => {
+  it('Verify successful review GET request', () => {
     const data = reviewData();
     cy.api({
       method: 'GET',
@@ -424,7 +425,7 @@ describe('positive', () => {
     })
   })
 
-  it('get by id', () => {
+  it('Verify succesful review GEt by ID request', () => {
     const data = reviewData();
     cy.api({
       method: 'GET',
@@ -440,7 +441,7 @@ describe('positive', () => {
     })
   })
 
-  it('patch', () => {
+  it('Verify successful review PATCH request', () => {
     cy.api({
       method: 'PATCH',
       url: 'http://localhost:4000/api/review/1',
@@ -458,7 +459,7 @@ describe('positive', () => {
     })
   })
 
-  it('put', () => {
+  it('Verify successful review PUT request', () => {
     cy.api({
       method: 'PUT',
       url: 'http://localhost:4000/api/review/2',
@@ -476,7 +477,7 @@ describe('positive', () => {
     })
   })
 
-  it('Delete', () => {
+  it('Verify successful review DELETE request', () => {
     const data = reviewData();
     cy.api({
       method: 'POST',
