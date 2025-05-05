@@ -33,7 +33,7 @@ export function createStore(){
     }
 }
 
-export function createFood() {
+export function createFoodData() {
     return {
         name: faker.commerce.productName(),
         price: faker.number.int({ min: 49.99, max: 350.99, precision: 0.01 }),

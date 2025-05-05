@@ -236,6 +236,7 @@ Cypress.Commands.add('createStore', () => {
 Cypress.Commands.add('createFood', () =>{
     let foodData = createFoodData()
     cy.writeFile('cypress/fixtures/foodData.json', foodData);
+    
     cy.api({
         method: 'POST',
         url: 'http://localhost:4000/api/food',
