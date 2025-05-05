@@ -1,36 +1,38 @@
 describe('API Testing - Review Endpoint', () => {
 
-  const authUser = 'Hel200123';
-  const authPass = 'Hel1234';
   let reviewID;
+  let reviewsData;
 
-  const invalidUser = 'WWWWWW';
-  const invalidPass = 'password123414';
-
+  beforeEach(() => {
+        cy.readFile('cypress/fixtures/reviewsData.json').then((data) => {
+          reviewsData = data;
+        });
+      });
+    
     // TC_API_Reviews_01
     it('Should verify successful POST request for writing a review.', () => {
       cy.request({
         method: 'POST',
         url: 'http://localhost:4000/api/review',
         auth: {
-          username: authUser,
-          password: authPass
+          username: reviewsData.authUser,
+          password: reviewsData.authPass
         },
         body: {
-          userId: 25,
-          foodId: 1,
-          storeId: 1,
-          content: 'Great and delicious food',
-          rating: 5
+          userId: reviewsData.userID,
+          foodId: reviewsData.foodID,
+          storeId: reviewsData.storeID,
+          content: reviewsData.content,
+          rating: reviewsData.rating
         }
       }).then((response) => {
         expect(response.status).to.eq(200);
         expect(response.body).to.have.property('id');
-        expect(response.body).to.have.property('userId', 25);
-        expect(response.body).to.have.property('foodId', 1);
-        expect(response.body).to.have.property('storeId', 1);
-        expect(response.body).to.have.property('content', 'Great and delicious food');
-        expect(response.body).to.have.property('rating', 5);
+        expect(response.body).to.have.property('userId', reviewsData.userID);
+        expect(response.body).to.have.property('foodId', reviewsData.foodID);
+        expect(response.body).to.have.property('storeId', reviewsData.storeID);
+        expect(response.body).to.have.property('content', reviewsData.content);
+        expect(response.body).to.have.property('rating', reviewsData.rating);
 
         reviewID = response.body.id;
         cy.log('Review ID:', reviewID);
@@ -43,13 +45,13 @@ describe('API Testing - Review Endpoint', () => {
           method: 'POST',
           url: 'http://localhost:4000/api/review',
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           body: {
-            foodId: 4,
-            content: 'Great and delicious food',
-            rating: 5
+            foodId: reviewsData.foodID,
+            content: reviewsData.content,
+            rating: reviewsData.rating
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -64,15 +66,15 @@ describe('API Testing - Review Endpoint', () => {
           method: 'POST',
           url: 'http://localhost:4000/api/review',
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           body: {
-            "userId": 25,
-            "foodId": 4,
-            "storeId" : 4, 
-            "content": "Nestled in the heart of the city, The Culinary Haven is a gem that promises an unforgettable dining experience. From the moment you step through its doors, you are greeted with an ambiance that is both warm and inviting. The decor is a tasteful blend of modern elegance and rustic charm, with soft lighting that creates a cozy atmosphere perfect for any occasion. The menu at The Culinary Haven is a testament to the chef's creativity and passion for food. It features a diverse array of dishes that cater to a wide range of tastes and preferences. Whether you are a fan of traditional cuisine or looking to explore something new, there is something for everyone. To start, I opted for the Roasted Beet Salad. This dish was a delightful combination of flavors and textures. The beets were perfectly roasted, bringing out their natural sweetness, while the goat cheese added a creamy richness. The salad was topped with candied walnuts, which provided a satisfying crunch, and a balsamic reduction that tied all the elements together beautifully. For the main course, I chose the Pan-Seared Sea Bass. This dish was a true masterpiece. The sea bass was cooked to perfection, with a crispy skin and tender, flaky flesh. It was served on a bed of saffron risotto, which was creamy and flavorful, with just the right amount of saffron to give it a subtle yet distinctive taste. The dish was garnished with a medley of seasonal vegetables, adding a burst of color and freshness. My dining companion opted for the Braised Lamb Shank, which was equally impressive. The lamb was incredibly tender, falling off the bone with ease. It was served with a rich, savory sauce that complemented the meat beautifully. The accompanying mashed potatoes were smooth and creamy, and the roasted root vegetables added a hearty touch to the dish. No meal at The Culinary Haven would be complete without dessert, and the Chocolate Fondant did not disappoint. This decadent dessert featured a warm, gooey center that oozed out when cut into, paired with a scoop of vanilla bean ice cream. The combination of the rich chocolate and the creamy ice cream was pure bliss, making it the perfect ending to a fantastic meal. The service at The Culinary Haven was impeccable. The staff were attentive and knowledgeable, providing excellent recommendations and ensuring that our dining experience was nothing short of perfect. They were friendly and professional, making us feel welcome and valued throughout our visit. In addition to the outstanding food and service, The Culinary Haven also boasts an impressive wine list. The selection includes a variety of wines from around the world, carefully curated to complement the menu. Whether you are a wine connoisseur or simply looking to enjoy a glass with your meal, you are sure to find something that suits your taste. Overall, The Culinary Haven is a restaurant that truly lives up to its name. It offers a dining experience that is both memorable and enjoyable, with exceptional food, service, and ambiance. Whether you are celebrating a special occasion or simply looking for a great meal, The Culinary Haven is the perfect choice. I highly recommend it to anyone who appreciates fine dining and is looking for a place that delivers on all fronts.",
-            "rating" : 5
+            "userId": reviewsData.userID,
+            "foodId": reviewsData.foodID,
+            "storeId" : reviewsData.storeID, 
+            "content": reviewsData.content500Words,
+            "rating" : reviewsData.rating
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -87,15 +89,15 @@ describe('API Testing - Review Endpoint', () => {
           method: 'POST',
           url: 'http://localhost:4000/api/review',
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           body: {
-            userId: 25,
-            foodId: 4,
-            storeId: 4,
-            content: 'Great and delicious food',
-            rating: 10
+            userId: reviewsData.userID,
+            foodId: reviewsData.foodID,
+            storeId: reviewsData.storeID,
+            content: reviewsData.content,
+            rating: reviewsData.invalidRating
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -110,11 +112,11 @@ describe('API Testing - Review Endpoint', () => {
           method: 'POST',
           url: 'http://localhost:4000/api/review',
           body: {
-            userId: 25,
-            foodId: 4,
-            storeId: 4,
-            content: 'Great and delicious food',
-            rating: 5
+            userId: reviewsData.userID,
+            foodId: reviewsData.foodID,
+            storeId: reviewsData.storeID,
+            content: reviewsData.content,
+            rating: reviewsData.rating
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -129,15 +131,15 @@ describe('API Testing - Review Endpoint', () => {
           method: 'POST',
           url: 'http://localhost:4000/api/review',
           auth: {
-            username: invalidUser,
-            password: invalidPass
+            username: reviewsData.invalidUser,
+            password: reviewsData.invalidPass
           },
           body: {
-            userId: 25,
-            foodId: 4,
-            storeId: 4,
-            content: 'Great and delicious food',
-            rating: 5
+            userId: reviewsData.userID,
+            foodId: reviewsData.foodID,
+            storeId: reviewsData.storeID,
+            content: reviewsData.content,
+            rating: reviewsData.rating
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -152,15 +154,15 @@ describe('API Testing - Review Endpoint', () => {
           method: 'POST',
           url: 'http://localhost:4000/api/review',
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           body: {
-            userId: 1000,
-            foodId: 2,
-            storeId: 4,
-            content: 'Great and delicious food',
-            rating: 5
+            userId: reviewsData.invalidUserID,
+            foodId: reviewsData.foodID,
+            storeId: reviewsData.storeID,
+            content: reviewsData.content,
+            rating: reviewsData.rating
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -175,15 +177,15 @@ describe('API Testing - Review Endpoint', () => {
           method: 'POST',
           url: 'http://localhost:4000/api/review',
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           body: {
-            userId: 25,
-            foodId: 2500,
-            storeId: 4,
-            content: 'Great and delicious food',
-            rating: 5
+            userId: reviewsData.userID,
+            foodId: reviewsData.invalidFoodID,
+            storeId: reviewsData.storeID,
+            content: reviewsData.content,
+            rating: reviewsData.rating
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -198,15 +200,15 @@ describe('API Testing - Review Endpoint', () => {
           method: 'POST',
           url: 'https://4efb9bfc-7910-483e-b63f-eeca2ad605e7.mock.pstmn.io/api/review/',
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           body: {
-            userId: 25,
-            foodId: 2500,
-            storeId: 4,
-            content: 'Great and delicious food',
-            rating: 5
+            userId: reviewsData.userID,
+            foodId: reviewsData.foodID,
+            storeId: reviewsData.storeID,
+            content: reviewsData.content,
+            rating: reviewsData.rating
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -221,8 +223,8 @@ describe('API Testing - Review Endpoint', () => {
           method: 'GET',
           url: 'http://localhost:4000/api/review',
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           }
         }).then((response) => {
           expect(response.status).to.eq(200);
@@ -235,8 +237,8 @@ describe('API Testing - Review Endpoint', () => {
           method: 'GET',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           }
         }).then((response) => {
           expect(response.status).to.eq(200);
@@ -261,8 +263,8 @@ describe('API Testing - Review Endpoint', () => {
           method: 'GET',
           url: 'http://localhost:4000/api/review/',
           body: {
-            username: invalidUser,
-            password: invalidPass
+            username: reviewsData.invalidUser,
+            password: reviewsData.invalidPass
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -289,8 +291,8 @@ describe('API Testing - Review Endpoint', () => {
           method: 'GET',
           url: 'http://localhost:4000/api/review/' + reviewID,
           body: {
-            username: invalidUser,
-            password: invalidPass
+            username: reviewsData.invalidUser,
+            password: reviewsData.invalidPass
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -303,10 +305,10 @@ describe('API Testing - Review Endpoint', () => {
       it('Should verify unsuccessful GET request when reviewId is non-existent.', () => {
         cy.request({
           method: 'GET',
-          url: 'http://localhost:4000/api/review/2000',
+          url: 'http://localhost:4000/api/review/' + reviewsData.invalidReviewID,
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -321,8 +323,8 @@ describe('API Testing - Review Endpoint', () => {
           method: 'GET',
           url: 'https://4efb9bfc-7910-483e-b63f-eeca2ad605e7.mock.pstmn.io/api/review/',
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -337,17 +339,17 @@ describe('API Testing - Review Endpoint', () => {
           method: 'PUT',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           body: {
-            content: 'Beautiful staff',
-            rating: 5
+            content: reviewsData.updatedContent,
+            rating: reviewsData.rating
           }
         }).then((response) => {
           expect(response.status).to.eq(200);
-          expect(response.body).to.have.property('content', 'Beautiful staff');
-          expect(response.body).to.have.property('rating', 5);
+          expect(response.body).to.have.property('content', reviewsData.updatedContent);
+          expect(response.body).to.have.property('rating', reviewsData.rating);
         });
       });      
 
@@ -357,8 +359,8 @@ describe('API Testing - Review Endpoint', () => {
           method: 'PUT',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           body: {
 
@@ -376,12 +378,12 @@ describe('API Testing - Review Endpoint', () => {
           method: 'PUT',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           body: {
-            "content": "Nestled in the heart of the city, The Culinary Haven is a gem that promises an unforgettable dining experience. From the moment you step through its doors, you are greeted with an ambiance that is both warm and inviting. The decor is a tasteful blend of modern elegance and rustic charm, with soft lighting that creates a cozy atmosphere perfect for any occasion. The menu at The Culinary Haven is a testament to the chef's creativity and passion for food. It features a diverse array of dishes that cater to a wide range of tastes and preferences. Whether you are a fan of traditional cuisine or looking to explore something new, there is something for everyone. To start, I opted for the Roasted Beet Salad. This dish was a delightful combination of flavors and textures. The beets were perfectly roasted, bringing out their natural sweetness, while the goat cheese added a creamy richness. The salad was topped with candied walnuts, which provided a satisfying crunch, and a balsamic reduction that tied all the elements together beautifully. For the main course, I chose the Pan-Seared Sea Bass. This dish was a true masterpiece. The sea bass was cooked to perfection, with a crispy skin and tender, flaky flesh. It was served on a bed of saffron risotto, which was creamy and flavorful, with just the right amount of saffron to give it a subtle yet distinctive taste. The dish was garnished with a medley of seasonal vegetables, adding a burst of color and freshness. My dining companion opted for the Braised Lamb Shank, which was equally impressive. The lamb was incredibly tender, falling off the bone with ease. It was served with a rich, savory sauce that complemented the meat beautifully. The accompanying mashed potatoes were smooth and creamy, and the roasted root vegetables added a hearty touch to the dish. No meal at The Culinary Haven would be complete without dessert, and the Chocolate Fondant did not disappoint. This decadent dessert featured a warm, gooey center that oozed out when cut into, paired with a scoop of vanilla bean ice cream. The combination of the rich chocolate and the creamy ice cream was pure bliss, making it the perfect ending to a fantastic meal. The service at The Culinary Haven was impeccable. The staff were attentive and knowledgeable, providing excellent recommendations and ensuring that our dining experience was nothing short of perfect. They were friendly and professional, making us feel welcome and valued throughout our visit. In addition to the outstanding food and service, The Culinary Haven also boasts an impressive wine list. The selection includes a variety of wines from around the world, carefully curated to complement the menu. Whether you are a wine connoisseur or simply looking to enjoy a glass with your meal, you are sure to find something that suits your taste. Overall, The Culinary Haven is a restaurant that truly lives up to its name. It offers a dining experience that is both memorable and enjoyable, with exceptional food, service, and ambiance. Whether you are celebrating a special occasion or simply looking for a great meal, The Culinary Haven is the perfect choice. I highly recommend it to anyone who appreciates fine dining and is looking for a place that delivers on all fronts.",
-            "rating" : 5
+            "content": reviewsData.content500Words,
+            "rating" : reviewsData.rating
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -396,12 +398,12 @@ describe('API Testing - Review Endpoint', () => {
           method: 'PUT',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           body: {
-            content: 'Accommodating staff',
-            rating: 100
+            content: reviewsData.updatedContent2,
+            rating: reviewsData.invalidRating
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -414,14 +416,14 @@ describe('API Testing - Review Endpoint', () => {
       it('Should verify unsuccessful PUT request for updating a review when reviewId is NaN.', () => {
         cy.request({
           method: 'PUT',
-          url: 'http://localhost:4000/api/review/invalidId',
+          url: 'http://localhost:4000/api/review/' + reviewsData.NaNReviewID,
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           body: {
-            content: 'Accommodating staff',
-            rating: 5
+            content: reviewsData.updatedContent2,
+            rating: reviewsData.rating
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -436,8 +438,8 @@ describe('API Testing - Review Endpoint', () => {
           method: 'PUT',
           url: 'http://localhost:4000/api/review/' + reviewID,
           body: {
-            content: 'Accommodating staff',
-            rating: 5
+            content: reviewsData.updatedContent2,
+            rating: reviewsData.rating
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -452,12 +454,12 @@ describe('API Testing - Review Endpoint', () => {
           method: 'PUT',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
-            username: invalidUser,
-            password: invalidPass
+            username: reviewsData.invalidUser,
+            password: reviewsData.invalidPass
           },
           body: {
-            content: 'Accommodating staff',
-            rating: 5
+            content: reviewsData.updatedContent2,
+            rating: reviewsData.rating
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -470,14 +472,14 @@ describe('API Testing - Review Endpoint', () => {
       it('Should verify unsuccessful PUT request when reviewId is non-existent.', () => {
         cy.request({
           method: 'PUT',
-          url: 'http://localhost:4000/api/review/2000',
+          url: 'http://localhost:4000/api/review/' + reviewsData.invalidReviewID,
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           body: {
-            content: 'Accommodating staff',
-            rating: 5
+            content: reviewsData.updatedContent2,
+            rating: reviewsData.rating
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -492,12 +494,12 @@ describe('API Testing - Review Endpoint', () => {
           method: 'PUT',
           url: 'https://4efb9bfc-7910-483e-b63f-eeca2ad605e7.mock.pstmn.io/api/review/' + reviewID,
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           body: {
-            content: 'Accommodating staff',
-            rating: 5
+            content: reviewsData.updatedContent2,
+            rating: reviewsData.rating
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -512,17 +514,17 @@ describe('API Testing - Review Endpoint', () => {
           method: 'PATCH',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           body: {
-            content: 'Food was bad this time',
-            rating: 1
+            content: reviewsData.patchContent,
+            rating: reviewsData.patchRating
           }
         }).then((response) => {
           expect(response.status).to.eq(200);
-          expect(response.body).to.have.property('content', 'Food was bad this time');
-          expect(response.body).to.have.property('rating', 1);
+          expect(response.body).to.have.property('content', reviewsData.patchContent);
+          expect(response.body).to.have.property('rating', reviewsData.patchRating);
         });
       });
       
@@ -532,15 +534,15 @@ describe('API Testing - Review Endpoint', () => {
           method: 'PATCH',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           body: {
-            content: 'Food was really bad this time'
+            content: reviewsData.patchContent,
           }
         }).then((response) => {
           expect(response.status).to.eq(200);
-          expect(response.body).to.have.property('content', 'Food was really bad this time');
+          expect(response.body).to.have.property('content', reviewsData.patchContent);
         });
       });
 
@@ -550,15 +552,15 @@ describe('API Testing - Review Endpoint', () => {
           method: 'PATCH',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           body: {
-            rating: 1
+            rating: reviewsData.patchRating
           }
         }).then((response) => {
           expect(response.status).to.eq(200);
-          expect(response.body).to.have.property('rating', 1);
+          expect(response.body).to.have.property('rating', reviewsData.patchRating);
         });
       });
 
@@ -568,8 +570,8 @@ describe('API Testing - Review Endpoint', () => {
           method: 'PATCH',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           body: {
 
@@ -587,12 +589,12 @@ describe('API Testing - Review Endpoint', () => {
           method: 'PATCH',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           body: {
-            "content": "Nestled in the heart of the city, The Culinary Haven is a gem that promises an unforgettable dining experience. From the moment you step through its doors, you are greeted with an ambiance that is both warm and inviting. The decor is a tasteful blend of modern elegance and rustic charm, with soft lighting that creates a cozy atmosphere perfect for any occasion. The menu at The Culinary Haven is a testament to the chef's creativity and passion for food. It features a diverse array of dishes that cater to a wide range of tastes and preferences. Whether you are a fan of traditional cuisine or looking to explore something new, there is something for everyone. To start, I opted for the Roasted Beet Salad. This dish was a delightful combination of flavors and textures. The beets were perfectly roasted, bringing out their natural sweetness, while the goat cheese added a creamy richness. The salad was topped with candied walnuts, which provided a satisfying crunch, and a balsamic reduction that tied all the elements together beautifully. For the main course, I chose the Pan-Seared Sea Bass. This dish was a true masterpiece. The sea bass was cooked to perfection, with a crispy skin and tender, flaky flesh. It was served on a bed of saffron risotto, which was creamy and flavorful, with just the right amount of saffron to give it a subtle yet distinctive taste. The dish was garnished with a medley of seasonal vegetables, adding a burst of color and freshness. My dining companion opted for the Braised Lamb Shank, which was equally impressive. The lamb was incredibly tender, falling off the bone with ease. It was served with a rich, savory sauce that complemented the meat beautifully. The accompanying mashed potatoes were smooth and creamy, and the roasted root vegetables added a hearty touch to the dish. No meal at The Culinary Haven would be complete without dessert, and the Chocolate Fondant did not disappoint. This decadent dessert featured a warm, gooey center that oozed out when cut into, paired with a scoop of vanilla bean ice cream. The combination of the rich chocolate and the creamy ice cream was pure bliss, making it the perfect ending to a fantastic meal. The service at The Culinary Haven was impeccable. The staff were attentive and knowledgeable, providing excellent recommendations and ensuring that our dining experience was nothing short of perfect. They were friendly and professional, making us feel welcome and valued throughout our visit. In addition to the outstanding food and service, The Culinary Haven also boasts an impressive wine list. The selection includes a variety of wines from around the world, carefully curated to complement the menu. Whether you are a wine connoisseur or simply looking to enjoy a glass with your meal, you are sure to find something that suits your taste. Overall, The Culinary Haven is a restaurant that truly lives up to its name. It offers a dining experience that is both memorable and enjoyable, with exceptional food, service, and ambiance. Whether you are celebrating a special occasion or simply looking for a great meal, The Culinary Haven is the perfect choice. I highly recommend it to anyone who appreciates fine dining and is looking for a place that delivers on all fronts.",
-            "rating" : 5
+            "content": reviewsData.content500Words,
+            "rating" : reviewsData.rating
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -607,12 +609,12 @@ describe('API Testing - Review Endpoint', () => {
           method: 'PATCH',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           body: {
-            content: "Very rude staff",
-            rating : 100
+            content: reviewsData.patchContent2,
+            rating : reviewsData.invalidRating
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -627,8 +629,8 @@ describe('API Testing - Review Endpoint', () => {
           method: 'PATCH',
           url: 'http://localhost:4000/api/review/' + reviewID,
           body: {
-            content: "Very rude staff",
-            rating : 1
+            content: reviewsData.patchContent2,
+            rating : reviewsData.patchRating
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -643,12 +645,12 @@ describe('API Testing - Review Endpoint', () => {
           method: 'PATCH',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
-            username: invalidUser,
-            password: invalidPass
+            username: reviewsData.invalidUser,
+            password: reviewsData.invalidPass
           },
           body: {
-            content: "Very rude staff",
-            rating : 1
+            content: reviewsData.patchContent2,
+            rating : reviewsData.patchRating
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -661,14 +663,14 @@ describe('API Testing - Review Endpoint', () => {
       it('Should verify unsuccessful PATCH request when reviewId is non-existent.', () => {
         cy.request({
           method: 'PATCH',
-          url: 'http://localhost:4000/api/review/2000',
+          url: 'http://localhost:4000/api/review/' + reviewsData.invalidReviewID,
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           body: {
-            content: 'Very rude staff',
-            rating: 1
+            content: reviewsData.patchContent2,
+            rating : reviewsData.patchRating
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -683,12 +685,12 @@ describe('API Testing - Review Endpoint', () => {
           method: 'PATCH',
           url: 'https://4efb9bfc-7910-483e-b63f-eeca2ad605e7.mock.pstmn.io/api/review/' + reviewID,
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           body: {
-            content: "Very rude staff",
-            rating : 1
+            content: reviewsData.patchContent2,
+            rating : reviewsData.patchRating
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -715,8 +717,8 @@ describe('API Testing - Review Endpoint', () => {
           method: 'DELETE',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
-            username: invalidUser,
-            password: invalidPass
+            username: reviewsData.invalidUser,
+            password: reviewsData.invalidPass
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -731,8 +733,8 @@ describe('API Testing - Review Endpoint', () => {
           method: 'DELETE',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           }
         }).then((response) => {
           expect(response.status).to.eq(200);
@@ -744,10 +746,10 @@ describe('API Testing - Review Endpoint', () => {
       it('Should verify unsuccessful DELETE request when reviewId is non-existent.', () => {
         cy.request({
           method: 'DELETE',
-          url: 'http://localhost:4000/api/review/2000',
+          url: 'http://localhost:4000/api/review/' + reviewsData.invalidReviewID,
           auth: {
-            username: authUser,
-            password: authPass
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           failOnStatusCode: false
         }).then((response) => {
@@ -762,12 +764,8 @@ describe('API Testing - Review Endpoint', () => {
           method: 'DELETE',
           url: 'https://4efb9bfc-7910-483e-b63f-eeca2ad605e7.mock.pstmn.io/api/review/' + reviewID,
           auth: {
-            username: authUser,
-            password: authPass
-          },
-          body: {
-            content: "Very rude staff",
-            rating : 1
+            username: reviewsData.authUser,
+            password: reviewsData.authPass
           },
           failOnStatusCode: false
         }).then((response) => {
