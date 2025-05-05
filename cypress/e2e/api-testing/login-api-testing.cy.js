@@ -2,6 +2,7 @@ import { createUser} from '../../support/user-faker.utils.js'
 
 describe('AUTH API Testing', () => {
     const newUser = createUser()
+    const mockUrl = 'https://a3442202-ff5c-4a8a-a369-8f57d9a75883.mock.pstmn.io'
 
     before(() => {
         cy.api({
@@ -94,19 +95,19 @@ describe('AUTH API Testing', () => {
         })
     }) // 500 without error message
 
-    it.skip("Verify unsuccessful POST request for login when a server error occurs", () => {
+    it("Verify unsuccessful POST request for login when a server error occurs", () => {
         cy.api({
             method: 'POST',
-            url: "http://localhost:4000/api/login",
+            url: mockUrl + "/api/login",
             failOnStatusCode: false,
             body: {
                 username: newUser.username,
                 password: newUser.password
             }
         }).should((response) => {
-            expect(response.status).to.eq(400)
+            expect(response.status).to.eq(500)
         })
-    }) // not tested
+    })
 
     it("Verify successful GET request using valid username in the authentication headers", () => {
         cy.api({
@@ -164,14 +165,5 @@ describe('AUTH API Testing', () => {
             expect(response.body.error).to.be.eql("Authorization header missing or invalid")
         })
     })
-
-    
-
-
-
-    
-
-
-
 
 })
