@@ -67,3 +67,6 @@ Cypress.Commands.add('AffordaEatsGenerateStoreFile', (NewStore) => {
     cy.writeFile('cypress/fixtures/AffordaEatsStoreInfo.json', NewStore)
 })
 
+Cypress.Commands.add('AffordEatsGenerateUpdateFoodFile', (UpdateFile) => {
+    cy.writeFile('cypress/fixtures/AffordaEatsUpdatefood.json', UpdateFile)
+} )

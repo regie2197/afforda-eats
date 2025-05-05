@@ -37,19 +37,34 @@ export function generateAffordaEatsUserInfo() {
 
 export function generateAffordaEatsFoodItem() {
     return{
-        id: 0,
+       id: 0,
         name: faker.commerce.productName(),
-        price: faker.commerce.price(),
+        price: faker.commerce.price(undefined, undefined, 2),
         description: faker.commerce.productDescription()
     }
 }
 
 export function generateAffordaEatsStore() {
     return{
+        name: faker.company.name(),
+        streetName: faker.location.streetAddress(),
         streetNumber: faker.location.street(),
         city: faker.location.city(),
         zipcode: faker.location.zipCode(),
         country: faker.location.country()
     }
 }
+
+export function generateAffordaEatsStoreOwner() {
+    return{
+        email: faker.internet.email(),
+        username: faker.internet.username(),
+        password: faker.internet.password(),
+        firstName: faker.person.firstName(),
+        lastName: faker.person.lastName(),
+        accountType: 'STORE_OWNER',
+    }
+}
+
+
 
