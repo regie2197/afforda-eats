@@ -16,7 +16,26 @@ describe('API - REGISTRATION testing', () => {
             auth: authCred
         }).should((response) => {
             expect(response.status).to.eq(200)
+            expect(response.body).to.have.property('id')
             userId = response.body.id
+            expect(response.body).to.have.property('username', newUser.username)
+            expect(response.body).to.have.property('email', newUser.email)
+            expect(response.body.password).to.not.equal(newUser.password);
+            expect(response.body).to.have.property('firstName', newUser.firstName)
+            expect(response.body).to.have.property('lastName', newUser.lastName)
+            expect(response.body).to.have.property('accountType', 'USER')
+        })
+    })
+
+    it('Verify unsuccessful request when the authentication header is missing', () => {
+        cy.api({
+            method: 'POST',
+            url: "http://localhost:4000/api/user",
+            body: newUser,
+            failOnStatusCode: false,
+        }).should((response) => {
+            expect(response.status).to.eq(401)
+            expect(response.body.error).to.eq("Authorization header missing or invalid")
         })
     })
 
@@ -37,7 +56,7 @@ describe('API - REGISTRATION testing', () => {
             expect(response.body.error).to.eq("Missing required fields")
         })
     })
-
+    
     it('Verify unsuccessful user registration when the required field values contains leading and trailing spaces', () => {
         const reg_spaceAround = createUser()
         cy.api({
@@ -50,49 +69,54 @@ describe('API - REGISTRATION testing', () => {
             expect(response.status).to.eq(400)
             expect(response.body.error).to.eq("Fields must not have leading or trailing spaces.")
         })
-    })
+    }) // 200 failed
 
     it('Verify unsuccessful user registration when email field value contains whitespace', () => {
-        const reg_emailWhitespace = createUser()
+        const reg_emailWhitespace = createUser() 
         cy.api({
             method: 'POST',
             url: "http://localhost:4000/api/user",
-            body: { ...reg_emailWhitespace, email: reg_emailWhitespace.firstName + " @email.com" },
+            body: {
+                ...reg_emailWhitespace, 
+                email: `${reg_emailWhitespace.firstName} @email.com`
+            },
             auth: authCred,
             failOnStatusCode: false
         }).should((response) => {
-            expect(response.status).to.eq(400)
-            expect(response.body.error).to.eq("Email must not contain spaces.")
-        })
-    })
+            expect(response.status).to.eq(400);
+            expect(response.body.error).to.eq("Email must not contain spaces.");
+        });
+    }) // 200 failed
 
     it('Verify unsuccessful user registration when username field value contains whitespace', () => {
         const reg_usernameWhitespace = createUser()
         cy.api({
             method: 'POST',
             url: "http://localhost:4000/api/user",
-            body: { ...reg_usernameWhitespace, username: "John Carl" },
+            body: { ...reg_usernameWhitespace, 
+                username: `${reg_usernameWhitespace.firstName} ${reg_usernameWhitespace.lastName}` 
+            },
             auth: authCred,
             failOnStatusCode: false
         }).should((response) => {
             expect(response.status).to.eq(400)
             expect(response.body.error).to.eq("Username must not contain spaces.")
         })
-    })
+    }) // 200 failed
 
     it('Verify unsuccessful user registration when email is on an invalid format', () => {
         const reg_invalidEmail = createUser()
         cy.api({
             method: 'POST',
             url: "http://localhost:4000/api/user",
-            body: { ...reg_invalidEmail, email: reg_invalidEmail.email + "email@com" },
+            body: { ...reg_invalidEmail, email: reg_invalidEmail.firstName + "emailcom" },
             auth: authCred,
             failOnStatusCode: false
         }).should((response) => {
             expect(response.status).to.eq(400)
             expect(response.body.error).to.eq("Invalid email format.")
         })
-    })
+    }) // 200 failed
 
     it('Verify unsuccessful user registration when the password field value has less than 6 character', () => {
         const reg_invalidPass = createUser()
@@ -106,7 +130,7 @@ describe('API - REGISTRATION testing', () => {
             expect(response.status).to.eq(400)
             expect(response.body.error).to.eq('Password must be at least 6 characters long.')
         })
-    })
+    }) // 200 failed
 
     it('Verify unsuccessful user registration when the entered email already exists in the database', () => {
         const reg_sameEmail = createUser()
@@ -120,7 +144,7 @@ describe('API - REGISTRATION testing', () => {
             expect(response.status).to.eq(400)
             expect(response.body.error).to.eq('User with this email already exists')
         })
-    })
+    }) 
 
     it('Verify unsuccessful user registration when the entered username already exists in the database', () => {
         const reg_sameUsername = createUser()
@@ -134,12 +158,24 @@ describe('API - REGISTRATION testing', () => {
             expect(response.status).to.eq(400)
             expect(response.body.error).to.eq('Username is already taken.')
         })
-    })
+    }) // 500 no error message
+
+    it.skip('Verify unsuccessful fetching of user data when the server is down', () => {
+        cy.api({
+            method: 'GET',
+            url: "http://localhost:5000/api/user",
+            body: newUser,
+            auth: authCred,
+            failOnStatusCode: false
+        }).should((response) => {
+            expect(response.status).to.eq(500)
+        })
+    }) // not tested
 
 
     // GET ALL request
 
-    it.only('Verify successful GET request for getting all user data', () => {
+    it('Verify successful GET request for getting all user data', () => {
         cy.api({
             method: 'GET',
             url: "http://localhost:4000/api/user",
@@ -147,10 +183,11 @@ describe('API - REGISTRATION testing', () => {
             auth: authCred
         }).should((response) => {
             expect(response.status).to.eq(200)
+            expect(response.body).to.be.an("array").and.to.not.be.empty;
         })
     })
 
-    it.only('Verify unsuccessful fetching of all user data when no user are found', () => {
+    it('Verify unsuccessful fetching of all user data when no user are found', () => {
         cy.api({
             method: 'GET',
             url: "http://localhost:4000/api/user/no-user",
@@ -158,22 +195,14 @@ describe('API - REGISTRATION testing', () => {
             failOnStatusCode: false
         }).should((response) => {
             expect(response.status).to.eq(404);
+            expect(response.body.error).to.eq("No users found")
+
         });
     })
 
-    it.skip('Verify unsuccessful fetching of all user data when the server is down', () => {
-        cy.api({
-            method: 'GET',
-            url: "http://localhost:4000/api/user",
-            body: newUser,
-            auth: authCred,
-            failOnStatusCode: false
-        }).should((response) => {
-            expect(response.status).to.eq(500)
-        })
-    })
+    // GET by ID request
 
-    it.only('Verify successful GET request for fetching user data by ID', () => {
+    it('Verify successful GET request for fetching user data by ID', () => {
         cy.api({
             method: 'GET',
             url: "http://localhost:4000/api/user/" + userId,
@@ -181,30 +210,35 @@ describe('API - REGISTRATION testing', () => {
             auth: authCred
         }).should((response) => {
             expect(response.status).to.eq(200)
+            expect(response.body).to.have.property('id', userId)
+            expect(response.body.password).to.not.equal(newUser.password);
         })
     })
 
-    it.only('Verify unsuccessful fetching of user data when the id is not a number', () => {
+    it('Verify unsuccessful fetching of user data when the id is not a number', () => {
         cy.api({
             method: 'GET',
-            url: "http://localhost:4000/api/user/" + 'hello',
+            url: "http://localhost:4000/api/user/" + newUser.username,
             body: newUser,
             auth: authCred,
             failOnStatusCode: false
         }).should((response) => {
             expect(response.status).to.eq(400)
+            expect(response.body.error).to.eq("Invalid user ID")
         })
     })
 
-    it.only('Verify unsuccessful fetching of user data when user does not exist', () => {
+    it('Verify unsuccessful fetching of user data when user does not exist', () => {
         cy.api({
             method: 'GET',
-            url: "http://localhost:4000/api/user/" + '3000',
+            url: "http://localhost:4000/api/user/" + '300000',
             body: newUser,
             auth: authCred,
             failOnStatusCode: false
         }).should((response) => {
             expect(response.status).to.eq(404)
+            expect(response.body.error).to.eq("User not found")
+
         })
     })
     it.skip('Verify unsuccessful fetching of user data when the server is down', () => {
@@ -217,13 +251,13 @@ describe('API - REGISTRATION testing', () => {
         }).should((response) => {
             expect(response.status).to.eq(500)
         })
-    })
+    }) // not tested
 
     // PUT request
 
     const updateUser = createUser()
 
-    it.skip('Verify successful PUT Request for Updating User by ID', () => {
+    it('Verify successful PUT Request for Updating User by ID', () => {
         cy.api({
             method: 'PUT',
             url: "http://localhost:4000/api/user/" + userId,
@@ -231,28 +265,57 @@ describe('API - REGISTRATION testing', () => {
             auth: authCred
         }).should((response) => {
             expect(response.status).to.eq(200)
+            expect(response.body).to.have.property('id', userId)
+            expect(response.body).to.have.property('username', newUser.username)
+            expect(response.body).to.have.property('email', newUser.email)
+            expect(response.body.password).to.not.equal(newUser.password);
+            expect(response.body).to.have.property('firstName', updateUser.firstName)
+            expect(response.body).to.have.property('lastName', updateUser.lastName)
+            expect(response.body).to.have.property('accountType', 'USER')
         })
     })
 
-    it.skip('Verify unsuccessful overwriting of user data when the user id is invalid', () => {
+    it('Verify unsuccessful overwriting of user data when there are missing required fields in the request body', () => {
+        const reg_missingField = createUser()
         cy.api({
             method: 'PUT',
-            url: "http://localhost:4000/api/user/" + 'userId',
-            body: { ...newUser, firstName: updateUser.firstName, lastName: updateUser.lastName },
-            auth: authCred
+            url: "http://localhost:4000/api/user/" + userId,
+            body: {
+                username: reg_missingField.username,
+                password: reg_missingField.password,
+                email: reg_missingField.email
+            },
+            failOnStatusCode: false,
+            auth: authCred,
         }).should((response) => {
             expect(response.status).to.eq(400)
+            expect(response.body.error).to.eq("Missing required fields")
+        })
+    }) // 200 failed
+
+    it('Verify unsuccessful overwriting of user data when the user id is invalid', () => {
+        cy.api({
+            method: 'PUT',
+            url: "http://localhost:4000/api/user/" + newUser.firstName,
+            body: { ...newUser, firstName: updateUser.firstName, lastName: updateUser.lastName },
+            auth: authCred,
+            failOnStatusCode: false
+        }).should((response) => {
+            expect(response.status).to.eq(400)
+            expect(response.body.error).to.eq("Invalid user ID")
         })
     })
 
-    it.skip('Verify unsuccessful overwriting of user data when the user does not exist', () => {
+    it('Verify unsuccessful overwriting of user data when the user does not exist', () => {
         cy.api({
             method: 'PUT',
-            url: "http://localhost:4000/api/user/" + '3000',
+            url: "http://localhost:4000/api/user/" + '30000',
             body: { ...newUser, firstName: updateUser.firstName, lastName: updateUser.lastName },
-            auth: authCred
+            auth: authCred,
+            failOnStatusCode: false
         }).should((response) => {
             expect(response.status).to.eq(404)
+            expect(response.body.error).to.eq("User not found")
         })
     })
 
@@ -261,99 +324,112 @@ describe('API - REGISTRATION testing', () => {
             method: 'PUT',
             url: "http://localhost:4000/api/user/" + 'userId',
             body: { ...newUser, firstName: updateUser.firstName, lastName: updateUser.lastName },
-            auth: authCred
+            auth: authCred,
+            failOnStatusCode: false
         }).should((response) => {
             expect(response.status).to.eq(500)
         })
-    })
+    }) // not tested
 
     // PATCH requests
 
-    it.skip('Verify successful PATCH request to modify user data', () => {
+    it.only('Verify successful PATCH request to modify user data', () => {
         cy.api({
-            method: 'PUT',
+            method: 'PATCH',
             url: "http://localhost:4000/api/user/" + userId,
             body: { firstName: 'George' },
             auth: authCred
         }).should((response) => {
             expect(response.status).to.eq(200)
+            expect(response.body).to.have.property('id', userId)
+            expect(response.body).to.have.property('firstName', 'George')
         })
     })
 
-    it.skip('Verify unsuccessful modification of user data when the inputted user id is non numeric', () => {
+    it('Verify unsuccessful modification of user data when the inputted user id is non numeric', () => {
         cy.api({
-            method: 'PUT',
+            method: 'PATCH',
             url: "http://localhost:4000/api/user/" + 'userId',
             body: { lastName: 'Adams' },
-            auth: authCred
+            auth: authCred,
+            failOnStatusCode: false
         }).should((response) => {
             expect(response.status).to.eq(400)
+            expect(response.body.error).to.eq("Invalid user ID")
         })
     })
 
-    it.skip('Verify unsuccessful modification of user data when the user does not exist', () => {
+    it('Verify unsuccessful modification of user data when the user does not exist', () => {
         cy.api({
-            method: 'PUT',
+            method: 'PATCH',
             url: "http://localhost:4000/api/user/" + '3000',
             body: { lastName: 'Adams' },
-            auth: authCred
+            auth: authCred,
+            failOnStatusCode: false
         }).should((response) => {
             expect(response.status).to.eq(404)
+            expect(response.body.error).to.eq("User not found")
         })
     })
 
     it.skip("Verify unsuccessful modification of user data when there's an internal server error", () => {
         cy.api({
-            method: 'PUT',
+            method: 'PATCH',
             url: "http://localhost:5000/api/user/" + userId,
             body: { lastName: 'Adams' },
-            auth: authCred
+            auth: authCred,
+            failOnStatusCode: false  
         }).should((response) => {
             expect(response.status).to.eq(500)
         })
     })
 
     // DELETE request
-
-    it.skip('Verify successful DELETE request to remove user data in the database', () => {
+    it.only('Verify successful DELETE request to remove user data in the database', () => {
         cy.api({
             method: 'DELETE',
-            url: "http://localhost:4000/api/user/" + userId - 1,
-            auth: authCred
+            url: "http://localhost:4000/api/user/" + userId,
+            auth: authCred,
+            failOnStatusCode: false
         }).should((response) => {
             expect(response.status).to.eq(200)
         })
-    })
+    }) // doesnt work "User Not found"
 
-    it.skip('Verify unsuccessful deletion of user when the user Id is non-numeric', () => {
+    it.only('Verify unsuccessful deletion of user when the user Id is non-numeric', () => {
         cy.api({
             method: 'DELETE',
             url: "http://localhost:4000/api/user/" + 'userId',
-            auth: authCred
+            auth: authCred,
+            failOnStatusCode: false
         }).should((response) => {
-            expect(response.status).to.eq(200)
+            expect(response.status).to.eq(400)
+            expect(response.body.error).to.eq("Invalid user ID")
         })
     })
 
-    it.skip('Verify unsuccessful deletion of user when the user does not exist', () => {
+    it.only('Verify unsuccessful deletion of user when the user does not exist', () => {
         cy.api({
             method: 'DELETE',
-            url: "http://localhost:4000/api/user/" + '3000',
-            auth: authCred
+            url: "http://localhost:4000/api/user/" + '30000',
+            auth: authCred,
+            failOnStatusCode: false
         }).should((response) => {
-            expect(response.status).to.eq(200)
+            expect(response.status).to.eq(404)
+            expect(response.body.error).to.eq("User not found")
         })
     })
 
     it.skip("Verify unsuccessful deletion of user data when there's an internal server error", () => {
         cy.api({
             method: 'DELETE',
-            url: "http://localhost:4000/api/user/" + '3000',
-            auth: authCred
+            url: "http://localhost5000/api/user/" + '3000',
+            auth: authCred,
+            failOnStatusCode: false
         }).should((response) => {
             expect(response.status).to.eq(200)
         })
-    })
+    }) // not tested
 
 
 
