@@ -1,6 +1,7 @@
 import { reviewData } from "../../support/fakerdata"
 
-describe('negative', () => {
+
+describe('AffordaEats API: Register Review tests (Negative) ', () => {
   it('Verify unsuccessful review POST request - missing required fields', () => {
     const data = reviewData();
     cy.api({
@@ -310,7 +311,7 @@ it('Verify unsuccessful review PUT request - Both content and rating are require
 
 })
 
-describe('500', () => {
+describe('AffordaEats API: Register Food tests (Negative [500])', () => {
     it('Verify unsuccessful review POST request', () => {
         cy.api({
             method: 'POST',
@@ -393,7 +394,7 @@ describe('500', () => {
     })
 })
 
-describe('positive', () => {
+describe('AffordaEats API: Register Food tests', () => {
   it('Verify successful review POST request', () => {
     const data = reviewData();
     cy.api({

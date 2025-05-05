@@ -1,6 +1,6 @@
 import { authData } from "../../support/fakerdata"
 
-describe('Positive', () => {
+describe('AffordaEats API: Register user tests', () => {
   const data = authData()
   it('Verify successful account registration', () => {
     cy.api({
@@ -33,7 +33,7 @@ describe('Positive', () => {
   })
 })
 
-describe('negative', () => {
+describe('AffordaEats API: Register user tests (Negative)', () => {
   const data = authData()
   it('Verify unsuccessful account registration - All fields are required', () => {
     cy.api({
