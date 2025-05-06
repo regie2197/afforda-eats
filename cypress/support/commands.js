@@ -2,6 +2,7 @@
 import { createVendor } from '../support/user-faker.utils.js';
 import { createStore } from '../support/user-faker.utils.js';
 import { createFoodData } from '../support/user-faker.utils.js';
+import RegisterPage from './registerPage.js';
 
 
 /* ----------------------------- GLOBAL COMMANDS ------------------------------ */
@@ -336,8 +337,34 @@ Cypress.Commands.add('createFood', () => {
 
 /* ----------------------------- REGIST UI COMMANDS ----------------------------- */
 
-Cypress.Commands.add('NavLogIn', () => {
+Cypress.Commands.add('UserReg', () => {
     cy.get('[data-testid=go-to-register]').click();
+    cy.wait(1000);
+    cy.contains('button','User').click();
+});
+
+Cypress.Commands.add('VendorReg', () => {
+  cy.get('[data-testid=go-to-register]').click();
+  cy.wait(1000);
+  cy.contains('button','Vendor').click();
+});
+
+Cypress.Commands.add('RegFormVisibility', () => {
+  RegisterPage.visibleAndLabel(RegisterPage.firstNameField, 'First Name');
+  RegisterPage.visibleAndLabel(RegisterPage.lastNameField, 'Last Name');
+  RegisterPage.visibleAndLabel(RegisterPage.emailField, 'Email');
+  RegisterPage.visibleAndLabel(RegisterPage.usernameField, 'Username');
+  RegisterPage.visibleAndLabel(RegisterPage.passwordField, 'Password');
+});
+
+Cypress.Commands.add('RegFormFill' , () => {
+  RegisterPage.fillRegistrationForm();
+});
+
+Cypress.Commands.add('alertAssertion' , () => {
+  cy.once('window:alert', (text) => {
+    expect(text).to.equal('Registration failed: Please try again');
+  });
 });
 
 
