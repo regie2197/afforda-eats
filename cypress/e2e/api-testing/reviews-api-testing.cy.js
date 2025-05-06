@@ -11,7 +11,7 @@ describe('API Testing - Review Endpoint', () => {
     
     // TC_API_Reviews_01
     it('Should verify successful POST request for writing a review.', () => {
-      cy.request({
+      cy.api({
         method: 'POST',
         url: 'http://localhost:4000/api/review',
         auth: {
@@ -41,7 +41,7 @@ describe('API Testing - Review Endpoint', () => {
 
     // TC_API_Reviews_02
     it('Should verify unsuccessful POST request for creating a review when field values are missing.', () => {
-        cy.request({
+        cy.api({
           method: 'POST',
           url: 'http://localhost:4000/api/review',
           auth: {
@@ -62,7 +62,7 @@ describe('API Testing - Review Endpoint', () => {
       
       // TC_API_Reviews_03
       it('Should verify unsuccessful POST request for creating a review when content word count exceeds 500.', () => {
-        cy.request({
+        cy.api({
           method: 'POST',
           url: 'http://localhost:4000/api/review',
           auth: {
@@ -85,7 +85,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_04
       it('Should verify unsuccessful POST request for creating a review when rating value is invalid.', () => {
-        cy.request({
+        cy.api({
           method: 'POST',
           url: 'http://localhost:4000/api/review',
           auth: {
@@ -108,7 +108,7 @@ describe('API Testing - Review Endpoint', () => {
 
        // TC_API_Reviews_05
        it('Should verify unsuccessful POST request for creating a review when no authorization credentials are present.', () => {
-        cy.request({
+        cy.api({
           method: 'POST',
           url: 'http://localhost:4000/api/review',
           body: {
@@ -127,7 +127,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_06
       it('Should verify unsuccessful POST request for creating a review when authorization credentials are invalid.', () => {
-        cy.request({
+        cy.api({
           method: 'POST',
           url: 'http://localhost:4000/api/review',
           auth: {
@@ -150,7 +150,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_07
       it('Should verify unsuccessful POST request for creating a review when userId value is non-existent.', () => {
-        cy.request({
+        cy.api({
           method: 'POST',
           url: 'http://localhost:4000/api/review',
           auth: {
@@ -173,7 +173,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_08
       it('Should verify unsuccessful POST request for creating a review when foodId value is non-existent.', () => {
-        cy.request({
+        cy.api({
           method: 'POST',
           url: 'http://localhost:4000/api/review',
           auth: {
@@ -196,7 +196,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_09
       it('Should verify unsuccessful POST request due to server-side issue/s.', () => {
-        cy.request({
+        cy.api({
           method: 'POST',
           url: 'https://4efb9bfc-7910-483e-b63f-eeca2ad605e7.mock.pstmn.io/api/review/',
           auth: {
@@ -219,7 +219,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_10
       it('Should verify successful GET request for all reviews.', () => {
-        cy.request({
+        cy.api({
           method: 'GET',
           url: 'http://localhost:4000/api/review',
           auth: {
@@ -233,7 +233,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_11
       it('Should verify successful GET request by reviewId.', () => {
-        cy.request({
+        cy.api({
           method: 'GET',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
@@ -247,7 +247,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_12
       it('Should verify unsuccessful GET request when no authorization credentials are present.', () => {
-        cy.request({
+        cy.api({
           method: 'GET',
           url: 'http://localhost:4000/api/review/',
           failOnStatusCode: false
@@ -259,7 +259,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_13
       it('Should verify unsuccessful GET request when authorization credentials are invalid.', () => {
-        cy.request({
+        cy.api({
           method: 'GET',
           url: 'http://localhost:4000/api/review/',
           body: {
@@ -275,7 +275,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_14
       it('Should verify unsuccessful GET request by reviewId when no authorization credentials are present.', () => {
-        cy.request({
+        cy.api({
           method: 'GET',
           url: 'http://localhost:4000/api/review/' + reviewID,
           failOnStatusCode: false
@@ -287,7 +287,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_15
       it('Should verify unsuccessful GET request by reviewId when authorization credentials are invalid.', () => {
-        cy.request({
+        cy.api({
           method: 'GET',
           url: 'http://localhost:4000/api/review/' + reviewID,
           body: {
@@ -303,7 +303,7 @@ describe('API Testing - Review Endpoint', () => {
       
       // TC_API_Reviews_16
       it('Should verify unsuccessful GET request when reviewId is non-existent.', () => {
-        cy.request({
+        cy.api({
           method: 'GET',
           url: 'http://localhost:4000/api/review/' + reviewsData.invalidReviewID,
           auth: {
@@ -319,7 +319,7 @@ describe('API Testing - Review Endpoint', () => {
       
       // TC_API_Reviews_17
       it('Should verify unsuccessful GET request due to server-side issue/s.', () => {
-        cy.request({
+        cy.api({
           method: 'GET',
           url: 'https://4efb9bfc-7910-483e-b63f-eeca2ad605e7.mock.pstmn.io/api/review/',
           auth: {
@@ -335,7 +335,7 @@ describe('API Testing - Review Endpoint', () => {
       
       // TC_API_Reviews_18
       it('Should verify successful PUT (Update) request.', () => {
-        cy.request({
+        cy.api({
           method: 'PUT',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
@@ -355,7 +355,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_19
       it('Should verify unsuccessful PUT request when both content and rating value is missing on the request body.', () => {
-        cy.request({
+        cy.api({
           method: 'PUT',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
@@ -374,7 +374,7 @@ describe('API Testing - Review Endpoint', () => {
       
       // TC_API_Reviews_20
       it('Should verify unsuccessful PUT request for updating a review when content word count exceeds 500.', () => {
-        cy.request({
+        cy.api({
           method: 'PUT',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
@@ -394,7 +394,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_21
       it('Should verify unsuccessful PUT request for updating a review when rating value is invalid.', () => {
-        cy.request({
+        cy.api({
           method: 'PUT',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
@@ -414,7 +414,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_22
       it('Should verify unsuccessful PUT request for updating a review when reviewId is NaN.', () => {
-        cy.request({
+        cy.api({
           method: 'PUT',
           url: 'http://localhost:4000/api/review/' + reviewsData.NaNReviewID,
           auth: {
@@ -434,7 +434,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_23
       it('Should verify unsuccessful PUT request when no authorization credentials are present.', () => {
-        cy.request({
+        cy.api({
           method: 'PUT',
           url: 'http://localhost:4000/api/review/' + reviewID,
           body: {
@@ -450,7 +450,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_24
       it('Should verify unsuccessful PUT request when authorization credentials are invalid.', () => {
-        cy.request({
+        cy.api({
           method: 'PUT',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
@@ -470,7 +470,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_25
       it('Should verify unsuccessful PUT request when reviewId is non-existent.', () => {
-        cy.request({
+        cy.api({
           method: 'PUT',
           url: 'http://localhost:4000/api/review/' + reviewsData.invalidReviewID,
           auth: {
@@ -490,7 +490,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_26
       it('Should verify unsuccessful PUT request due to server-side issue/s.', () => {
-        cy.request({
+        cy.api({
           method: 'PUT',
           url: 'https://4efb9bfc-7910-483e-b63f-eeca2ad605e7.mock.pstmn.io/api/review/' + reviewID,
           auth: {
@@ -510,7 +510,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_27
       it('Should verify successful PATCH request.', () => {
-        cy.request({
+        cy.api({
           method: 'PATCH',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
@@ -530,7 +530,7 @@ describe('API Testing - Review Endpoint', () => {
       
       // TC_API_Reviews_28
       it('Should verify successful PATCH request even with only the content field value on the request body.', () => {
-        cy.request({
+        cy.api({
           method: 'PATCH',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
@@ -548,7 +548,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_29
       it('Should verify successful PATCH request even with only the rating field value on the request body.', () => {
-        cy.request({
+        cy.api({
           method: 'PATCH',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
@@ -566,7 +566,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_30
       it('Should verify unsuccessful PATCH request when both content and rating value is missing on the request body.', () => {
-        cy.request({
+        cy.api({
           method: 'PATCH',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
@@ -585,7 +585,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_31
       it('Should verify unsuccessful PATCH request for updating a review when content word count exceeds 500.', () => {
-        cy.request({
+        cy.api({
           method: 'PATCH',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
@@ -605,7 +605,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_32
       it('Should verify unsuccessful PATCH request for updating a review when rating value is invalid.', () => {
-        cy.request({
+        cy.api({
           method: 'PATCH',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
@@ -625,7 +625,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_33
       it('Should verify unsuccessful PATCH request when no authorization credentials are present.', () => {
-        cy.request({
+        cy.api({
           method: 'PATCH',
           url: 'http://localhost:4000/api/review/' + reviewID,
           body: {
@@ -641,7 +641,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_34
       it('Should verify unsuccessful PATCH request when authorization credentials are invalid.', () => {
-        cy.request({
+        cy.api({
           method: 'PATCH',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
@@ -661,7 +661,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_35
       it('Should verify unsuccessful PATCH request when reviewId is non-existent.', () => {
-        cy.request({
+        cy.api({
           method: 'PATCH',
           url: 'http://localhost:4000/api/review/' + reviewsData.invalidReviewID,
           auth: {
@@ -681,7 +681,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_36
       it('Should verify unsuccessful PATCH request due to server-side issue/s.', () => {
-        cy.request({
+        cy.api({
           method: 'PATCH',
           url: 'https://4efb9bfc-7910-483e-b63f-eeca2ad605e7.mock.pstmn.io/api/review/' + reviewID,
           auth: {
@@ -701,7 +701,7 @@ describe('API Testing - Review Endpoint', () => {
       
       // TC_API_Reviews_37
       it('Should verify unsuccessful DELETE request when no authorization credentials are present."', () => {
-        cy.request({
+        cy.api({
           method: 'DELETE',
           url: 'http://localhost:4000/api/review/' + reviewID,
           failOnStatusCode: false
@@ -713,7 +713,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_38
       it('Should verify unsuccessful DELETE request when authorization credentials are invalid.', () => {
-        cy.request({
+        cy.api({
           method: 'DELETE',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
@@ -729,7 +729,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_39
       it('Should verify successful DELETE request by reviewId."', () => {
-        cy.request({
+        cy.api({
           method: 'DELETE',
           url: 'http://localhost:4000/api/review/' + reviewID,
           auth: {
@@ -744,7 +744,7 @@ describe('API Testing - Review Endpoint', () => {
       
       // TC_API_Reviews_40
       it('Should verify unsuccessful DELETE request when reviewId is non-existent.', () => {
-        cy.request({
+        cy.api({
           method: 'DELETE',
           url: 'http://localhost:4000/api/review/' + reviewsData.invalidReviewID,
           auth: {
@@ -760,7 +760,7 @@ describe('API Testing - Review Endpoint', () => {
 
       // TC_API_Reviews_41
       it('Should verify unsuccessful DELETE request due to server-side issue/s."', () => {
-        cy.request({
+        cy.api({
           method: 'DELETE',
           url: 'https://4efb9bfc-7910-483e-b63f-eeca2ad605e7.mock.pstmn.io/api/review/' + reviewID,
           auth: {

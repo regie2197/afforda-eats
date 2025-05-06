@@ -269,7 +269,7 @@ describe ('UI Testing - Store Page', () => {
           cy.get('[rows="8"]')
             .should('be.visible')
             .type('Average food not worth for the price')
-            .should('have.value', 'Average food, not worth for the price tbh.');
+            .should('have.value', 'Average food not worth for the price');
          
           // Click the 'Submit' button
           cy.get('.MuiDialogActions-root > :nth-child(1)').should('be.visible')
