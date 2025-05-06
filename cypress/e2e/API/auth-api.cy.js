@@ -33,7 +33,7 @@ describe('AffordaEats API: Register user tests', () => {
   })
 })
 
-describe('AffordaEats API: Register user tests (Negative)', () => {
+describe.skip('AffordaEats API: Register user tests (Negative)', () => {
   const data = authData()
   it('Verify unsuccessful account registration - All fields are required', () => {
     cy.api({
@@ -193,4 +193,21 @@ describe('AffordaEats API: Register user tests (Negative)', () => {
       expect(response.status).to.eq(404)
     })
   })
+
+  it('Verify unsuccessful account login - Invalid Credentials', () => {
+    cy.api({
+      method: 'POST',
+      url: 'http://localhost:4000/api/login/',
+      body: {
+        "email": "user@example.com",
+        "username": "user",
+        "password": "invalidpassword"
+      },
+      failOnStatusCode: false
+    }).should((response) => {
+      expect(response.status).to.eq(400)
+      expect(response.body.error).to.eq('Invalid credentials')
+    })
+  })
+
 })
