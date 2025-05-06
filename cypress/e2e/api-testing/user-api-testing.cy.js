@@ -9,7 +9,7 @@ describe('USER API Testing', () => {
         "password": 'lemon123'
     }
 
-    it('Verify successful POST request for creating a new user', () => {
+    it.only('Verify successful POST request for creating a new user', () => {
         cy.api({
             method: 'POST',
             url: "http://localhost:4000/api/user",
@@ -321,6 +321,109 @@ describe('USER API Testing', () => {
             expect(response.body.error).to.eq("User not found")
         })
     })
+        
+    it.only('Verify unsuccessful overwriting of user data when the required field values contains leading and trailing spaces', () => {
+        const reg_spaceAround = createUser()
+        cy.api({
+            method: 'PUT',
+            url: "http://localhost:4000/api/user/" + userId,
+            body: { ...reg_spaceAround, firstName: "Sofia  ", lastName: "  Lawson" },
+            auth: authCred,
+            failOnStatusCode: false
+        }).should((response) => {
+            expect(response.status).to.eq(400)
+            expect(response.body.error).to.eq("Fields must not have leading or trailing spaces.")
+        })
+    }) // 200 failed
+
+    it.only('Verify unsuccessful overwriting of user data when email field value contains whitespace', () => {
+        const reg_emailWhitespace = createUser() 
+        cy.api({
+            method: 'PUT',
+            url: "http://localhost:4000/api/user/" + userId,
+            body: {
+                ...reg_emailWhitespace, 
+                email: `${reg_emailWhitespace.firstName} @email.com`
+            },
+            auth: authCred,
+            failOnStatusCode: false
+        }).should((response) => {
+            expect(response.status).to.eq(400);
+            expect(response.body.error).to.eq("Email must not contain spaces.");
+        });
+    }) // 200 failed
+
+    it.only('Verify unsuccessful overwriting of user data when username field value contains whitespace', () => {
+        const reg_usernameWhitespace = createUser()
+        cy.api({
+            method: 'PUT',
+            url: "http://localhost:4000/api/user/" + userId,
+            body: { ...reg_usernameWhitespace, 
+                username: `${reg_usernameWhitespace.firstName} ${reg_usernameWhitespace.lastName}` 
+            },
+            auth: authCred,
+            failOnStatusCode: false
+        }).should((response) => {
+            expect(response.status).to.eq(400)
+            expect(response.body.error).to.eq("Username must not contain spaces.")
+        })
+    }) // 200 failed
+
+    it.only('Verify unsuccessful overwriting of user data when email is on an invalid format', () => {
+        const reg_invalidEmail = createUser()
+        cy.api({
+            method: 'PUT',
+            url: "http://localhost:4000/api/user/" + userId,
+            body: { ...reg_invalidEmail, email: reg_invalidEmail.firstName + "emailcom" },
+            auth: authCred,
+            failOnStatusCode: false
+        }).should((response) => {
+            expect(response.status).to.eq(400)
+            expect(response.body.error).to.eq("Invalid email format.")
+        })
+    }) // 200 failed
+
+    it.only('Verify unsuccessful overwriting of user data when the password field value has less than 6 character', () => {
+        const reg_invalidPass = createUser()
+        cy.api({
+            method: 'PUT',
+            url: "http://localhost:4000/api/user/" + userId,
+            body: { ...reg_invalidPass, password: "l0co?" },
+            auth: authCred,
+            failOnStatusCode: false
+        }).should((response) => {
+            expect(response.status).to.eq(400)
+            expect(response.body.error).to.eq('Password must be at least 6 characters long.')
+        })
+    }) // 200 failed
+
+    it.only('Verify unsuccessful overwriting of user data when the entered email already exists in the database', () => {
+        const reg_sameEmail = createUser()
+        cy.api({
+            method: 'PUT',
+            url: "http://localhost:4000/api/user/" + userId,
+            body: { ...reg_sameEmail, email: newUser.email },
+            auth: authCred,
+            failOnStatusCode: false
+        }).should((response) => {
+            expect(response.status).to.eq(400)
+            expect(response.body.error).to.eq('User with this email already exists')
+        })
+    }) // 200 failed
+
+    it.only('Verify unsuccessful overwriting of user data when the entered username already exists in the database', () => {
+        const reg_sameUsername = createUser()
+        cy.api({
+            method: 'PUT',
+            url: "http://localhost:4000/api/user/" + userId,
+            body: { ...reg_sameUsername, username: newUser.username },
+            auth: authCred,
+            failOnStatusCode: false
+        }).should((response) => {
+            expect(response.status).to.eq(400)
+            expect(response.body.error).to.eq('Username is already taken.')
+        })
+    }) // 200 failed
 
     it('Verify unsuccessful overwriting of user data when an internal server error occurs', () => {
         cy.api({
@@ -376,6 +479,100 @@ describe('USER API Testing', () => {
             expect(response.body.error).to.eq("User not found")
         })
     })
+
+    it.only('Verify unsuccessful modification of user data when the required field values contains leading and trailing spaces', () => {
+        cy.api({
+            method: 'PATCH',
+            url: "http://localhost:4000/api/user/" + userId,
+            body: { firstName: "Sofia  ", lastName: "  Lawson" },
+            auth: authCred,
+            failOnStatusCode: false
+        }).should((response) => {
+            expect(response.status).to.eq(400)
+            expect(response.body.error).to.eq("Fields must not have leading or trailing spaces.")
+        })
+    }) // 200 failed
+
+    it.only('Verify unsuccessful modification of user data when email field value contains whitespace', () => {
+        const reg_emailWhitespace = createUser() 
+        cy.api({
+            method: 'PATCH',
+            url: "http://localhost:4000/api/user/" + userId,
+            body: { email: `${reg_emailWhitespace.firstName} @email.com` },
+            auth: authCred,
+            failOnStatusCode: false
+        }).should((response) => {
+            expect(response.status).to.eq(400);
+            expect(response.body.error).to.eq("Email must not contain spaces.");
+        });
+    }) // 200 failed
+
+    it.only('Verify unsuccessful modification of user data when username field value contains whitespace', () => {
+        const reg_usernameWhitespace = createUser()
+        cy.api({
+            method: 'PATCH',
+            url: "http://localhost:4000/api/user/" + userId,
+            body: { username: `${reg_usernameWhitespace.firstName} ${reg_usernameWhitespace.lastName}`},
+            auth: authCred,
+            failOnStatusCode: false
+        }).should((response) => {
+            expect(response.status).to.eq(400)
+            expect(response.body.error).to.eq("Username must not contain spaces.")
+        })
+    }) // 200 failed
+
+    it.only('Verify unsuccessful modification of user data when email is on an invalid format', () => {
+        const reg_invalidEmail = createUser()
+        cy.api({
+            method: 'PATCH',
+            url: "http://localhost:4000/api/user/" + userId,
+            body: { email: reg_invalidEmail.firstName + "emailcom" },
+            auth: authCred,
+            failOnStatusCode: false
+        }).should((response) => {
+            expect(response.status).to.eq(400)
+            expect(response.body.error).to.eq("Invalid email format.")
+        })
+    }) // 200 failed
+
+    it.only('Verify unsuccessful modification of user data when the password field value has less than 6 character', () => {
+        cy.api({
+            method: 'PATCH',
+            url: "http://localhost:4000/api/user/" + userId,
+            body: { password: "l0co?" },
+            auth: authCred,
+            failOnStatusCode: false
+        }).should((response) => {
+            expect(response.status).to.eq(400)
+            expect(response.body.error).to.eq('Password must be at least 6 characters long.')
+        })
+    }) // 200 failed
+
+    it.only('Verify unsuccessful modification of user data when the entered email already exists in the database', () => {
+        cy.api({
+            method: 'PATCH',
+            url: "http://localhost:4000/api/user/" + userId,
+            body: { email: newUser.email },
+            auth: authCred,
+            failOnStatusCode: false
+        }).should((response) => {
+            expect(response.status).to.eq(400)
+            expect(response.body.error).to.eq('User with this email already exists')
+        })
+    }) // 200 failed
+
+    it.only('Verify unsuccessful modification of user data when the entered username already exists in the database', () => {
+        cy.api({
+            method: 'PATCH',
+            url: "http://localhost:4000/api/user/" + userId,
+            body: { username: newUser.username },
+            auth: authCred,
+            failOnStatusCode: false
+        }).should((response) => {
+            expect(response.status).to.eq(400)
+            expect(response.body.error).to.eq('Username is already taken.')
+        })
+    }) // 200 failed
 
     it("Verify unsuccessful modification of user data when there's an internal server error", () => {
         cy.api({
@@ -436,6 +633,20 @@ describe('USER API Testing', () => {
             expect(response.status).to.eq(500)
             expect(response.body.error).to.be.eql("Internal server error")
         })
+    })
+
+    it.skip("404 - No user", () => {
+        for( let i = 0; i<= userId; i++){
+            cy.api({
+                method: 'DELETE',
+                url: "http://localhost:4000/api/user/" + i,
+                auth: {
+                    "username": newUser.username,
+                    "password": newUser.password
+                },
+                failOnStatusCode: false
+            })
+        }
     })
 
 })
