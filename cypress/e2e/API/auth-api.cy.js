@@ -193,5 +193,4 @@ describe('AffordaEats API: Register user tests (Negative)', () => {
       expect(response.status).to.eq(404)
     })
   })
-
 })
