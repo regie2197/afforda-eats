@@ -1,4 +1,4 @@
-describe ('UI Testing - Store Page 01', () => {
+describe ('UI Testing - Store Page', () => {
     // TC_StorePage_01
     it('Should verify that Store Page is visible.', () =>{
         // Navigate to Store Page
