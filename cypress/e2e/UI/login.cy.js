@@ -29,10 +29,16 @@ describe('Feature 1 - Login Test Suite', () => {
     })
 
     // Successful Login
-    it('Verify Successful Login when using Valid Username and Password', () => {
+    it('Verify Successful User Login when using Valid Username and Password', () => {
         cy.Login(vUser, vPassword)
         //cy.visit('https://afforda-eats.vercel.app/home')// only checking
         cy.url().should('include', '/home')
+    })
+
+    it('Verify Successful Vendor Login when using Valid Username and Password', () => {
+        cy.Login('vendorUser', vPassword)
+        //cy.visit('https://afforda-eats.vercel.app/home')// only checking
+        cy.url().should('include', '/home/vendor')
     })
 
     // Tests for invalid inputs
@@ -82,5 +88,36 @@ describe('Feature 1 - Login Test Suite', () => {
         cy.visit('http://localhost:3000/home')
         cy.url().should('include', '/login')
     })
+})
+
+describe.only('Logout Test', () => {
+    beforeEach(() =>{
+        cy.visit('http://localhost:3000/login')
+        //cy.visit('https://afforda-eats.vercel.app/login')
+        cy.url().should('include', '/login')
+    })
+
+    it('Verify user can logout after login', () => {
+        const vUser = 'tester'
+        const vPassword = 'password123'
     
+        cy.Login(vUser, vPassword)
+        cy.get('.burger').should('be.visible').click()
+        cy.get(':nth-child(2) > button').should('be.visible').click()
+
+        cy.url().should('include', '/login')
+    })
+
+    it('Verify user can logout after login', () => {
+        const vUser = 'tester'
+        const vPassword = 'password123'
+    
+        cy.Login(vUser, vPassword)
+        cy.get('.burger').should('be.visible').click()
+        cy.get(':nth-child(2) > button').should('be.visible').click()
+        cy.url().should('include', '/login')
+
+        cy.visit('http://localhost:3000/home')
+        cy.url().should('include', '/login')
+    })
 })
