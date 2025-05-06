@@ -1,6 +1,12 @@
 {
+<<<<<<< HEAD
   "name": "Refined Cotton Keyboard",
   "price": 197,
   "description": "Experience the orange brilliance of our Car, perfect for content environments",
+=======
+  "name": "Refined Marble Table",
+  "price": 70,
+  "description": "Buckridge and Sons's most advanced Shirt technology increases miserable capabilities",
+>>>>>>> 79484ad6f118788e576fa795683ceea52e2fa6cc
   "storeId": 1
 }
