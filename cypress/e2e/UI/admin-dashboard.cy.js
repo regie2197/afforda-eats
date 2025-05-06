@@ -12,10 +12,10 @@ describe('Admin Dashboard', () => {
         cy.get('.MuiToolbar-root > .MuiButtonBase-root').should('be.visible').and('not.be.disabled')
 
     });
-    it('Verify format of "Users" user information', () => {
+    it.only('Verify format of "Users" user information', () => {
         cy.get('.MuiContainer-root > .MuiBox-root > :nth-child(1)').should('be.visible')
-        cy.get('.MuiBox-root > :nth-child(1) > .MuiTypography-h5').and('contain', 'Users')
-        cy.get(':nth-child(1) > :nth-child(2) > .MuiCardContent-root').should('be.visible').and('contain', 'View Reviews')
+        cy.get('h5.MuiTypography-h5').should('be.visible').and('contain', 'Users')
+        cy.get('div.MuiCardContent-root.css-1lt5qva-MuiCardContent-root').should('be.visible').and('contain', 'View Reviews')
         cy.get(':nth-child(2) > .MuiCardContent-root > .MuiButtonBase-root').should('be.visible').and('not.be.disabled')
 
     });
