@@ -90,7 +90,7 @@ describe('Feature 1 - Login Test Suite', () => {
     })
 })
 
-describe.only('Logout Test', () => {
+describe('Logout Test Suite', () => {
     beforeEach(() =>{
         cy.visit('http://localhost:3000/login')
         //cy.visit('https://afforda-eats.vercel.app/login')
@@ -108,7 +108,7 @@ describe.only('Logout Test', () => {
         cy.url().should('include', '/login')
     })
 
-    it('Verify user can logout after login', () => {
+    it('Verify user cannot got to home page after logout', () => {
         const vUser = 'tester'
         const vPassword = 'password123'
     
