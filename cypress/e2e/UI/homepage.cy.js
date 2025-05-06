@@ -185,16 +185,16 @@ describe('TC-HOME: Home Page Test Suite', () => {
   });
 
   const testCases = [
-    { id: "4", input: "Store 1", results: "Results found", assertion: "Store 1", group: "Valid Alphanumeric" }, // ✅ Valid alphanumeric
-    { id: "5", input: "Store_1# !", results: "No results found", assertion: "Store_1# !", group: "Alphanumeric with Symbols" }, // ✅ Alphanumeric with symbols
-    { id: "6", input: "Store_1# !😜🫨😜", results: "Invalid Input", assertion: "Invalid Input", group: "Invalid - Alphanumeric with Symbols & Emojis" }, // ❌ Alphanumeric with symbols & emojis
-    { id: "7", input: "!!!!!!!", results: "Invalid Input", assertion: "No results found", group: "Invalid - Only Symbols" }, // ❌ Invalid: only symbols
-    { id: "8", input: "", results: "Invalid Input", assertion: "No results found", group: "Invalid - Empty Search" }, // ❌ Invalid: empty search
-    { id: "9", input: "     ", results: "Invalid Input", assertion: "No results found", group: "Invalid - Whitespace Only" }, // ❌ Invalid: whitespace only
+    { id: "4", input: "Store 1", results: "Results found", group: "Valid Alphanumeric" }, // ✅ Valid alphanumeric
+    { id: "5", input: "Store_1# !", results: "No results found", group: "Alphanumeric with Symbols" }, // ✅ Alphanumeric with symbols
+    { id: "6", input: "Store_1# !😜🫨😜", results: "Invalid Input", group: "Invalid - Alphanumeric with Symbols & Emojis" }, // ❌ Alphanumeric with symbols & emojis
+    { id: "7", input: "!!!!!!!", results: "Invalid Input", group: "Invalid - Only Symbols" }, // ❌ Invalid: only symbols
+    { id: "8", input: "", results: "Invalid Input", group: "Invalid - Empty Search" }, // ❌ Invalid: empty search
+    { id: "9", input: "     ", results: "Invalid Input", group: "Invalid - Whitespace Only" }, // ❌ Invalid: whitespace only
   ];
   
   // Test Case 04-09
-  testCases.forEach(({ id, input, results, assertion, group }) => {
+  testCases.forEach(({ id, input, results, group }) => {
     it(`TC-HOME-0${id} - Home Page - Testing the Search Bar Using EQ: ${group}`, () => {
       // Select a search bar and type the corresponding input
       cy.get('input[type="text"]').type(input).should('have.value', input.substring(0, 25));
@@ -218,17 +218,19 @@ describe('TC-HOME: Home Page Test Suite', () => {
   });
 
   const boundaryTestCases = [
-    { id: "10", input: "A", results: "Results found", group: "Minimum Valid Input - 1 Characters (min)" },
-    { id: "11", input: "AB", results: "No results found", group: "One Character more than Minimum Input - 2 Characters (min+)"},
-    { id: "12", input: "Store 1234567890", results: "No results found", group: "Typical Valid Length" },
-    { id: "13", input: "Store 12345678901234567890", results: "No results found", group: "Max Valid Length - 20 Characters (max)" },
-    { id: "14", input: "Store 123456789012345678901", results: "Invalid Input", group: "Exceeds Max Length - 21 Characters (max+)" },
-    { id: "15", input: "Store 1234567890123456789", results: "Invalid Input", group: "One Character Less than the Max Length - 19 Characters (max-)" },
-    { id: "16", input: " ", results: "Invalid Input", group: "Single Whitespace Only" },
-    { id: "17", input: "Store 13", results: "No results found", group: "Searching for a Non-existent Store" }
+    { id: "10", input: "S", results: "Results found", group: "Existing Minimum Valid Input - 1 Characters (min)" },
+    { id: "11", input: "A", results: "No results found", group: "Non-Existing Minimum Valid Input - 1 Characters (min)" },
+    { id: "12", input: "St", results: "Results found", group: "Existing One Character more than Minimum Input - 2 Characters (min+)"},
+    { id: "13", input: "AB", results: "No results found", group: "Non-Existing One Character more than Minimum Input - 2 Characters (min+)"},
+    { id: "14", input: "Store 1234567890", results: "No results found", group: "Typical Valid Length" },
+    { id: "15", input: "Store 12345678901234567890", results: "No results found", group: "Max Valid Length - 20 Characters (max)" },
+    { id: "16", input: "Store 123456789012345678901", results: "Invalid Input", group: "Exceeds Max Length - 21 Characters (max+)" },
+    { id: "17", input: "Store 1234567890123456789", results: "Invalid Input", group: "One Character Less than the Max Length - 19 Characters (max-)" },
+    { id: "18", input: " ", results: "Invalid Input", group: "Single Whitespace Only" },
+    { id: "19", input: "Store 13", results: "No results found", group: "Searching for a Non-existent Store" }
   ];
   
-  // Test Case 10-17
+  // Test Case 10-19
   boundaryTestCases.forEach(({ id, input, results, group }) => {
     it(`TC-HOME-${id} - Testing Search Bar Using BVA: ${group}`, () => {
       cy.get('input[type="text"]').type(input).should('have.value', input.substring(0, 25)); // ✅ Handles trimmed value
