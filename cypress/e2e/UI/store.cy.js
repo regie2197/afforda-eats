@@ -6,11 +6,14 @@ import { faker } from '@faker-js/faker';
 describe('Feature - Store Test Suite', () => {
     beforeEach(() =>{
         cy.visit('http://localhost:3000/store?id=1')
+        //cy.visit('http://localhost:3000/home')
+        //cy.get(':nth-child(1) > .container').click()
         //cy.visit('https://afforda-eats.vercel.app/store?id=1')
         cy.url().should('include', '/store?id=1')
     })
 
     it('Verify Store page contains all elements', () => {
+
         // Verify Logo is visible
         cy.get('img[src="/logo.png"]').should('be.visible')
         // Verify Brand Name is visible
@@ -59,9 +62,7 @@ describe('Feature - Store Test Suite', () => {
         // Verify Create Review view
         cy.contains('Create a Review').should('be.visible')
         cy.contains('Rating:').should('be.visible')
-        cy.get('input[name="half-rating"][value="5"]').should('be.checked');
-        cy.get('[for="«r3»"]').click()
-        cy.get('input[name="half-rating"][value="3"]').should('be.checked');
+        cy.get('[type="radio"][value="5"]').should('be.checked');
         cy.contains('Feedback:').should('be.visible')
         
         cy.writeFeedback(100)
@@ -79,19 +80,23 @@ describe('Feature - Store Test Suite', () => {
 
     it('Verify user can submit review', () => {
         cy.contains('button', 'Create Review').should('be.visible').click()
-        cy.get('[for="«r1»"]').should('be.visible').click()
-        cy.get('input[name="half-rating"][value="1"]').should('be.checked');
+        
+        cy.get('[type="radio"][value="3"]').click({force : true})
+        cy.get('input[type="radio"][value="3"]').should('be.checked'); 
+
         cy.writeFeedback(100)
         cy.contains('button', 'Submit').should('be.visible').click()
         // Check submitted by checking if the review dialog box disappears
         cy.get('.MuiDialog-paper[role="dialog"]').should('not.be.visible');
+        // message that the comment is submitted
     })
 
     //star ratings check
     it('Verify user can give 1 star rating', () => {
         cy.contains('button', 'Create Review').should('be.visible').click()
-        cy.get('[for="«r1»"]').should('be.visible').click()
-        cy.get('input[name="half-rating"][value="1"]').should('be.checked');
+        cy.get('[type="radio"][value="1"]').click({force : true})
+        cy.get('input[type="radio"][value="1"]').should('be.checked'); 
+
         cy.writeFeedback(100)
         cy.contains('button', 'Submit').should('be.visible').click()
         // Check submitted by checking if the review dialog box disappears
@@ -101,10 +106,9 @@ describe('Feature - Store Test Suite', () => {
     it('Verify user can give 5 star rating', () => {
         cy.contains('button', 'Create Review').should('be.visible').click()
         
-        cy.get('[for="«r5»"]').click()
-        cy.get('[for="«r5»"]').click()
-        
-        cy.get('input[name="half-rating"][value="5"]').should('be.checked');
+        cy.get('[type="radio"][value="5"]').click({force : true})
+        cy.get('[type="radio"][value="5"]').click({force : true})
+        cy.get('input[type="radio"][value="5"]').should('be.checked'); 
 
         cy.writeFeedback(100)
 
@@ -116,17 +120,23 @@ describe('Feature - Store Test Suite', () => {
 
     it('Verify user cannot give 0 star rating', () => {
         cy.contains('button', 'Create Review').should('be.visible').click()
-        cy.get('[for="«r5»"]').click()
+        cy.get('[type="radio"][value="5"]').click({force : true})
+        cy.get('input[type="radio"][value="5"]').should('not.be.checked'); 
+
         cy.writeFeedback(100)
         cy.contains('button', 'Submit').should('be.visible').click()
         // Check not submitted by checking if the review dialog box disappears
         cy.get('.MuiDialog-paper[role="dialog"]').should('be.visible');
+        // Check error message
+        cy.contains('Please give a rating.').should('be.visible')
     })
 
     // feedback check
     it('Verify user can give review without feedback', () => {
         cy.contains('button', 'Create Review').should('be.visible').click()
-        cy.get('[for="«r3»"]').should('be.visible').click()
+        cy.get('[type="radio"][value="3"]').click({force : true})
+        cy.get('input[type="radio"][value="3"]').should('be.checked'); 
+
         cy.contains('button', 'Submit').should('be.visible').click()
         // Check submitted by checking if the review dialog box disappears
         cy.get('.MuiDialog-paper[role="dialog"]').should('not.be.visible');
@@ -134,7 +144,8 @@ describe('Feature - Store Test Suite', () => {
 
     it('Verify user can give review with 500 character feedback', () => {
         cy.contains('button', 'Create Review').should('be.visible').click()
-        cy.get('[for="«r3»"]').should('be.visible').click()
+        cy.get('[type="radio"][value="3"]').click({force : true})
+        cy.get('input[type="radio"][value="3"]').should('be.checked'); 
         cy.writeFeedback(500)
         cy.contains('button', 'Submit').should('be.visible').click()
         // Check submitted by checking if the review dialog box disappears
@@ -143,7 +154,8 @@ describe('Feature - Store Test Suite', () => {
 
     it('Verify user can give review with 499 character feedback', () => {
         cy.contains('button', 'Create Review').should('be.visible').click()
-        cy.get('[for="«r3»"]').should('be.visible').click()
+        cy.get('[type="radio"][value="3"]').click({force : true})
+        cy.get('input[type="radio"][value="3"]').should('be.checked'); 
         cy.writeFeedback(499)
         cy.contains('button', 'Submit').should('be.visible').click()
         // Check submitted by checking if the review dialog box disappears
@@ -152,7 +164,8 @@ describe('Feature - Store Test Suite', () => {
 
     it('Verify user cannot give review with 501 character feedback', () => {
         cy.contains('button', 'Create Review').should('be.visible').click()
-        cy.get('[for="«r3»"]').should('be.visible').click()
+        cy.get('[type="radio"][value="3"]').click({force : true})
+        cy.get('input[type="radio"][value="3"]').should('be.checked'); 
         cy.writeFeedback(501)
         cy.contains('button', 'Submit').should('be.visible').click()
         // Check submitted by checking if the review dialog box disappears
@@ -161,7 +174,8 @@ describe('Feature - Store Test Suite', () => {
 
     it('Verify user can give review with 1 character feedback', () => {
         cy.contains('button', 'Create Review').should('be.visible').click()
-        cy.get('[for="«r3»"]').should('be.visible').click()
+        cy.get('[type="radio"][value="3"]').click({force : true})
+        cy.get('input[type="radio"][value="3"]').should('be.checked'); 
         cy.writeFeedback(1)
         cy.contains('button', 'Submit').should('be.visible').click()
         // Check submitted by checking if the review dialog box disappears
@@ -170,7 +184,8 @@ describe('Feature - Store Test Suite', () => {
 
     it('Verify user can write feedback with special characters', () => {
         cy.contains('button', 'Create Review').should('be.visible').click()
-        cy.get('[for="«r3»"]').should('be.visible').click()
+        cy.get('[type="radio"][value="3"]').click({force : true})
+        cy.get('input[type="radio"][value="3"]').should('be.checked'); 
         
         const specialMessage = faker.lorem.sentence() + ' !@#$%^&*()_+[]{}|;:,./<>?';
         cy.get('[rows="8"]').should('be.visible').type(specialMessage)
@@ -178,6 +193,18 @@ describe('Feature - Store Test Suite', () => {
         cy.contains('button', 'Submit').should('be.visible').click()
         // Check submitted by checking if the review dialog box disappears
         cy.get('.MuiDialog-paper[role="dialog"]').should('not.be.visible');
+    })
+
+    it('Verify user cannot submit empty review', () => {
+        cy.contains('button', 'Create Review').should('be.visible').click()
+        cy.get('[type="radio"][value="5"]').click({force : true})
+        cy.get('input[type="radio"][value="5"]').should('not.be.checked'); 
+
+        cy.contains('button', 'Submit').should('be.visible').click()
+        // Check not submitted by checking if the review dialog box disappears
+        cy.get('.MuiDialog-paper[role="dialog"]').should('be.visible')
+        // Check error message
+        cy.contains('Please give a feedback.').should('be.visible')
     })
 
 

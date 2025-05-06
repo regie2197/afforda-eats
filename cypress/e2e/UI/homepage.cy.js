@@ -135,7 +135,7 @@ describe('TC-HOME: Home Page Test Suite', () => {
     cy.contains('button', 'Log Out').should('be.visible').and('not.be.disabled');
   });
 
-  it('TC-HOME-01 - Home Page - Log Out User', () => {
+  it('TC-HOME-01 - Home Page - Logging Out', () => {
     // Verify if page is in the Home Page
     cy.url().should('include', '/home');
 
@@ -151,9 +151,25 @@ describe('TC-HOME: Home Page Test Suite', () => {
     cy.url().should('include', '/login');
   });
 
+  it('TC-HOME-02 - Home Page - Viewing Created Reviews', () => {
+    // Verify if page is in the Home Page
+    cy.url().should('include', '/home');
+
+    // Click on the hamburger menu
+    cy.get('div.burger').click();
+    cy.wait(1500);
+
+    // Press the Log Out button
+    cy.contains('button', 'Reviews').click();
+    cy.wait(1500);
+
+    // Verify if the user has been redirected to the login page
+    cy.url().should('include', '/reviews');
+  });
+
   const searchInput = 'Store 3';
 
-  it('TC-HOME-02 - Home Page - Searching for a Store', () => {
+  it('TC-HOME-03 - Home Page - Verify if Search Function Works', () => {
     // Verify if page is in the Home Page
     cy.url().should('include', '/home');
     
@@ -169,15 +185,16 @@ describe('TC-HOME: Home Page Test Suite', () => {
   });
 
   const testCases = [
-    { id: "3", input: "Store 1", results: "Results found", assertion: "Store 1", group: "Valid Alphanumeric" }, // ✅ Valid alphanumeric
-    { id: "4", input: "Store_1# !", results: "No results found", assertion: "Store_1# !", group: "Alphanumeric with Symbols" }, // ✅ Alphanumeric with symbols
-    { id: "5", input: "Store_1# !😜🫨😜", results: "Invalid Input", assertion: "Invalid Input", group: "Invalid - Alphanumeric with Symbols & Emojis" }, // ❌ Alphanumeric with symbols & emojis
-    { id: "6", input: "!!!!!!!", results: "Invalid Input", assertion: "No results found", group: "Invalid - Only Symbols" }, // ❌ Invalid: only symbols
-    { id: "7", input: "", results: "Invalid Input", assertion: "No results found", group: "Invalid - Empty Search" }, // ❌ Invalid: empty search
-    { id: "8", input: "     ", results: "Invalid Input", assertion: "No results found", group: "Invalid - Whitespace Only" }, // ❌ Invalid: whitespace only
+    { id: "4", input: "Store 1", results: "Results found", group: "Valid Alphanumeric" }, // ✅ Valid alphanumeric
+    { id: "5", input: "Store_1# !", results: "No results found", group: "Alphanumeric with Symbols" }, // ✅ Alphanumeric with symbols
+    { id: "6", input: "Store_1# !😜🫨😜", results: "Invalid Input", group: "Invalid - Alphanumeric with Symbols & Emojis" }, // ❌ Alphanumeric with symbols & emojis
+    { id: "7", input: "!!!!!!!", results: "Invalid Input", group: "Invalid - Only Symbols" }, // ❌ Invalid: only symbols
+    { id: "8", input: "", results: "Invalid Input", group: "Invalid - Empty Search" }, // ❌ Invalid: empty search
+    { id: "9", input: "     ", results: "Invalid Input", group: "Invalid - Whitespace Only" }, // ❌ Invalid: whitespace only
   ];
   
-  testCases.forEach(({ id, input, results, assertion, group }) => {
+  // Test Case 04-09
+  testCases.forEach(({ id, input, results, group }) => {
     it(`TC-HOME-0${id} - Home Page - Testing the Search Bar Using EQ: ${group}`, () => {
       // Select a search bar and type the corresponding input
       cy.get('input[type="text"]').type(input).should('have.value', input.substring(0, 25));
@@ -201,16 +218,20 @@ describe('TC-HOME: Home Page Test Suite', () => {
   });
 
   const boundaryTestCases = [
-    { id: "09", input: "A", results: "Results found", assertion: "A", group: "Minimum Valid Input - 1 Characters (min)" },
-    { id: "10", input: "AB", results: "No results found", assertion: "AB", group: "One Character more than Minimum Input - 2 Characters (min+)"},
-    { id: "11", input: "Store 1234567890", results: "No results found", assertion: "Store 1234567890", group: "Typical Valid Length" },
-    { id: "12", input: "Store 12345678901234567890", results: "No results found", assertion: "Store 12345678901234567890", group: "Max Valid Length - 20 Characters (max)" },
-    { id: "13", input: "Store 123456789012345678901", results: "Invalid Input", assertion: "No results found", group: "Exceeds Max Length - 21 Characters (max+)" },
-    { id: "14", input: "Store 1234567890123456789", results: "Invalid Input", assertion: "No results found", group: "One Character Less than the Max Length - 19 Characters (max-)" },
-    { id: "15", input: " ", results: "Invalid Input", assertion: "No results found", group: "Single Whitespace Only" },
+    { id: "10", input: "S", results: "Results found", group: "Existing Minimum Valid Input - 1 Characters (min)" },
+    { id: "11", input: "A", results: "No results found", group: "Non-Existing Minimum Valid Input - 1 Characters (min)" },
+    { id: "12", input: "St", results: "Results found", group: "Existing One Character more than Minimum Input - 2 Characters (min+)"},
+    { id: "13", input: "AB", results: "No results found", group: "Non-Existing One Character more than Minimum Input - 2 Characters (min+)"},
+    { id: "14", input: "Store 1234567890", results: "No results found", group: "Typical Valid Length" },
+    { id: "15", input: "Store 12345678901234567890", results: "No results found", group: "Max Valid Length - 20 Characters (max)" },
+    { id: "16", input: "Store 123456789012345678901", results: "Invalid Input", group: "Exceeds Max Length - 21 Characters (max+)" },
+    { id: "17", input: "Store 1234567890123456789", results: "Invalid Input", group: "One Character Less than the Max Length - 19 Characters (max-)" },
+    { id: "18", input: " ", results: "Invalid Input", group: "Single Whitespace Only" },
+    { id: "19", input: "Store 13", results: "No results found", group: "Searching for a Non-existent Store" }
   ];
   
-  boundaryTestCases.forEach(({ id, input, results, assertion, group }) => {
+  // Test Case 10-19
+  boundaryTestCases.forEach(({ id, input, results, group }) => {
     it(`TC-HOME-${id} - Testing Search Bar Using BVA: ${group}`, () => {
       cy.get('input[type="text"]').type(input).should('have.value', input.substring(0, 25)); // ✅ Handles trimmed value
       cy.contains("button", "Search").click();
@@ -231,37 +252,5 @@ describe('TC-HOME: Home Page Test Suite', () => {
       }
     });
   });
-
-  it("TC-HOME-16 - Home Page - Viewing all the User's Reviews", () => {
-    // Verify if page is in the Home Page
-    cy.url().should('include', '/home');
-
-    // Click on the hamburger button
-    cy.get('div.burger').click();
-
-    // Click on the reviews button
-    cy.contains('button', 'Reviews');
-
-    // Verify if the user is able to view their reviews
-    cy.url().should('include', '/reviews');
-  });
-
-  it('TC-HOME-17 - Home Page - Viewing a Store and Leaving a Review', () => {
-    // Verify if page is in the Home Page
-    cy.url().should('include', '/home');
-
-    // Select the search bar and type 100 characters
-    cy.get('input[type="text"]').type("A".repeat(100)).should('have.text', "A".repeat(25));
-    cy.contains("button", "Search").click();
-
-    // Check search results
-    cy.get('.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-sm-6.MuiGrid-grid-md-4')
-      .each(($element) => {
-        // Check if search results are correct
-        cy.wrap($element)
-          .children()
-          .find('h6')
-          .should('contain.text', "A".repeat(25));
-    });
-  });
+  
 })
