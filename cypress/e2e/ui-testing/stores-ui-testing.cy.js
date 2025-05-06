@@ -1,14 +1,14 @@
 describe ('UI Testing - Store Page 01', () => {
     // TC_StorePage_01
-    it('Should verify that Store 01 page is visible.', () =>{
-        // Navigate to Store page
+    it('Should verify that Store Page is visible.', () =>{
+        // Navigate to Store Page
         cy.visit('https://afforda-eats.vercel.app/store?id=1');
         cy.url().should('include', '/store?id=1');
     });
 
      // TC_StorePage_02
-    it("Should verify that Store 01's information is successfully displayed. ", () =>{
-        // Navigate to Store page
+    it("Should verify that Store Page's information is successfully displayed. ", () =>{
+        // Navigate to Store Page
         cy.visit('https://afforda-eats.vercel.app/store?id=1');
         cy.url().should('include', '/store?id=1');
 
@@ -57,8 +57,8 @@ describe ('UI Testing - Store Page 01', () => {
     });
 
      // TC_StorePage_03
-    it('Should verify that user can successfully create a review for Store 01 with default rating value.', () =>{
-        // Navigate to Store page
+    it('Should verify that user can successfully create a review for Store Page with default rating value.', () =>{
+        // Navigate to Store Page
         cy.visit('https://afforda-eats.vercel.app/store?id=1');
         cy.url().should('include', '/store?id=1');
 
@@ -91,8 +91,8 @@ describe ('UI Testing - Store Page 01', () => {
     });
 
      // TC_StorePage_04
-    it('Should verify that user can successfully create a review for Store 01 with 1-star rating value.', () => {
-        // Navigate to Store page
+    it('Should verify that user can successfully create a review for Store Page with 1-star rating value.', () => {
+        // Navigate to Store Page
         cy.visit('https://afforda-eats.vercel.app/store?id=1');
         cy.url().should('include', '/store?id=1');
 
@@ -130,8 +130,8 @@ describe ('UI Testing - Store Page 01', () => {
     });
 
     // TC_StorePage_05
-    it('Should verify that user can successfully create a review for Store 01 with 2-stars rating value.', () => {
-        // Navigate to Store page
+    it('Should verify that user can successfully create a review for Store Page with 2-stars rating value.', () => {
+        // Navigate to Store Page
         cy.visit('https://afforda-eats.vercel.app/store?id=1');
         cy.url().should('include', '/store?id=1');
 
@@ -169,8 +169,8 @@ describe ('UI Testing - Store Page 01', () => {
     });
 
     // TC_StorePage_06
-    it('Should verify that user can successfully create a review for Store 01 with 3-stars rating value.', () => {
-        // Navigate to Store page
+    it('Should verify that user can successfully create a review for Store Page with 3-stars rating value.', () => {
+        // Navigate to Store Page
         cy.visit('https://afforda-eats.vercel.app/store?id=1');
         cy.url().should('include', '/store?id=1');
 
@@ -208,8 +208,8 @@ describe ('UI Testing - Store Page 01', () => {
     });
 
     // TC_StorePage_07
-    it('Should verify that user can successfully create a review for Store 01 with 4-stars rating value.', () => {
-        // Navigate to Store page
+    it('Should verify that user can successfully create a review for Store Page with 4-stars rating value.', () => {
+        // Navigate to Store Page
         cy.visit('https://afforda-eats.vercel.app/store?id=1');
         cy.url().should('include', '/store?id=1');
 
@@ -247,8 +247,8 @@ describe ('UI Testing - Store Page 01', () => {
     });
 
     // TC_StorePage_08
-    it('Should verify that user can create a review for Store 01 without any special characters.', () =>{
-        // Navigate to Store page
+    it('Should verify that user can create a review for Store Page without any special characters.', () =>{
+        // Navigate to Store Page
         cy.visit('https://afforda-eats.vercel.app/store?id=1');
         cy.url().should('include', '/store?id=1');
 
@@ -281,8 +281,8 @@ describe ('UI Testing - Store Page 01', () => {
     });
 
     // TC_StorePage_09
-    it('Should verify that user cannot create a review for Store 01 when the feedback input is empty.', () =>{
-        // Navigate to Store page
+    it('Should verify that user cannot create a review for Store Page when the feedback input is empty.', () =>{
+        // Navigate to Store Page
         cy.visit('https://afforda-eats.vercel.app/store?id=1');
         cy.url().should('include', '/store?id=1');
 
@@ -314,8 +314,8 @@ describe ('UI Testing - Store Page 01', () => {
     });
 
      // TC_StorePage_10
-    it('Should verify that user can successfully cancel a written review for Store 01.', () => {
-        // Navigate to Store page
+    it('Should verify that user can successfully cancel a written review for Store Page.', () => {
+        // Navigate to Store Page
         cy.visit('https://afforda-eats.vercel.app/store?id=1');
         cy.url().should('include', '/store?id=1');
 
