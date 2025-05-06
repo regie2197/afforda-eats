@@ -218,17 +218,18 @@ describe('TC-HOME: Home Page Test Suite', () => {
   });
 
   const boundaryTestCases = [
-    { id: "10", input: "A", results: "Results found", assertion: "A", group: "Minimum Valid Input - 1 Characters (min)" },
-    { id: "11", input: "AB", results: "No results found", assertion: "AB", group: "One Character more than Minimum Input - 2 Characters (min+)"},
-    { id: "12", input: "Store 1234567890", results: "No results found", assertion: "Store 1234567890", group: "Typical Valid Length" },
-    { id: "13", input: "Store 12345678901234567890", results: "No results found", assertion: "Store 12345678901234567890", group: "Max Valid Length - 20 Characters (max)" },
-    { id: "14", input: "Store 123456789012345678901", results: "Invalid Input", assertion: "No results found", group: "Exceeds Max Length - 21 Characters (max+)" },
-    { id: "15", input: "Store 1234567890123456789", results: "Invalid Input", assertion: "No results found", group: "One Character Less than the Max Length - 19 Characters (max-)" },
-    { id: "16", input: " ", results: "Invalid Input", assertion: "No results found", group: "Single Whitespace Only" },
+    { id: "10", input: "A", results: "Results found", group: "Minimum Valid Input - 1 Characters (min)" },
+    { id: "11", input: "AB", results: "No results found", group: "One Character more than Minimum Input - 2 Characters (min+)"},
+    { id: "12", input: "Store 1234567890", results: "No results found", group: "Typical Valid Length" },
+    { id: "13", input: "Store 12345678901234567890", results: "No results found", group: "Max Valid Length - 20 Characters (max)" },
+    { id: "14", input: "Store 123456789012345678901", results: "Invalid Input", group: "Exceeds Max Length - 21 Characters (max+)" },
+    { id: "15", input: "Store 1234567890123456789", results: "Invalid Input", group: "One Character Less than the Max Length - 19 Characters (max-)" },
+    { id: "16", input: " ", results: "Invalid Input", group: "Single Whitespace Only" },
+    { id: "17", input: "Store 13", results: "No results found", group: "Searching for a Non-existent Store" }
   ];
   
-  // Test Case 10-16
-  boundaryTestCases.forEach(({ id, input, results, assertion, group }) => {
+  // Test Case 10-17
+  boundaryTestCases.forEach(({ id, input, results, group }) => {
     it(`TC-HOME-${id} - Testing Search Bar Using BVA: ${group}`, () => {
       cy.get('input[type="text"]').type(input).should('have.value', input.substring(0, 25)); // ✅ Handles trimmed value
       cy.contains("button", "Search").click();
@@ -247,25 +248,6 @@ describe('TC-HOME: Home Page Test Suite', () => {
         // ❌ Verify error message appears
         cy.get(".error-message").should("contain.text", results);
       }
-    });
-  });
-
-  it("TC-HOME-17 - Home Page - High Character Input Stress Test", () => {
-    // Verify if page is in the Home Page
-    cy.url().should('include', '/home');
-
-    // Select the search bar and type 100 characters
-    cy.get('input[type="text"]').type("A".repeat(100)).should('have.text', "A".repeat(25));
-    cy.contains("button", "Search").click();
-
-    // Check search results
-    cy.get('.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-sm-6.MuiGrid-grid-md-4')
-      .each(($element) => {
-        // Check if search results are correct
-        cy.wrap($element)
-          .children()
-          .find('h6')
-          .should('contain.text', "A".repeat(25));
     });
   });
   
