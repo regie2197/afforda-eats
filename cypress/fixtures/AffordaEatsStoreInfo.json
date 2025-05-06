@@ -1,8 +1,11 @@
 {
-  "name": "Hessel, Towne and Larkin",
-  "streetName": "526 N Division Street",
-  "streetNumber": "Elyssa Lake",
-  "city": "Oliverfield",
-  "zipcode": "56712-4091",
-  "country": "New Caledonia"
+  "name": "Fritsch, Stiedemann and Pollich",
+  "streetName": "50317 Hegmann Meadows",
+  "streetNumber": "Bonnie Extension",
+  "city": "Port Cecilburgh",
+  "zipcode": "67365",
+  "country": "Mauritania",
+  "id": 43,
+  "ownerId": 68,
+  "locationId": 43
 }

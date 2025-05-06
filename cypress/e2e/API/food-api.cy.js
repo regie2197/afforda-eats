@@ -714,13 +714,119 @@ describe('AffordaEats API: Delete specific food menu', () => {
 })
 
 
+// ================= PUT ===========================
+describe('AffordaEats API: Put specific food menu', () => {
+       
+    let uname = 'kangkangkang'
+    let pword = 'hehehehe1234'
+    const BASE_URL = 'http://localhost:4000/api'
+    let PatchName, PatchPrice, PatchDescription, OldName, OldPrice, OldDescription
+    before(() => {
+        cy.readFile('cypress/fixtures/AffordaEatsFood.json').then((OldInfo) => {
+            OldName = OldInfo.name
+            OldPrice = OldInfo.price
+            OldDescription = OldInfo.description
+        })
+
+        const PatchFood = generateAffordaEatsFoodItem()
+        cy.AffordEatsGenerateFoodFile(PatchFood)
+
+        cy.readFile('cypress/fixtures/AffordaEatsFood.json').then((Newinfo) => {
+            PatchName = Newinfo.name
+            PatchPrice = Newinfo.price
+            PatchDescription = Newinfo.description
+        })
+    })
+    it('200: Successfully Updated specific food menu', () => {
+        cy.api({
+            method: "PUT",
+            url: BASE_URL + '/food/19',
+            auth: {
+                username: uname,
+                password: pword
+            },
+            body: {
+                name: PatchName,
+                price: PatchPrice,
+                description: PatchDescription
+            }
+        }).then((response) => {
+            expect(response.status).to.eq(200)
+            expect(response.body).to.have.property('id')
+            expect(response.body).to.have.property('name', PatchName)
+            expect(response.body).to.have.property('price', PatchPrice)
+            expect(response.body).to.have.property('description', PatchDescription)
+            expect(response.body).to.have.property('storeId')
+        }) 
+        //Improvement: add api call to check if put is successful
+    })
+
+    it('400: Verify Invalid food ID error', () => {
+        cy.api({
+            method: "PUT",
+            url: BASE_URL + '/food/NaN',
+            auth: {
+                username: uname,
+                password: pword
+            },
+            body: {
+                name: PatchName,
+                price: PatchPrice,
+                description: PatchDescription
+            },
+            failOnStatusCode:false
+        }).then((response) => {
+            expect(response.status).to.eq(400)
+            expect(response.body).to.have.property('message','Invalid food ID')
+        })
+    })
+
+    it('404: Verify Food not found error', () => {
+        cy.api({
+            method: "PUT",
+            url: BASE_URL + '/food/1239',
+            auth: {
+                username: uname,
+                password: pword
+            },
+            body: {
+                name: PatchName,
+                price: PatchPrice,
+                description: PatchDescription
+            },
+            failOnStatusCode:false
+        }).then((response) => {
+            expect(response.status).to.eq(404)
+            expect(response.body).to.have.property('message','Food not found')
+        }) 
+    })
+    it('500: Verify Failed to update food error',() => {
+        cy.intercept('PUT', `${BASE_URL} + /food/679`, {
+            statusCode: 500,
+            }).as('postwholeData');  // Aliasing the request
+    
+            cy.request({
+                method: 'PUT',
+                url: BASE_URL + '/food/679',
+                auth: {
+                    username: uname,
+                    password: pword
+                },   
+                failOnStatusCode: false // Prevents Cypress from failing the test immediately on 500
+              }).then((response) => {
+                // Assert that the response has a 500 status code
+                expect(response.status).to.eq(500);
+                expect(response.body.message).to.equal('Failed to fetch food');
+              });
+    })
+})
 
 
 
 
 
 
-// HTD 배치 19의 자산, 완료 날짜: 2025/05/02 , 저작권: 2025 
+// HTD 배치 19의 자산, 완료 날짜: 2025/05/06 , 저작권: 2025 
 
 
 
