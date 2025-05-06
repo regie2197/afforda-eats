@@ -9,7 +9,7 @@ describe('USER API Testing', () => {
         "password": 'lemon123'
     }
 
-    it.only('Verify successful POST request for creating a new user', () => {
+    it('Verify successful POST request for creating a new user', () => {
         cy.api({
             method: 'POST',
             url: "http://localhost:4000/api/user",
@@ -322,7 +322,7 @@ describe('USER API Testing', () => {
         })
     })
         
-    it.only('Verify unsuccessful overwriting of user data when the required field values contains leading and trailing spaces', () => {
+    it('Verify unsuccessful overwriting of user data when the required field values contains leading and trailing spaces', () => {
         const reg_spaceAround = createUser()
         cy.api({
             method: 'PUT',
@@ -336,7 +336,7 @@ describe('USER API Testing', () => {
         })
     }) // 200 failed
 
-    it.only('Verify unsuccessful overwriting of user data when email field value contains whitespace', () => {
+    it('Verify unsuccessful overwriting of user data when email field value contains whitespace', () => {
         const reg_emailWhitespace = createUser() 
         cy.api({
             method: 'PUT',
@@ -353,7 +353,7 @@ describe('USER API Testing', () => {
         });
     }) // 200 failed
 
-    it.only('Verify unsuccessful overwriting of user data when username field value contains whitespace', () => {
+    it('Verify unsuccessful overwriting of user data when username field value contains whitespace', () => {
         const reg_usernameWhitespace = createUser()
         cy.api({
             method: 'PUT',
@@ -369,7 +369,7 @@ describe('USER API Testing', () => {
         })
     }) // 200 failed
 
-    it.only('Verify unsuccessful overwriting of user data when email is on an invalid format', () => {
+    it('Verify unsuccessful overwriting of user data when email is on an invalid format', () => {
         const reg_invalidEmail = createUser()
         cy.api({
             method: 'PUT',
@@ -383,7 +383,7 @@ describe('USER API Testing', () => {
         })
     }) // 200 failed
 
-    it.only('Verify unsuccessful overwriting of user data when the password field value has less than 6 character', () => {
+    it('Verify unsuccessful overwriting of user data when the password field value has less than 6 character', () => {
         const reg_invalidPass = createUser()
         cy.api({
             method: 'PUT',
@@ -397,7 +397,7 @@ describe('USER API Testing', () => {
         })
     }) // 200 failed
 
-    it.only('Verify unsuccessful overwriting of user data when the entered email already exists in the database', () => {
+    it('Verify unsuccessful overwriting of user data when the entered email already exists in the database', () => {
         const reg_sameEmail = createUser()
         cy.api({
             method: 'PUT',
@@ -411,7 +411,7 @@ describe('USER API Testing', () => {
         })
     }) // 200 failed
 
-    it.only('Verify unsuccessful overwriting of user data when the entered username already exists in the database', () => {
+    it('Verify unsuccessful overwriting of user data when the entered username already exists in the database', () => {
         const reg_sameUsername = createUser()
         cy.api({
             method: 'PUT',
@@ -480,7 +480,7 @@ describe('USER API Testing', () => {
         })
     })
 
-    it.only('Verify unsuccessful modification of user data when the required field values contains leading and trailing spaces', () => {
+    it('Verify unsuccessful modification of user data when the required field values contains leading and trailing spaces', () => {
         cy.api({
             method: 'PATCH',
             url: "http://localhost:4000/api/user/" + userId,
@@ -493,7 +493,7 @@ describe('USER API Testing', () => {
         })
     }) // 200 failed
 
-    it.only('Verify unsuccessful modification of user data when email field value contains whitespace', () => {
+    it('Verify unsuccessful modification of user data when email field value contains whitespace', () => {
         const reg_emailWhitespace = createUser() 
         cy.api({
             method: 'PATCH',
@@ -507,7 +507,7 @@ describe('USER API Testing', () => {
         });
     }) // 200 failed
 
-    it.only('Verify unsuccessful modification of user data when username field value contains whitespace', () => {
+    it('Verify unsuccessful modification of user data when username field value contains whitespace', () => {
         const reg_usernameWhitespace = createUser()
         cy.api({
             method: 'PATCH',
@@ -521,7 +521,7 @@ describe('USER API Testing', () => {
         })
     }) // 200 failed
 
-    it.only('Verify unsuccessful modification of user data when email is on an invalid format', () => {
+    it('Verify unsuccessful modification of user data when email is on an invalid format', () => {
         const reg_invalidEmail = createUser()
         cy.api({
             method: 'PATCH',
@@ -535,7 +535,7 @@ describe('USER API Testing', () => {
         })
     }) // 200 failed
 
-    it.only('Verify unsuccessful modification of user data when the password field value has less than 6 character', () => {
+    it('Verify unsuccessful modification of user data when the password field value has less than 6 character', () => {
         cy.api({
             method: 'PATCH',
             url: "http://localhost:4000/api/user/" + userId,
@@ -548,7 +548,7 @@ describe('USER API Testing', () => {
         })
     }) // 200 failed
 
-    it.only('Verify unsuccessful modification of user data when the entered email already exists in the database', () => {
+    it('Verify unsuccessful modification of user data when the entered email already exists in the database', () => {
         cy.api({
             method: 'PATCH',
             url: "http://localhost:4000/api/user/" + userId,
@@ -561,7 +561,7 @@ describe('USER API Testing', () => {
         })
     }) // 200 failed
 
-    it.only('Verify unsuccessful modification of user data when the entered username already exists in the database', () => {
+    it('Verify unsuccessful modification of user data when the entered username already exists in the database', () => {
         cy.api({
             method: 'PATCH',
             url: "http://localhost:4000/api/user/" + userId,
@@ -633,20 +633,6 @@ describe('USER API Testing', () => {
             expect(response.status).to.eq(500)
             expect(response.body.error).to.be.eql("Internal server error")
         })
-    })
-
-    it.skip("404 - No user", () => {
-        for( let i = 0; i<= userId; i++){
-            cy.api({
-                method: 'DELETE',
-                url: "http://localhost:4000/api/user/" + i,
-                auth: {
-                    "username": newUser.username,
-                    "password": newUser.password
-                },
-                failOnStatusCode: false
-            })
-        }
     })
 
 })
