@@ -39,14 +39,22 @@ Cypress.Commands.add('VerifyErrMes', (errorcode) => {
 })
 
 Cypress.Commands.add('writeFeedback', (n) => {
-    fakeMessage = faker.string.alpha(n);; // Limits the text to 100 characters
+    let paragraph = "";
+
+    while (paragraph.length < n) {
+        paragraph += (paragraph ? " " : "") + faker.lorem.sentence(); // Append sentences
+    }
+
+    fakeMessage = paragraph.substring(0, n); // Trim to exactly 'n' characters
+    
+    //fakeMessage = faker.string.alpha(n); // create string with n length
+    
     cy.get('[rows="8"]').should('be.visible').type(fakeMessage)
     if (n < 500){
         cy.get('[rows="8"]').invoke('val').should('have.length', n);
     } else if (n > 500) {
         cy.get('[rows="8"]').invoke('val').should('have.length', 500); // Checks if it has exactly 500 characters
-    }
-    
+    }    
 })
 
 // Joshua ----------------
@@ -67,3 +75,6 @@ Cypress.Commands.add('AffordaEatsGenerateStoreFile', (NewStore) => {
     cy.writeFile('cypress/fixtures/AffordaEatsStoreInfo.json', NewStore)
 })
 
+Cypress.Commands.add('AffordEatsGenerateUpdateFoodFile', (UpdateFile) => {
+    cy.writeFile('cypress/fixtures/AffordaEatsUpdatefood.json', UpdateFile)
+} )

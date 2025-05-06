@@ -9,6 +9,7 @@ export class RegistrationPage {
     }
     fillFormVendor(vendor) {
         if (vendor.firstName) cy.get('input[name="firstName"]').type(vendor.firstName).and('have.value', vendor.firstName)
+        if (vendor.firstName) cy.get('input[name="firstName"]').type(vendor.firstName).and('have.value', vendor.firstName)
         if (vendor.lastName) cy.get('input[name="lastName"]').type(vendor.lastName).and('have.value', vendor.lastName)
         if (vendor.email) cy.get('input[name="email"]').type(vendor.email).and('have.value', vendor.email)
         if (vendor.username) cy.get('input[name="username"]').type(vendor.username).and('have.value', vendor.username)

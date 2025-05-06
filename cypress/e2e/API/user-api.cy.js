@@ -839,8 +839,8 @@ describe('UserAPI Test Case #14 - Update a User - Assert that a user cannot be u
         username: "titingkayad",
         password: "kinaya",
         state: "unauthorized",
-        firstName: "thefirst",
-        lastName: "lasttwo",
+        firstName: "thethe",
+        lastName: "lastlast",
         accountType: "USER"
     }
     it('Verify that the Response Code is 400: Bad Request if the message is not in the correct format', () => {

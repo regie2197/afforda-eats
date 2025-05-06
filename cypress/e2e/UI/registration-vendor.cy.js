@@ -11,6 +11,7 @@ describe('Registration - VENDOR', () => {
 
     beforeEach(() => {
         cy.visit('http://localhost:3000/login')
+        cy.visit('http://localhost:3000/login')
         
     });
     const vendor = vendorRegister();
