@@ -352,4 +352,3 @@ describe ('UI Testing - Store Page', () => {
         cy.get('.MuiDialog-container').should('not.be.visible')
     });
 });
-
