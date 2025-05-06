@@ -37,7 +37,7 @@ export function generateAffordaEatsUserInfo() {
 
 export function generateAffordaEatsFoodItem() {
     return{
-       id: 0,
+        id: 0,
         name: faker.commerce.productName(),
         price: faker.commerce.price(undefined, undefined, 2),
         description: faker.commerce.productDescription()
