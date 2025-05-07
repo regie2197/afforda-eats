@@ -138,3 +138,7 @@ dist
 
 # Screenshots folder
 cypress/screenshots/
+
+# Affordaeats json
+cypress/fixtures/AffordaEatsFood.json
+cypress/fixtures/AffordaEatsUpdatefood.json
