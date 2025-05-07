@@ -997,6 +997,19 @@ describe('UserAPI Test Case #19 - Delete a User - Assert that a user can be dele
             expect(res.status).to.eql(204)
             expect(res.statusText).to.eql("No Content")
         })
+        cy.api({
+            method: 'GET',
+            url: baseURL + '/' + userID,
+            auth: {
+                username: username,
+                password: password
+            },
+            failOnStatusCode: false
+        }).then((res) => {
+            expect(res.status).to.eql(404);
+            expect(res.statusText).to.eql('Not Found');
+            expect(response.body.error).to.eql('User not found')
+        })
     });
 })
 
@@ -1018,7 +1031,7 @@ describe('UserAPI Test Case #20 - Delete a User - Assert that a proper response 
 })
 
 describe('UserAPI Test Case #21 - Delete a User - Assert that the delete function will fail when a non-numerical datatype is provided in the Request URL', () => {
-    it('Send a DELETE Request and Verify that the Response Code is 404 if the user is not found', () => {
+    it('Send a DELETE Request and Verify that the Response Code is 400 for a bad request', () => {
         cy.api({
             method: 'DELETE',
             url: baseURL + '/' + 'testing',
