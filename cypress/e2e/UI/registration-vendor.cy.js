@@ -159,7 +159,7 @@ describe('Registration - VENDOR', () => {
         cy.url().should('include', 'http://localhost:3000/home', { timeout: 15000 });
         //should procede to next page
     })
-    it('Verify if registration accepts input field with 1 character', () => {
+    it('Verify registration with one field contain 1 alphanumeric characters and above (e.g. First Name)', () => {
             const testUser = { 	
                 firstName: 'M',
                 lastName: faker.person.lastName(),
@@ -172,12 +172,12 @@ describe('Registration - VENDOR', () => {
             registrationPage.assertFields();
             registrationPage.fillForm(testUser);
             registrationPage.clickSubmit();
-            cy.get('Error prompt')
+            // cy.get('Error prompt')
             // cy.on('window:alert', (text) => {
             //     expect(text).to.equal(/Registration failed: Please try again/);
             //     return true;
             // });
-            // cy.url().should('contain', '/user', { timeout: 15000 }) // Waits up to 10 seconds
+            cy.url().should('contain', '/user', { timeout: 15000 }) // Waits up to 10 seconds
         })
         it('Verify if registration accepts input field with 51 characters and above', () => {
             const testUser = { 	

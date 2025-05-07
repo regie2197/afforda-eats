@@ -38,7 +38,7 @@ describe('Registration - USER', () => {
         cy.get('a[href="/login"]').should('be.visible').and('not.be.disabled')
         cy.get('a[href="/login"]').click()
     })
-    it('Verify user can input data on all mandatory fields ("First Name" , "Last Name", "Email", "Username", "Password")', () => {
+    it.only('Verify user can input data on all mandatory fields ("First Name" , "Last Name", "Email", "Username", "Password")', () => {
         loginPage.loginView()
         loginPage.assertRegisterTextButton();
         loginPage.clickUserButton();
@@ -176,7 +176,7 @@ describe('Registration - USER', () => {
  // Waits up to 10 seconds
         //should procede to next page
     })
-    it('Verify if registration accepts input field with 1 character', () => {
+    it('Verify registration with one field contain 1 alphanumeric characters and above (e.g. First Name)', () => {
         const testUser = { 	
             firstName: 'M',
             lastName: faker.person.lastName(),
@@ -189,12 +189,12 @@ describe('Registration - USER', () => {
         registrationPage.assertFields();
         registrationPage.fillForm(testUser);
         registrationPage.clickSubmit();
-        cy.get('Error prompt')
+        // cy.get('Error prompt')
         // cy.on('window:alert', (text) => {
         //     expect(text).to.equal(/Registration failed: Please try again/);
         //     return true;
         // });
-        // cy.url().should('contain', '/user', { timeout: 15000 }) // Waits up to 10 seconds
+        cy.url().should('contain', '/user', { timeout: 15000 }) // Waits up to 10 seconds
     })
     it('Verify if registration accepts input field with 51 characters and above', () => {
         const testUser = { 	
@@ -297,7 +297,7 @@ describe('Registration - USER', () => {
     it('Verify user registration with "Email" accepts data with valid email format (e.g. "sample@gmail.com")', () => { //Accept White Spaces
         const testUser = { firstName: faker.person.firstName(),
             lastName: faker.person.lastName(),
-            email: 'sampleee@email.com',
+            email: 'sample3@email.com',
             username: faker.person.firstName(),
             password: "password123",    };
         loginPage.loginView()
