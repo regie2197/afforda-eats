@@ -225,7 +225,7 @@ describe('TC-HOME: Home Page Test Suite', () => {
     { id: "14", input: "Store 1234567890", results: "No results found", group: "Typical Valid Length" },
     { id: "15", input: "Store 12345678901234567890", results: "No results found", group: "Max Valid Length - 20 Characters (max)" },
     { id: "16", input: "Store 123456789012345678901", results: "Invalid Input", group: "Exceeds Max Length - 21 Characters (max+)" },
-    { id: "17", input: "Store 1234567890123456789", results: "Invalid Input", group: "One Character Less than the Max Length - 19 Characters (max-)" },
+    { id: "17", input: "Store 1234567890123456789", results: "No results found", group: "One Character Less than the Max Length - 19 Characters (max-)" },
     { id: "18", input: " ", results: "Invalid Input", group: "Single Whitespace Only" },
     { id: "19", input: "Store 13", results: "No results found", group: "Searching for a Non-existent Store" }
   ];
