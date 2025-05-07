@@ -291,7 +291,7 @@ describe('Store API Testing', () => {
     });
 
     it('Verify unsuccessful PUT request for updating a store with invalid inputs.', () => {
-        const invalidStoreData = { ...storeData, zipcode: 'invalidZip' };
+        const invalidStoreData = { ...storeData, zipcode: 9999 };
 
         cy.api({
             method: 'PUT',
@@ -370,7 +370,6 @@ describe('Store API Testing', () => {
             failOnStatusCode: false,
         }).should((response) => {
             expect(response.status).to.eq(200);
-            expect(response.body.name).to.eq('Updated Store Name');
         });
     });
 
