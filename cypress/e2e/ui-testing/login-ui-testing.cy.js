@@ -127,7 +127,8 @@ describe('Login Page module', () => {
             expect(str).to.contain('Login failed'); 
         });
         cy.url().should('include', '/login');
-        });
         cy.takeScreenshot('Login without credentials');
+        });
+       
     });
     
